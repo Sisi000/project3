@@ -3,7 +3,7 @@ import React  from 'react';
 import { Container, NavDropdown, Nav, Navbar } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default function NavBar() {;
+export default function NavBar() {
   return (
    <>
 
