@@ -1,5 +1,5 @@
 const { MongoClient } = require("mongodb");
-const mongoose = require("./mongoose");
+const mongoose = require("../mongoose");
 
 const { Schema, model } = mongoose;
 
@@ -15,7 +15,7 @@ const photoSchema = new Schema({
 });
 
 const User = model("User", userSchema);
-const Photo = model("Comment", photoSchema);
+// const Photo = model("Photo", photoSchema);
 
 const addUser = async (newUser) => {
     const addedUser = await User.create(newUser);
