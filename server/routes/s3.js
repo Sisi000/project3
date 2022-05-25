@@ -7,7 +7,7 @@ const { getFileStream } = require("../db/models/s3model");
 
 const s3 = new aws.S3();
 
-const app = express();
+// const app = express();
 
 const storage = s3Storage({
   s3,
