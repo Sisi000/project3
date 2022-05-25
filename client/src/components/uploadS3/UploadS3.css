@@ -1,0 +1,33 @@
+.containers3 {
+    text-align: center;
+  }
+  
+.forms3 {
+    display: flex; 
+    flex-direction: column; 
+    max-width: 400px; 
+    margin: auto;
+  }
+  
+  .imagePreview {
+    position: relative;
+    width: 200px;
+  }
+  
+  .containers3 img {
+    width: 100%;
+  }
+  
+.btn-s3 {
+    position: flex;
+    width: 60px;
+  }
+  
+.forms3 > * {
+    margin: 10px 0;
+  }
+  
+.fetchimg {
+    max-width: 400px;
+    margin: auto;
+  }

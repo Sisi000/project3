@@ -1,13 +1,14 @@
-import { useState } from 'react'
-import axios from 'axios'
+import { useState } from 'react';
+import axios from 'axios';
+import "./UploadS3.css";
 
 
-async function postImage({image, description}) {
+async function postImage({image}) {
   const formData = new FormData();
   formData.append("image", image)
-  formData.append("description", description)
 
-  const result = await axios.post('/s3/upload', formData, { headers: {'Content-Type': 'multipart/form-data'}})
+
+  const result = await axios.post('/upload', formData, { headers: {'Content-Type': 'multipart/form-data'}})
   return result.data
 }
 
@@ -15,12 +16,11 @@ async function postImage({image, description}) {
 function UploadS3() {
 
   const [file, setFile] = useState()
-  const [description, setDescription] = useState("")
   const [images, setImages] = useState([])
 
   const submit = async event => {
     event.preventDefault()
-    const result = await postImage({image: file, description})
+    const result = await postImage({image: file})
     setImages([result.image, ...images])
   }
 
@@ -31,11 +31,10 @@ function UploadS3() {
 	}
 
   return (
-    <div className="App">
-      <form onSubmit={submit}>
+    <div className="containers3">
+      <form className="forms3" onSubmit={submit}>
         <input onChange={fileSelected} type="file" accept="image/*"></input>
-        <input value={description} onChange={e => setDescription(e.target.value)} type="text"></input>
-        <button type="submit">Submit</button>
+            <button className="btn-s3" type="submit">Submit</button>
       </form>
 
       { images.map( image => (
@@ -44,7 +43,7 @@ function UploadS3() {
         </div>
       ))}
 
-      <img src="/images/0109b808b1403e2013eb50cfd718dae4" alt=""></img>
+      <img className="fetchimg" src="/images/0109b808b1403e2013eb50cfd718dae4" alt=""></img>
 
     </div>
   );

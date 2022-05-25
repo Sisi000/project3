@@ -21,6 +21,15 @@ const storage = s3Storage({
 
 const upload = multer({ storage: storage });
 
+// function getFileStream(fileKey) {
+//   const downloadParams = {
+//     Key: fileKey,
+//     Bucket: bucketName
+//   }
+
+//   return s3.getObject(downloadParams).createReadStream()
+// }
+
 router.get("/images/:key", (req, res) => {
   console.log(req.params);
   const key = req.params.key;
