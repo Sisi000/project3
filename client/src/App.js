@@ -1,11 +1,14 @@
-//import logo from './logo.svg';
 import NavBar from './components/Navbar/NavBar';
-//import './App.css';
+import UploadS3 from './components/uploadS3/UploadS3'
+
+
 
 function App() {
   return (
     <div>
       <NavBar />
+      <UploadS3 />
+     
     </div>
   );
 }

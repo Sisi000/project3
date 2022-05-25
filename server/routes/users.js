@@ -1,12 +1,11 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const debug = require("debug")("server:routes");
-const { addUser, allUsers } = require('../db/models/dbmodel');
-
+const { addUser, allUsers } = require("../db/models/userModel");
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get("/", function (req, res, next) {
+  res.send("respond with a resource");
 });
 
 // add user
@@ -33,6 +32,4 @@ router.get("/allusers", async (req, res) => {
   }
 });
 
-
 module.exports = router;
-

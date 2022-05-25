@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import "./UploadS3.css";
 
@@ -24,11 +24,25 @@ function UploadS3() {
     setImages([result.image, ...images])
   }
 
-
   const fileSelected = event => {
     const file = event.target.files[0]
 		setFile(file)
 	}
+
+  // const allimages = async () => {
+  //   try {
+  //     let response = await fetch("/allimages");
+  //     // let allimages = await response.json();
+  //     return setImages(response);
+  //   } catch (ex) {
+  //     console.log(ex);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   allimages();
+  // }, []);
+
 
   return (
     <div className="containers3">
@@ -43,7 +57,9 @@ function UploadS3() {
         </div>
       ))}
 
-      <img className="fetchimg" src="/images/0109b808b1403e2013eb50cfd718dae4" alt=""></img>
+      {/* <img className="fetchimg" src="/images/" alt=""></img> */}
+      {/* <img className="fetchimages" src={images} alt=""></img> */}
+      
 
     </div>
   );

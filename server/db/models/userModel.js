@@ -18,9 +18,9 @@ const User = model("User", userSchema);
 // const Photo = model("Photo", photoSchema);
 
 const addUser = async (newUser) => {
-    const addedUser = await User.create(newUser);
-    console.log("User added successfully");
-    return addedUser;
+  const addedUser = await User.create(newUser);
+  console.log("User added successfully");
+  return addedUser;
 };
 
 const allUsers = async () => {
