@@ -11,8 +11,8 @@ const storage = s3Storage({
   s3,
   Bucket: "project3inc",
   resize: {
-    width: 400,
-    height: 400,
+    width: 1000,
+    height: 1000,
     options:
     { fit: 'contain'}
   },
