@@ -1,4 +1,3 @@
-const { MongoClient } = require("mongodb");
 const mongoose = require("../mongoose");
 
 const { Schema, model } = mongoose;
@@ -6,7 +5,6 @@ const { Schema, model } = mongoose;
 const userSchema = new Schema({
   username: String,
   email: String,
-  // user_id: String,
 });
 
 
