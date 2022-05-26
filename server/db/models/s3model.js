@@ -1,6 +1,8 @@
 require("dotenv").config();
 const fs = require("fs");
 const S3 = require("aws-sdk/clients/s3");
+const { MongoClient } = require("mongodb");
+const mongoose = require("../mongoose");
 
 const bucketName = process.env.AWS_BUCKET;
 const region = process.env.AWS_BUCKET_REGION;
@@ -13,28 +15,22 @@ const s3 = new S3({
   secretAccessKey,
 });
 
-const getAllImages = async () =>  {
-// (async function () {
-  try {
 
-    const response = await s3.listObjectsV2({
-      Bucket: "project3inc"
-    }).promise();
-    // console.log(response)
+const { Schema, model } = mongoose;
 
-  } catch (err) {
-    console.error(err)
-  }
-  debugger;
-}
+const photoSchema = new Schema({
+  // user_id: String,
+  location: String,
+});
 
-// function getAllImages() {
-//   const downloadParams = {
-//     // Key: "",
-//     Bucket: bucketName,
-//   };
-//   return s3.getObject(downloadParams).createReadStream();
-// }
+
+const Photo = model("Photo", photoSchema);
+
+const addPhotoLocation = async (location) => {
+  const addedPhotoLocation = await Photo.create(location);
+  console.log("Photo location added successfully", addedPhotoLocation);
+  return addedPhotoLocation;
+};
 
 // downloads a file from s3
 function getFileStream(fileKey) {
@@ -45,4 +41,4 @@ function getFileStream(fileKey) {
   return s3.getObject(downloadParams).createReadStream();
 }
 
-module.exports = { getAllImages, getFileStream }
+module.exports = { addPhotoLocation, getFileStream }

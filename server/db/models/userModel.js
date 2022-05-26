@@ -9,10 +9,6 @@ const userSchema = new Schema({
   // user_id: String,
 });
 
-const photoSchema = new Schema({
-  user_id: String,
-  picture: String,
-});
 
 const User = model("User", userSchema);
 // const Photo = model("Photo", photoSchema);
