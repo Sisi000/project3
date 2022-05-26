@@ -95,4 +95,4 @@ router.get("/facelandmark", async (req, res, next) =>  {
     res.send(response)
   });
   
-  module.exports = router;
+//   module.exports = router;
