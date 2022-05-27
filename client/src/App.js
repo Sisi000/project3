@@ -13,10 +13,10 @@ function App() {
     <Router>
       <div className='App'>
       <NavBar />
-        <UploadS3 />
       <div className='content'>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/upload" element={<UploadS3 />} />
           <Route path="/about" element={<About />} />
         </Routes>
       </div>
