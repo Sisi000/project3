@@ -7,19 +7,19 @@ const aws = require("aws-sdk");
 const { uploadFile, getFileStream } = require("../db/models/s3Model");
 const s3 = new aws.S3();
 const mongoose = require("../db/mongoose");
-const { facelandmark } = require("./facelandmark");
+const { facelandmark } = require("../db/models/faceDetectionCalc.js");
 
-const storage2 = s3Storage({
-  s3,
-  Bucket: "project3inc",
-  resize: {
-    width: 1000,
-    height: 1000,
-    options: { withoutEnlargement: true },
-  },
-});
+// const storage = s3Storage({
+//   s3,
+//   Bucket: "project3inc",
+//   resize: {
+//     width: 1000,
+//     height: 1000,
+//     options: { withoutEnlargement: true },
+//   },
+// });
+
 const storage = multer.memoryStorage();
-
 const upload = multer({ storage: storage });
 // const upload2 = multer({ storage: storage2 });
 
@@ -51,7 +51,6 @@ router.post("/upload", upload.single("image"), async (req, res, next) => {
   //   const result2 = upload2.single("image");
   //   console.log("result is", result2);
     res.send(resultVision);
-  
 });
 
 module.exports = router;
