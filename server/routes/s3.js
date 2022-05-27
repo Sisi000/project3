@@ -21,7 +21,7 @@ const storage2 = s3Storage({
 const storage = multer.memoryStorage();
 
 const upload = multer({ storage: storage });
-const upload2 = multer({ storage: storage2 });
+// const upload2 = multer({ storage: storage2 });
 
 const { Schema, model } = mongoose;
 
@@ -46,12 +46,12 @@ router.post("/upload", upload.single("image"), async (req, res, next) => {
   const buffer = req.file.buffer;
   const resultVision = await facelandmark(buffer);
   console.log("resultVision is", resultVision);
-  const result = async () => {
-    // const file = req.file;
-    const result2 = upload2.single("image");
-    console.log("result is", result2);
-    res.send(result);
-  };
+  // const result = async () => {
+  //   // const file = req.file;
+  //   const result2 = upload2.single("image");
+  //   console.log("result is", result2);
+    res.send(resultVision);
+  
 });
 
 module.exports = router;
