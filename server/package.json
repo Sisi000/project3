@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "test": "jest --setupFiles dotenv/config"
   },
   "dependencies": {
     "@google-cloud/vision": "^2.4.2",
@@ -25,5 +26,8 @@
   "devDependencies": {
     "jest": "^28.1.0",
     "nodemon": "^2.0.16"
+  },
+  "devDependencies": {
+    "jest": "^28.1.0"
   }
 }
