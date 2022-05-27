@@ -2,9 +2,9 @@ const vision = require('@google-cloud/vision');
 const express = require("express");
 const sizeOf = require("image-size");
 const fs = require ('fs');
-const router = express.Router();
-const uploadLocation="./testimages/";
-const fname = "testimage.jpg" //Test image
+// const router = express.Router();
+// const uploadLocation="./testimages/";
+// const fname = "testimage.jpg" //Test image
 
 var config = {credentials:
     {
@@ -13,22 +13,22 @@ var config = {credentials:
     }
 };
 
-async function facelandmark(req, res, next) {
+async function facelandmark(buffer) {
     const client = new vision.ImageAnnotatorClient(config);
     //test for upload - needed for encode
-    var imageFileUpload = fs.readFileSync(uploadLocation+fname);
-    //defines internal file 
-    var imageB64Upload = Buffer.from(imageFileUpload).toString('base64');
-    const request = {
-        image: {
-            content: Buffer.from(imageB64Upload, 'base64')
-        }
-    };  
-    let originalImageSize = sizeOf(uploadLocation+fname);
+    // var imageFileUpload = fs.readFileSync(uploadLocation+fname);
+    // //defines internal file 
+    // var imageB64Upload = Buffer.from(imageFileUpload).toString('base64');
+    // const request = {
+    //     image: {
+    //         content: Buffer.from(imageB64Upload, 'base64')
+    //     }
+    // };  
+    // let originalImageSize = sizeOf(uploadLocation+fname);
     let imageInformation;
     async function setEndpoint() {
         try{
-            const result = await client.faceDetection(request);
+            const result = await client.faceDetection(buffer);
             imageInformation = result;
             console.log(result)
         } catch(error) {
@@ -86,13 +86,14 @@ async function facelandmark(req, res, next) {
     console.log("Euclidiean distance for vertical left eye dimension: ", leftEyeVertD)
     console.log("Euclidiean distance for horizontal left eye dimension: ", leftEyeHorrizD)
     console.log("The ratio of vertical/horizontal left eye dimensions is: ", leftEyeVertD/leftEyeHorrizD)
-    return {imageInformation, originalImageSize}
+    return {imageInformation}
 }
 
 
-router.get("/facelandmark", async (req, res, next) =>  {
-    let response = await facelandmark()
-    res.send(response)
-  });
+// router.get("/facelandmark", async (req, res, next) =>  {
+//     let response = await facelandmark()
+//     res.send(response)
+//   });
   
 //   module.exports = router;
+module.exports = { facelandmark };
