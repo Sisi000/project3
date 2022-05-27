@@ -76,16 +76,43 @@ async function facelandmark(req, res, next) {
     let mouth_center = landmarks[12].position
 
     let forehead_gabella = landmarks[28].position
-    console.log(left_eye_top.x, left_eye_top.y, left_eye_top.z)
-    console.log(left_eye_top)
-    console.log(left_eye_bottom)
-    console.log(left_eye_right_corner)
-    console.log(left_eye_left_corner)
-    leftEyeVertD=euclideandistance(left_eye_top.x, left_eye_top.y, left_eye_top.z,left_eye_bottom.x, left_eye_bottom.y, left_eye_bottom.z)
-    leftEyeHorrizD=euclideandistance(left_eye_right_corner.x, left_eye_right_corner.y, left_eye_right_corner.z,left_eye_left_corner.x, left_eye_left_corner.y, left_eye_left_corner.z)
-    console.log("Euclidiean distance for vertical left eye dimension: ", leftEyeVertD)
-    console.log("Euclidiean distance for horizontal left eye dimension: ", leftEyeHorrizD)
-    console.log("The ratio of vertical/horizontal left eye dimensions is: ", leftEyeVertD/leftEyeHorrizD)
+    
+    // console.log(left_eye_top.x, left_eye_top.y, left_eye_top.z)
+    // console.log(left_eye_top)
+    // console.log(left_eye_bottom)
+    // console.log(left_eye_right_corner)
+    // console.log(left_eye_left_corner)
+    let leftEyeVertD=euclideandistance(left_eye_top.x, left_eye_top.y, left_eye_top.z,left_eye_bottom.x, left_eye_bottom.y, left_eye_bottom.z)
+    let leftEyeHorrizD=euclideandistance(left_eye_right_corner.x, left_eye_right_corner.y, left_eye_right_corner.z,left_eye_left_corner.x, left_eye_left_corner.y, left_eye_left_corner.z)
+    let rightEyeVertD=euclideandistance(right_eye_top.x, right_eye_top.y, right_eye_top.z,right_eye_bottom.x, right_eye_bottom.y, right_eye_bottom.z)
+    let rightEyeHorrizD=euclideandistance(right_eye_right_corner.x, right_eye_right_corner.y, right_eye_right_corner.z,right_eye_left_corner.x, right_eye_left_corner.y, right_eye_left_corner.z)
+    let rightEyeHorrizvsVertRatio=rightEyeHorrizD/rightEyeVertD
+    let leftEyeHorrizvsVertRatio=leftEyeHorrizD/leftEyeVertD
+    let eyeRatioHorrizvsVertRatio=(leftEyeHorrizvsVertRatio+rightEyeHorrizvsVertRatio)/2
+
+    let earToEarHorizontal=euclideandistance(left_ear_tragion.x, left_ear_tragion.y, left_ear_tragion.z,right_ear_tragion.x, right_ear_tragion.y, right_ear_tragion.z)
+    let betweenEyesToChinVert=euclideandistance(midpoint_between_eyes.x, midpoint_between_eyes.y, midpoint_between_eyes.z,chin_gnathion.x, chin_gnathion.y, chin_gnathion.z)
+    let earsToFaceHorrizvsVertRatio=earToEarHorizontal/betweenEyesToChinVert
+
+    let cheekToCheekHorizD=euclideandistance(left_cheek_center.x, left_cheek_center.y, left_cheek_center.z,right_cheek_center.x, right_cheek_center.y, right_cheek_center.z)
+    let chinPointHorizD=euclideandistance(right_chin_gonion.x, right_chin_gonion.y, right_chin_gonion.z,left_chin_gonion.x, left_chin_gonion.y, left_chin_gonion.z)
+    let cheekVsChinHorizRatio=cheekToCheekHorizD/chinPointHorizD
+
+    let noseLeftToRightHorizD=euclideandistance(nose_bottom_right.x, nose_bottom_right.y, nose_bottom_right.z,nose_bottom_left.x, nose_bottom_left.y, nose_bottom_left.z)
+    let nodeTipToBottomVertD=euclideandistance(nose_bottom_center.x, nose_bottom_center.y, nose_bottom_center.z,nose_tip.x, nose_tip.y, nose_tip.z)
+    let noseWidthvsHeightRatio=noseLeftToRightHorizD/nodeTipToBottomVertD
+
+    // console.log("Euclidiean distance for vertical left eye dimension: ", leftEyeVertD)
+    // console.log("Euclidiean distance for horizontal left eye dimension: ", leftEyeHorrizD)
+    // console.log("The ratio of horizontal/vertical left eye dimensions is: ", leftEyeHorrizvsVertRatio)
+    // console.log("The ratio of horizontal/vertical right eye dimensions is: ", rightEyeHorrizvsVertRatio)
+    console.log("The avg ratio of horizontal/vertical eye dimensions is: ", eyeRatioHorrizvsVertRatio)
+
+    console.log("The ratio of horizontal/vertical ear to ear vs between eyes to chin is: ", earsToFaceHorrizvsVertRatio)
+
+    console.log("The ratio of horizontal/horizontal cheek to cheek vs chin to chin is: ", cheekVsChinHorizRatio)
+
+    console.log("The ratio of horizontal/horizontal nose width vs height is: ", noseWidthvsHeightRatio)
     return {imageInformation, originalImageSize}
 }
 
