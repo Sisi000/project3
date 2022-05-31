@@ -5,15 +5,26 @@ const multer = require("multer");
 const s3Storage = require("multer-sharp-s3");
 const aws = require("aws-sdk");
 const { uploadFile, getFileStream } = require("../db/models/s3Model");
+// const s3 = new aws.S3();
 const mongoose = require("../db/mongoose");
 const { facelandmark } = require("../db/models/faceDetectionCalc.js");
-const sharp = require('sharp');
+const sharp = require("sharp");
+const S3 = require('aws-sdk/clients/s3')
+const fs = require("fs");
+const util = require('util')
+const unlinkFile = util.promisify(fs.unlink)
 
-const s3 = new aws.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+
+const bucketName = process.env.AWS_BUCKET;
+const region = process.env.AWS_BUCKET_REGION;
+const accessKeyId = process.env.AWS_ACCESS_KEY;
+const secretAccessKey = process.env.AWS_SECRET_KEY;
+
+const s3 = new S3({
+  region,
+  accessKeyId,
+  secretAccessKey,
 });
-
 
 // const storage2 = s3Storage({
 //   s3,
@@ -25,9 +36,10 @@ const s3 = new aws.S3({
 //   },
 // });
 
+// const upload2 = multer({ storage: storage2 });
+const upload = multer({ dest: 'uploads/' })
 // const storage = multer.memoryStorage();
 // const upload = multer({ storage: storage });
-// const upload2 = multer({ storage: storage2 });
 
 const { Schema, model } = mongoose;
 
@@ -44,48 +56,38 @@ router.get("/images/:key", (req, res) => {
   readStream.pipe(res);
 });
 
-// router.post("/upload", upload.single("image"), async (req, res, next) => {
-router.post("/upload", multer().single("image"), (req, res, next) => {
-  console.log("Uploaded file is", req.file.buffer); // Print upload details
-  // const buffer = req.file.buffer;
-  Promise.all([
-    s3.upload({
-      Bucket: "project3inc",
-      Key: req.file.key,
-      Body: req.file.buffer
-    }),
+router.post("/upload", upload.single("image"), async (req, res, next) => {
 
-       
-    sharp(req.file.buffer)
-      .resize(400, 300)
-      .toBuffer()
-      .then(buffer => {
-        const resultVision = facelandmark(buffer)
-        console.log(resultVision);
-        // res.send(resultVision);
-        // .promise()
-    //  .then(toMongo => {
+  // mongodb
+  // const result = await Photo.create({ location: req.file.Location });
+  // console.log("result is", result);
+  const file2 = req.file;
+  console.log("file is", file2);
+  // const fileBuffer = Buffer.from(file.filename)
+  // console.log("fileBuffer is", fileBuffer);
 
-    //    const result = await Photo.create({ location: req.file.Location });
-    //     }
-      }
-        ),
-        
-        
-        // console.log("resultVision is", result);
+  await sharp(file2.path)
+    .resize(900, 900)
+    .toBuffer()
+    .then(async (resized) => {
+      const buffer = resized;
+      const resultVision = await facelandmark(buffer);
+      console.log("resultVision is", resultVision);
+    });
+    
+    await sharp(file2.path)
+    .resize(900, 900)
+    .toFile(`resized/${file2.filename}`)
+    // .toBuffer()
+    .then(async (file) => {
+      const result = await uploadFile(file2);
+      
+    await unlinkFile(file2.path)
+    console.log(file)
 
-  // const resultVision = await facelandmark(buffer);
-  // const result = async () => {
-    //   // const file = req.file;
-    //   const result2 = upload2.single("image");
-    //   console.log("result is", result2);
-    // res.send("Successfully uploaded!");
-  ])
-  .then(() => res.send("Image uploaded!"))
-  .catch(e => {
-    console.warn(e) // debug this error
-    res.status(500).send("Unable to upload images")
-  })
+    })
+    
+  res.send("Successfully uploaded!");
 });
 
 module.exports = router;
