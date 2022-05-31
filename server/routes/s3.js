@@ -58,30 +58,31 @@ router.get("/images/:key", (req, res) => {
 
 router.post("/upload", upload.single("image"), async (req, res, next) => {
 
-  // mongodb
-  // const result = await Photo.create({ location: req.file.Location });
-  // console.log("result is", result);
   const file2 = req.file;
   console.log("file is", file2);
   // const fileBuffer = Buffer.from(file.filename)
   // console.log("fileBuffer is", fileBuffer);
-
+  
   await sharp(file2.path)
-    .resize(900, 900)
-    .toBuffer()
-    .then(async (resized) => {
-      const buffer = resized;
-      const resultVision = await facelandmark(buffer);
-      console.log("resultVision is", resultVision);
-    });
+  .resize(900, 900)
+  .toBuffer()
+  .then(async (resized) => {
+    const buffer = resized;
+    const resultVision = await facelandmark(buffer);
+    console.log("resultVision is", resultVision);
+  });
+  
+  await sharp(file2.path)
+  .resize(900, 900)
+  .toFile(`resized/${file2.filename}`)
+  // .toBuffer()
+  .then(async (file) => {
+    const result = await uploadFile(file2);
+    console.log("result is", result);
     
-    await sharp(file2.path)
-    .resize(900, 900)
-    .toFile(`resized/${file2.filename}`)
-    // .toBuffer()
-    .then(async (file) => {
-      const result = await uploadFile(file2);
-      
+    // mongodb
+    const resultMongo = await Photo.create({ location: result.Location });
+    console.log("resultMongo is", resultMongo);
     await unlinkFile(file2.path)
     console.log(file)
 
