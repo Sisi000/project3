@@ -149,6 +149,7 @@ async function facelandmark(req, res, next) {
     let glassesEuDistanceMin
     let glassesType
 
+    //I should really normalize the eculidian distance so we have equal weighting, or we can throw factors into the calculation for heavier weighted factors
     for(let i = 0; i < glassesTestData.length; i++){
         let glassesTest = glassesToUserDataCalc(glassesTestData[i].data,userData)
         console.log(`This is the Euclid Dist for ${glassesTestData[i].type} : ${glassesTest}`)
