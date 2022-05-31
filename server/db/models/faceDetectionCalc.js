@@ -11,7 +11,58 @@ var config = {credentials:
     }
 };
 
+let glassesTestData=[
+    {"type":"Glasses1",
+    "data":[2.1,1.2,0.8,2.0]},
+    {"type":"Glasses2",
+    "data":[2.0,1.4,0.7,1.9]},
+    {"type":"Glasses3",
+    "data":[2.2,1.1,0.9,2.1]},
+    {"type":"Glasses4",
+    "data":[2.3,1.25,0.75,2.1]},
+    {"type":"Glasses5",
+    "data":[2.05,1.15,0.85,2.1]},
+    {"type":"Glasses6",
+    "data":[2.2,1.3,0.9,1.85]},
+    {"type":"Glasses7",
+    "data":[2.05,1.05,0.95,2.15]},
+    {"type":"Glasses8",
+    "data":[2.15,1.15,0.85,2.05]},
+    {"type":"Glasses9",
+    "data":[2.2,1.25,0.75,2.05]},
+    {"type":"Glasses10",
+    "data":[2.1,1.25,0.65,2.2]},
+]
+
 async function facelandmark(req, res, next) {
+
+    function euclideandistance(x1,y1,z1,x2,y2,z2){
+        return Math.sqrt((x2-x1)**2+(y2-y1)**2+(z2-z1)**2)
+    }
+
+    async function setEndpoint() {
+        try{
+            const result = await client.faceDetection(request);
+            console.log(result)
+            return result
+        } catch(error) {
+            console.log(error);
+            return res.status(500).json(`problem with the Google API`);
+        }
+    }
+
+    function glassesToUserDataCalc (glassesData, userData){
+        if(glassesData.length != userData.length){
+            return res.json(`problem with the user calculation`); 
+        }
+        let sum = 0
+        for(let i=0; i<userData.length; i++){
+            sum = (glassesData[i]-userData[i])**2+sum
+        }
+        return Math.sqrt(sum)
+    }
+
+
     const client = new vision.ImageAnnotatorClient(config);
     //test for upload - needed for encode
     var imageFileUpload = req //fs.readFileSync(uploadLocation+fname); Remove, using Jest now
@@ -23,22 +74,7 @@ async function facelandmark(req, res, next) {
         }
     };  
     let originalImageSize = sizeOf(req);
-    let imageInformation;
-    async function setEndpoint() {
-        try{
-            const result = await client.faceDetection(request);
-            imageInformation = result;
-            console.log(result)
-        } catch(error) {
-            console.log(error);
-            return res.status(500).json(`problem with the Google API`);
-        }
-    }
-    await setEndpoint();
-    
-    function euclideandistance(x1,y1,z1,x2,y2,z2){
-        return Math.sqrt((x2-x1)**2+(y2-y1)**2+(z2-z1)**2)
-    }
+    let imageInformation = await setEndpoint();
 
     let landmarks=imageInformation[0].faceAnnotations[0].landmarks
     //used for eye ratio
@@ -108,6 +144,22 @@ async function facelandmark(req, res, next) {
     console.log("The ratio of horizontal/vertical ear to ear vs between eyes to chin is: ", earsToFaceHorrizvsVertRatio)
     console.log("The ratio of horizontal/horizontal cheek to cheek vs chin to chin is: ", cheekVsChinHorizRatio)
     console.log("The ratio of horizontal/horizontal nose width vs height is: ", noseWidthvsHeightRatio)
+    
+    let userData=[eyeRatioHorrizvsVertRatio,earsToFaceHorrizvsVertRatio,cheekVsChinHorizRatio,noseWidthvsHeightRatio]
+    let glassesEuDistanceMin
+    let glassesType
+
+    for(let i = 0; i < glassesTestData.length; i++){
+        let glassesTest = glassesToUserDataCalc(glassesTestData[i].data,userData)
+        console.log(`This is the Euclid Dist for ${glassesTestData[i].type} : ${glassesTest}`)
+        if(!glassesEuDistanceMin || glassesTest < glassesEuDistanceMin){
+            glassesEuDistanceMin = glassesTest
+            glassesType = glassesTestData[i].type
+        }
+    }
+
+    console.log("This is the suggest glasses type: ", glassesType)
+    
     return {imageInformation, originalImageSize}
 }
 
