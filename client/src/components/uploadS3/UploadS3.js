@@ -56,11 +56,11 @@ function UploadS3() {
         </div>
       ))}
 
-      <img
+      {/* <img
         className="fetchimg"
         src="/images/a0b7358dd124b140f1cd813de1778223"
         alt=""
-      ></img>
+      ></img> */}
     </div>
   );
 }
