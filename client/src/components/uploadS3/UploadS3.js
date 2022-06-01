@@ -15,52 +15,41 @@ async function postImage({ image }) {
 function UploadS3() {
   const [file, setFile] = useState();
   const [images, setImages] = useState([]);
+  const [selectedImage, setSelectedImage] = useState();
+
+  // This function will be triggered when the "Remove This Image" button is clicked
+  const removeSelectedImage = () => {
+    setSelectedImage();
+  };
 
   const submit = async (event) => {
     event.preventDefault();
     const result = await postImage({ image: file });
     setImages([result.image, ...images]);
-  };
+      };
 
   const fileSelected = (event) => {
     const file = event.target.files[0];
     setFile(file);
   };
 
-  // const allimages = async () => {
-  //   try {
-  //     let response = await fetch("/allimages");
-  //     // let allimages = await response.json();
-  //     return setImages(response);
-  //   } catch (ex) {
-  //     console.log(ex);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   allimages();
-  // }, []);
-
   return (
     <div className="containers3">
       <form className="forms3" onSubmit={submit}>
         <input onChange={fileSelected} type="file" accept="image/*"></input>
-        <button className="btn-s3" type="submit">
+        <button className="button-4" type="submit">
           Submit
         </button>
       </form>
-
-      {images.map((image) => (
-        <div key={image}>
-          <img src={image} alt=""></img>
+      {file && (
+        <div className="preview">
+          <img
+            src={URL.createObjectURL(file)}
+            className="imagePreview"
+            alt="Thumb"
+          />
         </div>
-      ))}
-
-      {/* <img
-        className="fetchimg"
-        src="/images/a0b7358dd124b140f1cd813de1778223"
-        alt=""
-      ></img> */}
+      )}
     </div>
   );
 }

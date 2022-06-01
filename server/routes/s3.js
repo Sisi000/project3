@@ -59,6 +59,7 @@ router.get("/images/:key", (req, res) => {
 router.post("/upload", upload.single("image"), async (req, res, next) => {
 
   const file2 = req.file;
+  const file2Name = req.file.filename + ".jpg";
   console.log("file is", file2);
   // const fileBuffer = Buffer.from(file.filename)
   // console.log("fileBuffer is", fileBuffer);
@@ -74,7 +75,7 @@ router.post("/upload", upload.single("image"), async (req, res, next) => {
   
   await sharp(file2.path)
   .resize(900, 900)
-  .toFile(`resized/${file2.filename}`)
+  .toFile(`resized/${file2Name}`)
   // .toBuffer()
   .then(async (file) => {
     const result = await uploadFile(file2);
@@ -83,7 +84,7 @@ router.post("/upload", upload.single("image"), async (req, res, next) => {
     // mongodb
     const resultMongo = await Photo.create({ location: result.Location });
     console.log("resultMongo is", resultMongo);
-    await unlinkFile(file2.path)
+    // await unlinkFile(file2.path)
     console.log(file)
 
     })
