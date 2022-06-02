@@ -20,15 +20,11 @@ export default function NavBar() {
         <Nav.Link href="/">Home</Nav.Link>
         <Nav.Link href="/about">About</Nav.Link>
         <Nav.Link href="/upload">Upload</Nav.Link>
-        <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-          <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-          <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-          <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-          <NavDropdown.Divider />
-          <NavDropdown.Item href="#action/3.4">Sign Up</NavDropdown.Item>
-          <NavDropdown.Item href="#action/3.4">Sign In</NavDropdown.Item>
-        </NavDropdown>
-      </Nav>
+        </Nav>
+        <Nav className='mx-5'>
+        <Nav.Link href="/signup">Sign Up</Nav.Link>
+        <Nav.Link href="/singin">Sign In</Nav.Link>
+        </Nav>
     </Navbar.Collapse>
   </Container>
 </Navbar>
