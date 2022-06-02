@@ -4,8 +4,16 @@ import { Container, NavDropdown, Nav, Navbar } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import logo from '../../assets/logo.png';
 import "./Navbar.css";
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 export default function NavBar() {
+
+  // const [click, setClick] = useState(false);
+  // const handleClick = () => setClick(!click);
+
+  const { isAuthenticated, loginWithPopup ,loginWithRedirect, logout, user } = useAuth0();
+
   return (
    <> 
 
@@ -22,8 +30,21 @@ export default function NavBar() {
         <Nav.Link href="/upload">Upload</Nav.Link>
         </Nav>
         <Nav className='mx-5'>
-        <Nav.Link href="/signup">Sign Up</Nav.Link>
-        <Nav.Link href="/singin">Sign In</Nav.Link>
+        {/* <Nav.Link href="/signup">Sign Up</Nav.Link>
+        <Nav.Link href="/singin">Sign In</Nav.Link> */}
+        <div>
+            {!isAuthenticated && (
+              <button className="btn" onClick={() => loginWithRedirect({})}>
+                Log in
+              </button>
+            )}
+
+            {isAuthenticated && (
+              <button className="btn" onClick={() => logout()}>
+                Log out
+              </button>
+            )}
+          </div>
         </Nav>
     </Navbar.Collapse>
   </Container>
