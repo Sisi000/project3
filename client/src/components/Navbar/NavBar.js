@@ -6,10 +6,8 @@ import "./Navbar.css";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export default function NavBar() {
-  // const [click, setClick] = useState(false);
-  // const handleClick = () => setClick(!click);
 
-  const { isAuthenticated, loginWithPopup, loginWithRedirect, logout, user } =
+  const { isAuthenticated, loginWithRedirect, logout, user } =
     useAuth0();
 
   return (

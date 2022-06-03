@@ -1,14 +1,16 @@
 {
-  "name": "backend",
+  "name": "server",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "test": "jest --setupFiles dotenv/config"
+    "test": "jest --setupFiles dotenv/config",
+    "dev": "concurrently --kill-others \"npm run start\" \"cd  ../client && npm run start\""
   },
   "dependencies": {
     "@google-cloud/vision": "^2.4.2",
     "aws-sdk": "^2.1142.0",
+    "concurrently": "^7.2.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.0.1",

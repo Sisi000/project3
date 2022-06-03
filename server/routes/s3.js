@@ -56,7 +56,8 @@ router.post("/upload", upload.single("image"), async (req, res, next) => {
       const buffer = resized;
       const resultVision = await facelandmark(buffer);
       console.log("resultVision is", resultVision);
-    });
+    })
+    .catch((err) => console.log(err.message));
 
   // resize and send to s3
   await sharp(file2.path)
@@ -64,12 +65,12 @@ router.post("/upload", upload.single("image"), async (req, res, next) => {
     .toFile(`resized/${file2Name}`)
     .then(async (file) => {
       const result = await uploadFile(file2);
-      console.log("result is", result);
+      console.log("result is", result).catch((err) => console.log(err.message));
 
       // mongodb
       const resultMongo = await Photo.create({ location: result.Location });
       console.log("resultMongo is", resultMongo);
-      await unlinkFile(file2.path)
+      await unlinkFile(file2.path);
       console.log(file);
     });
 
