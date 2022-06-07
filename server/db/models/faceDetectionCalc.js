@@ -12,25 +12,25 @@ var config = {credentials:
 };
 
 let glassesTestData=[
-    {"type":"Glasses1",
+    {"type":"Glasses 1",
     "data":[2.1,1.2,0.8,2.0]},
-    {"type":"Glasses2",
+    {"type":"Glasses 2",
     "data":[2.0,1.4,0.7,1.9]},
-    {"type":"Glasses3",
+    {"type":"Glasses 3",
     "data":[2.2,1.1,0.9,2.1]},
-    {"type":"Glasses4",
+    {"type":"Glasses 4",
     "data":[2.3,1.25,0.75,2.1]},
-    {"type":"Glasses5",
+    {"type":"Glasses 5",
     "data":[2.05,1.15,0.85,2.1]},
-    {"type":"Glasses6",
+    {"type":"Glasses 6",
     "data":[2.2,1.3,0.9,1.85]},
-    {"type":"Glasses7",
+    {"type":"Glasses 7",
     "data":[2.05,1.05,0.95,2.15]},
-    {"type":"Glasses8",
+    {"type":"Glasses 8",
     "data":[2.15,1.15,0.85,2.05]},
-    {"type":"Glasses9",
+    {"type":"Glasses 9",
     "data":[2.2,1.25,0.75,2.05]},
-    {"type":"Glasses10",
+    {"type":"Glasses 10",
     "data":[2.1,1.25,0.65,2.2]},
 ]
 
@@ -161,7 +161,7 @@ async function facelandmark(req, res, next) {
 
     console.log("This is the suggest glasses type: ", glassesType)
     
-    return {imageInformation, originalImageSize}
+    return {imageInformation, originalImageSize, glassesType}
 }
 
 async function facelandmarkURL(req, res, next) {

@@ -2,18 +2,14 @@ const express = require("express");
 const router = express.Router();
 require("dotenv").config();
 const multer = require("multer");
-const s3Storage = require("multer-sharp-s3");
-const aws = require("aws-sdk");
 const { uploadFile, getFileStream } = require("../db/models/s3Model");
-// const s3 = new aws.S3();
 const mongoose = require("../db/mongoose");
 const { facelandmark } = require("../db/models/faceDetectionCalc.js");
 const sharp = require("sharp");
-const S3 = require('aws-sdk/clients/s3')
+const S3 = require("aws-sdk/clients/s3");
 const fs = require("fs");
-const util = require('util')
-const unlinkFile = util.promisify(fs.unlink)
-
+const util = require("util");
+const unlinkFile = util.promisify(fs.unlink);
 
 const bucketName = process.env.AWS_BUCKET;
 const region = process.env.AWS_BUCKET_REGION;
@@ -26,18 +22,9 @@ const s3 = new S3({
   secretAccessKey,
 });
 
-// const storage2 = s3Storage({
-//   s3,
-//   Bucket: "project3inc",
-//   resize: {
-//     width: 1000,
-//     height: 1000,
-//     options: { withoutEnlargement: true },
-//   },
-// });
-
 // const upload2 = multer({ storage: storage2 });
-const upload = multer({ dest: 'uploads/' })
+const upload = multer({ dest: "uploads/" });
+
 // const storage = multer.memoryStorage();
 // const upload = multer({ storage: storage });
 
@@ -49,6 +36,12 @@ const photoSchema = new Schema({
 
 const Photo = model("Photo", photoSchema);
 
+const visionSchema = new Schema({
+  result: Object,
+});
+
+const Vision = model("Vision", visionSchema);
+
 router.get("/images/:key", (req, res) => {
   console.log(req.params);
   const key = req.params.key;
@@ -57,38 +50,39 @@ router.get("/images/:key", (req, res) => {
 });
 
 router.post("/upload", upload.single("image"), async (req, res, next) => {
-
   const file2 = req.file;
+  const file2Name = req.file.filename + ".jpg";
   console.log("file is", file2);
-  // const fileBuffer = Buffer.from(file.filename)
-  // console.log("fileBuffer is", fileBuffer);
-  
-  await sharp(file2.path)
-  .resize(900, 900)
-  .toBuffer()
-  .then(async (resized) => {
-    const buffer = resized;
-    const resultVision = await facelandmark(buffer);
-    console.log("resultVision is", resultVision);
-  });
-  
-  await sharp(file2.path)
-  .resize(900, 900)
-  .toFile(`resized/${file2.filename}`)
-  // .toBuffer()
-  .then(async (file) => {
-    const result = await uploadFile(file2);
-    console.log("result is", result);
-    
-    // mongodb
-    const resultMongo = await Photo.create({ location: result.Location });
-    console.log("resultMongo is", resultMongo);
-    await unlinkFile(file2.path)
-    console.log(file)
 
+  // resize and send to google vision
+  await sharp(file2.path)
+    .resize(900, 900, { withoutEnlargement: true })
+    .toBuffer()
+    .then(async (resized) => {
+      const buffer = resized;
+      const resultVision = await facelandmark(buffer);
+      // console.log("resultVision is", resultVision);
+      const resultMongoVision = await Vision.create({ result: resultVision });
+      // console.log("VisionMongo is", resultMongoVision);
+      res.send(resultVision);
     })
-    
-  res.send("Successfully uploaded!");
+  
+  // resize and send to s3
+  await sharp(file2.path)
+    .resize(900, 900, { withoutEnlargement: true })
+    .toFile(`resized/${file2Name}`)
+    .then(async (file) => {
+      const result = await uploadFile(file2);
+         
+      // mongodb
+      const resultMongo = await Photo.create({ location: result.Location });
+      // console.log("resultMongo is", resultMongo);
+      await unlinkFile(file2.path);
+      await unlinkFile(`resized/${file2Name}`);
+      // console.log(file);
+    });
+
+  res.status("Successfully uploaded!");
 });
 
 module.exports = router;

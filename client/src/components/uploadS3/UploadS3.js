@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import "./UploadS3.css";
+import imgphoto from "../../assets/photo.png";
 
 async function postImage({ image }) {
   const formData = new FormData();
@@ -9,6 +10,9 @@ async function postImage({ image }) {
   const result = await axios.post("/upload", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
+ 
+  alert ("Suggested glasses are " + JSON.stringify(result.data.glassesType));
+  console.log("Suggested glasses are", result.data);
   return result.data;
 }
 
@@ -16,10 +20,13 @@ function UploadS3() {
   const [file, setFile] = useState();
   const [images, setImages] = useState([]);
 
+
   const submit = async (event) => {
     event.preventDefault();
     const result = await postImage({ image: file });
     setImages([result.image, ...images]);
+    // setFile(null);
+    // document.getElementById("selectedimage").value = "";
   };
 
   const fileSelected = (event) => {
@@ -27,40 +34,40 @@ function UploadS3() {
     setFile(file);
   };
 
-  // const allimages = async () => {
-  //   try {
-  //     let response = await fetch("/allimages");
-  //     // let allimages = await response.json();
-  //     return setImages(response);
-  //   } catch (ex) {
-  //     console.log(ex);
-  //   }
+  // const showAlert = () => {
+  //   alert("Photo uploaded successfully");
   // };
-
-  // useEffect(() => {
-  //   allimages();
-  // }, []);
 
   return (
     <div className="containers3">
+      <div className="containerphoto">
+        <img className="imgphoto" src={imgphoto} alt="" />
+        <span>&nbsp;Choose Photo</span>
+      </div>
       <form className="forms3" onSubmit={submit}>
-        <input onChange={fileSelected} type="file" accept="image/*"></input>
-        <button className="btn-s3" type="submit">
+        <input
+          id="selectedimage"
+          onChange={fileSelected}
+          type="file"
+          accept="image/*"
+        ></input>
+        <div className="imgcontainer">
+          {file && (
+            <div className="preview">
+              <img
+                src={URL.createObjectURL(file)}
+                className="imagePreview"
+                alt="Thumb"
+              />
+            </div>
+          )}
+        </div>
+        {/* <button className="button-4" type="submit" onClick={showAlert}> */}
+        <button className="button-4" type="submit" >
           Submit
         </button>
+        {/* <div className="get-calc">{result}</div> */}
       </form>
-
-      {images.map((image) => (
-        <div key={image}>
-          <img src={image} alt=""></img>
-        </div>
-      ))}
-
-      <img
-        className="fetchimg"
-        src="/images/a0b7358dd124b140f1cd813de1778223"
-        alt=""
-      ></img>
     </div>
   );
 }
