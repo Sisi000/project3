@@ -160,8 +160,7 @@ async function facelandmark(req, res, next) {
 
     console.log("This is the suggest glasses type: ", glassesType)
     
-    // return {imageInformation, originalImageSize, glassesType}
-    return glassesType
+    return {imageInformation, originalImageSize, glassesType}
 }
 
 

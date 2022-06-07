@@ -10,7 +10,8 @@ async function postImage({ image }) {
   const result = await axios.post("/upload", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
-  alert ("Suggested glasses are" +' ' + JSON.stringify(result.data))
+ 
+  alert ("Suggested glasses are " + JSON.stringify(result.data.glassesType));
   console.log("Suggested glasses are", result.data);
   return result.data;
 }
@@ -19,12 +20,6 @@ function UploadS3() {
   const [file, setFile] = useState();
   const [images, setImages] = useState([]);
 
-  const getCalc = async () => {
-    const calc = await postImage();
-    alert(calc.data);
-    console.log(calc.data);
-    return calc.data
-  };
 
   const submit = async (event) => {
     event.preventDefault();
@@ -39,9 +34,9 @@ function UploadS3() {
     setFile(file);
   };
 
-  const showAlert = () => {
-    alert("Photo uploaded successfully");
-  };
+  // const showAlert = () => {
+  //   alert("Photo uploaded successfully");
+  // };
 
   return (
     <div className="containers3">
@@ -71,7 +66,7 @@ function UploadS3() {
         <button className="button-4" type="submit" >
           Submit
         </button>
-        <div className="get-calc">{getCalc}</div>
+        {/* <div className="get-calc">{result}</div> */}
       </form>
     </div>
   );
