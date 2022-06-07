@@ -36,6 +36,12 @@ const photoSchema = new Schema({
 
 const Photo = model("Photo", photoSchema);
 
+const visionSchema = new Schema({
+  result: Object,
+});
+
+const Vision = model("Vision", visionSchema);
+
 router.get("/images/:key", (req, res) => {
   console.log(req.params);
   const key = req.params.key;
@@ -55,18 +61,19 @@ router.post("/upload", upload.single("image"), async (req, res, next) => {
     .then(async (resized) => {
       const buffer = resized;
       const resultVision = await facelandmark(buffer);
-      console.log("resultVision is", resultVision);
+      // console.log("resultVision is", resultVision);
+      const resultMongoVision = await Vision.create({ result: resultVision });
+      // console.log("VisionMongo is", resultMongoVision);
+      res.send(resultVision);
     })
-    .catch((err) => console.log(err.message));
-
+  
   // resize and send to s3
   await sharp(file2.path)
     .resize(900, 900, { withoutEnlargement: true })
     .toFile(`resized/${file2Name}`)
     .then(async (file) => {
       const result = await uploadFile(file2);
-      console.log("result is", result).catch((err) => console.log(err.message));
-
+         
       // mongodb
       const resultMongo = await Photo.create({ location: result.Location });
       console.log("resultMongo is", resultMongo);
@@ -74,7 +81,7 @@ router.post("/upload", upload.single("image"), async (req, res, next) => {
       console.log(file);
     });
 
-  res.send("Successfully uploaded!");
+  res.status("Successfully uploaded!");
 });
 
 module.exports = router;
