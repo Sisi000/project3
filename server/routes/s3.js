@@ -76,10 +76,10 @@ router.post("/upload", upload.single("image"), async (req, res, next) => {
          
       // mongodb
       const resultMongo = await Photo.create({ location: result.Location });
-      console.log("resultMongo is", resultMongo);
+      // console.log("resultMongo is", resultMongo);
       await unlinkFile(file2.path);
       await unlinkFile(`resized/${file2Name}`);
-      console.log(file);
+      // console.log(file);
     });
 
   res.status("Successfully uploaded!");
