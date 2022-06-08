@@ -7,9 +7,13 @@ const userSchema = new Schema({
   email: String,
 });
 
-
 const User = model("User", userSchema);
-// const Photo = model("Photo", photoSchema);
+
+const urlSchema = new Schema({
+  URL: String,
+});
+
+const Url = model("Url", urlSchema);
 
 const addUser = async (newUser) => {
   const addedUser = await User.create(newUser);
@@ -28,8 +32,15 @@ const findUsersbyid = async (id) => {
   return userid;
 };
 
+const addUrl = async (newUrl) => {
+  const addedUrl = await Url.create(newUrl);
+  console.log("Url added successfully");
+  return addedUrl;
+};
+
 module.exports = {
   addUser,
   allUsers,
   findUsersbyid,
+  addUrl,
 };

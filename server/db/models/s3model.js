@@ -24,7 +24,6 @@ function uploadFile(file) {
     Key: file.filename + ".jpg",
   };
 
-  // unlinkFile(fileStream.path)
   return s3.upload(uploadParams).promise();
 }
 exports.uploadFile = uploadFile;

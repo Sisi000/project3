@@ -1,10 +1,15 @@
 const express = require("express");
 const router = express.Router();
+var debug = require("debug")("server:routes");
 require("dotenv").config();
 const multer = require("multer");
 const { uploadFile, getFileStream } = require("../db/models/s3Model");
+const { addUrl } = require("../db/models/userModel");
 const mongoose = require("../db/mongoose");
-const { facelandmark } = require("../db/models/faceDetectionCalc.js");
+const {
+  facelandmark,
+  facelandmarkURL,
+} = require("../db/models/faceDetectionCalc.js");
 const sharp = require("sharp");
 const S3 = require("aws-sdk/clients/s3");
 const fs = require("fs");
@@ -42,6 +47,7 @@ const visionSchema = new Schema({
 
 const Vision = model("Vision", visionSchema);
 
+// get image from S3 by key
 router.get("/images/:key", (req, res) => {
   console.log(req.params);
   const key = req.params.key;
@@ -49,6 +55,7 @@ router.get("/images/:key", (req, res) => {
   readStream.pipe(res);
 });
 
+// upload image to vision, S3 and MongoDB
 router.post("/upload", upload.single("image"), async (req, res, next) => {
   const file2 = req.file;
   const file2Name = req.file.filename + ".jpg";
@@ -65,15 +72,15 @@ router.post("/upload", upload.single("image"), async (req, res, next) => {
       const resultMongoVision = await Vision.create({ result: resultVision });
       // console.log("VisionMongo is", resultMongoVision);
       res.send(resultVision);
-    })
-  
+    });
+
   // resize and send to s3
   await sharp(file2.path)
     .resize(900, 900, { withoutEnlargement: true })
     .toFile(`resized/${file2Name}`)
     .then(async (file) => {
       const result = await uploadFile(file2);
-         
+
       // mongodb
       const resultMongo = await Photo.create({ location: result.Location });
       // console.log("resultMongo is", resultMongo);
@@ -83,6 +90,18 @@ router.post("/upload", upload.single("image"), async (req, res, next) => {
     });
 
   res.status("Successfully uploaded!");
+});
+
+// upload Url to vision and mongoDB
+router.post("/uploadurl", async (req, res, next) => {
+  const urlBody = req.body;
+  console.log("urlBody is", urlBody);
+
+  const resultVision = await facelandmarkURL(urlBody);
+
+  const uploadedUrl = await addUrl(urlBody);
+  console.log("Added url is", uploadedUrl);
+  res.send(resultVision);
 });
 
 module.exports = router;
