@@ -40,7 +40,7 @@ async function facelandmark(req, res, next) {
         return Math.sqrt((x2-x1)**2+(y2-y1)**2+(z2-z1)**2)
     }
 
-    async function setEndpoint() {
+    async function setEndpoint(request) {
         try{
             const result = await client.faceDetection(request);
             console.log(result)
@@ -74,7 +74,7 @@ async function facelandmark(req, res, next) {
         }
     };  
     let originalImageSize = sizeOf(req);
-    let imageInformation = await setEndpoint();
+    let imageInformation = await setEndpoint(request);
 
     let landmarks=imageInformation[0].faceAnnotations[0].landmarks
     //used for eye ratio
