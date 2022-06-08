@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import axios from "axios";
+import "./UploadUrl.css";
 
-class InputUrlComponent extends Component {
+class UploadUrl extends Component {
   state = {
-    websiteUrl: "",
+    URL: "",
     // isValid: false
   };
 
@@ -12,46 +14,49 @@ class InputUrlComponent extends Component {
   //   return urlRegEx.test(String(websiteUrl).toLowerCase());
   // };
 
-  changeUrl = e => {
+  changeUrl = (e) => {
     const { value } = e.target;
     // const isValid = !value
     // || this.validateWebsiteUrl(value);
 
     this.setState({
-      websiteUrl: value,
+      URL: value,
       // isValid
     });
   };
 
-  submitForm = () => {
-    const { websiteUrl } = this.state;
-    console.log("Website URL", websiteUrl);
+  submitForm = async (event) => {
+    event.preventDefault();
+    const { URL } = this.state;
+    await axios.post("/uploadurl", { URL }).then((res) => {
+      console.log(res);
+      console.log(res.data);
+      // window.location = "/retrieve" //This line of code will redirect you once the submission is succeed
+      alert("Suggested glasses are " + JSON.stringify(res.data.glassesType));
+      console.log("Suggested glasses are", res.data);
+      this.setState({
+        URL: "",
+      });
+    });
   };
 
   render() {
-    const { websiteUrl } = this.state;
+    const { URL } = this.state;
     return (
-      <div className="App">
-
-        <form>
-          <input
-            type="text"
-            name="websiteUrl"
-            value={websiteUrl}
-            onChange={this.changeUrl}
-          />
+      <div className="containerUrl">
+        <form className="formsUrl">
+          or enter image Url
+          <input type="text" name="URL" value={URL} onChange={this.changeUrl} />
           {/* {!this.state.isValid && (
             <div style={{ color: "red" }}>URL is invalid</div>
           )} */}
-          <br></br>
-          <button onClick={this.submitForm}>
-            Submit
+          <button className="button-2" onClick={this.submitForm}>
+            SubmitUrl
           </button>
-          <img src={websiteUrl} alt=""></img>
+          <img src={URL} alt=""></img>
         </form>
-
       </div>
     );
   }
 }
-export default InputUrlComponent;
+export default UploadUrl;

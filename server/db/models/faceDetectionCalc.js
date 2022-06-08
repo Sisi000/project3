@@ -288,7 +288,7 @@ async function facelandmarkURL(req, res, next) {
 
     console.log("This is the suggest glasses type: ", glassesType)
     
-    return {imageInformation}
+    return {imageInformation, glassesType}
 }
 
 module.exports = {

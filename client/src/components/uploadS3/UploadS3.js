@@ -2,21 +2,21 @@ import { useState } from "react";
 import axios from "axios";
 import "./UploadS3.css";
 import imgphoto from "../../assets/photo.png";
-
+import UploadUrl from "../uploadUrl/UploadUrl";
 
 function UploadS3() {
   const [file, setFile] = useState();
   const [images, setImages] = useState([]);
-  
+
   async function postImage({ image }) {
     const formData = new FormData();
     formData.append("image", image);
-  
+
     const result = await axios.post("/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-   
-    alert ("Suggested glasses are " + JSON.stringify(result.data.glassesType));
+
+    alert("Suggested glasses are " + JSON.stringify(result.data.glassesType));
     console.log("Suggested glasses are", result.data);
     return result.data;
   }
@@ -25,8 +25,8 @@ function UploadS3() {
     event.preventDefault();
     const result = await postImage({ image: file });
     setImages([result.image, ...images]);
-    // setFile(null);
-    // document.getElementById("selectedimage").value = "";
+    setFile(null);
+    document.getElementById("selectedimage").value = "";
   };
 
   const fileSelected = (event) => {
@@ -40,11 +40,11 @@ function UploadS3() {
 
   return (
     <div className="containers3">
+           <form className="forms3" onSubmit={submit}>
       <div className="containerphoto">
         <img className="imgphoto" src={imgphoto} alt="" />
         <span>&nbsp;Choose Photo</span>
       </div>
-      <form className="forms3" onSubmit={submit}>
         <input
           id="selectedimage"
           onChange={fileSelected}
@@ -63,11 +63,12 @@ function UploadS3() {
           )}
         </div>
         {/* <button className="button-4" type="submit" onClick={showAlert}> */}
-        <button className="button-4" type="submit" >
+        <button className="button-4" type="submit">
           Submit
         </button>
         {/* <div className="get-calc">{result}</div> */}
       </form>
+      <UploadUrl />
     </div>
   );
 }
