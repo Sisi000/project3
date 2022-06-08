@@ -94,12 +94,12 @@ router.post("/upload", upload.single("image"), async (req, res, next) => {
 
 // upload Url to vision and mongoDB
 router.post("/uploadurl", async (req, res, next) => {
-  const urlBody = req.body;
+  const urlBody = req.body.URL;
   console.log("urlBody is", urlBody);
 
   const resultVision = await facelandmarkURL(urlBody);
 
-  const uploadedUrl = await addUrl(urlBody);
+  const uploadedUrl = await addUrl({URL: urlBody});
   console.log("Added url is", uploadedUrl);
   res.send(resultVision);
 });
