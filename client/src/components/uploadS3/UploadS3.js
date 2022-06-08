@@ -3,23 +3,23 @@ import axios from "axios";
 import "./UploadS3.css";
 import imgphoto from "../../assets/photo.png";
 
-async function postImage({ image }) {
-  const formData = new FormData();
-  formData.append("image", image);
-
-  const result = await axios.post("/upload", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
- 
-  alert ("Suggested glasses are " + JSON.stringify(result.data.glassesType));
-  console.log("Suggested glasses are", result.data);
-  return result.data;
-}
 
 function UploadS3() {
   const [file, setFile] = useState();
   const [images, setImages] = useState([]);
-
+  
+  async function postImage({ image }) {
+    const formData = new FormData();
+    formData.append("image", image);
+  
+    const result = await axios.post("/upload", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+   
+    alert ("Suggested glasses are " + JSON.stringify(result.data.glassesType));
+    console.log("Suggested glasses are", result.data);
+    return result.data;
+  }
 
   const submit = async (event) => {
     event.preventDefault();

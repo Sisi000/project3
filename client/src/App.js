@@ -5,6 +5,7 @@ import About from './components/About/about';
 import Home from './components/Home/home';
 import Footer from './components/Footer/footer';
 import UploadS3 from './components/uploadS3/UploadS3'
+import UploadUrl from './components/uploadUrl/UploadUrl'
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 //import './App.css';
 
@@ -22,6 +23,7 @@ function App() {
         </Routes>
       </div>
       </div>
+      <UploadUrl />
       <Footer />
     </Router>
     </>
