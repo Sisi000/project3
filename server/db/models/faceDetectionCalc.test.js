@@ -21,3 +21,14 @@ test("Tests for URL submit to Google API", async () => {
     let facelandmarkResultURL = await facelandmarkURL(URL);
     expect(facelandmarkResultURL).toBeDefined()
 })
+/*
+test("Used for getting glasses data", async () => {
+
+    //console.log("api keys: ", process.env.GOOGLE_API_EMAIL)
+    //console.log("api keys: ", process.env.GOOGLE_API_KEY)
+
+    let imageFileUpload = fs.readFileSync("./testimages/data-2022-06-09/Shakira.jpg"); 
+    let facelandmarkResult = await facelandmark(imageFileUpload);
+    expect(facelandmarkResult).toBeDefined()
+})
+*/

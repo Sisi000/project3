@@ -13,25 +13,25 @@ var config = {credentials:
 
 let glassesTestData=[
     {"type":"Glasses 1",
-    "data":[2.1,1.2,0.8,2.0]},
+    "data":[2.4836,1.1581,0.7601,1.9322]},//Brad Pitt
     {"type":"Glasses 2",
-    "data":[2.0,1.4,0.7,1.9]},
+    "data":[2.2740,1.2698,0.8955,2.2307]},//BTS
     {"type":"Glasses 3",
-    "data":[2.2,1.1,0.9,2.1]},
+    "data":[2.4132,1.0822,0.8577,1.9868]},//Denzel Washington
     {"type":"Glasses 4",
-    "data":[2.3,1.25,0.75,2.1]},
+    "data":[2.3881,1.1532,0.7524,2.0369]},//Dwayne Johnson
     {"type":"Glasses 5",
-    "data":[2.05,1.15,0.85,2.1]},
+    "data":[2.4372,1.2571,0.7567,1.8846]},//Eminem
     {"type":"Glasses 6",
-    "data":[2.2,1.3,0.9,1.85]},
+    "data":[2.3847,1.2567,0.7788,2.1247]},//Gordon Ramsey
     {"type":"Glasses 7",
-    "data":[2.05,1.05,0.95,2.15]},
+    "data":[2.3088,1.2542,0.7389,2.0332]},//Justin Trudeau
     {"type":"Glasses 8",
-    "data":[2.15,1.15,0.85,2.05]},
+    "data":[2.0897,1.2618,0.7698,1.9015]},//Christian Ronaldo
     {"type":"Glasses 9",
-    "data":[2.2,1.25,0.75,2.05]},
+    "data":[2.3786,1.1987,0.7553,2.1600]},//Serena Williams
     {"type":"Glasses 10",
-    "data":[2.1,1.25,0.65,2.2]},
+    "data":[2.1103,1.2603,0.7584,2.1184]},//Shakira
 ]
 
 async function facelandmark(req, res, next) {
@@ -43,10 +43,10 @@ async function facelandmark(req, res, next) {
     async function setEndpoint(request) {
         try{
             const result = await client.faceDetection(request);
-            console.log(result)
+            //console.log(result)
             return result
         } catch(error) {
-            console.log(error);
+            //console.log(error);
             return res.status(500).json(`problem with the Google API`);
         }
     }
