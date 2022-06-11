@@ -4,7 +4,7 @@ var debug = require("debug")("server:routes");
 require("dotenv").config();
 const multer = require("multer");
 const { uploadFile, getFileStream } = require("../db/models/s3Model");
-const { addUrl } = require("../db/models/userModel");
+const addUrl = require("../db/models/urlmodel");
 const mongoose = require("../db/mongoose");
 const {
   facelandmark,

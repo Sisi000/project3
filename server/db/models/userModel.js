@@ -1,46 +1,16 @@
-const mongoose = require("../mongoose");
+const mongoose = require('mongoose');
 
-const { Schema, model } = mongoose;
+const userSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    isAdmin: { type: Boolean, default: false, required: true },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const userSchema = new Schema({
-  username: String,
-  email: String,
-});
-
-const User = model("User", userSchema);
-
-const urlSchema = new Schema({
-  URL: String,
-});
-
-const Url = model("Url", urlSchema);
-
-const addUser = async (newUser) => {
-  const addedUser = await User.create(newUser);
-  console.log("User added successfully");
-  return addedUser;
-};
-
-const allUsers = async () => {
-  const usersArray = await User.find();
-  return usersArray;
-};
-
-const findUsersbyid = async (id) => {
-  let userid = await User.findById(id);
-  console.log(userid);
-  return userid;
-};
-
-const addUrl = async (newUrl) => {
-  const addedUrl = await Url.create(newUrl);
-  console.log("Url added successfully");
-  return addedUrl;
-};
-
-module.exports = {
-  addUser,
-  allUsers,
-  findUsersbyid,
-  addUrl,
-};
+const User = mongoose.model('User', userSchema);
+module.exports = User;

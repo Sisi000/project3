@@ -6,8 +6,13 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var s3Router = require('./routes/s3');
-var usersRouter = require('./routes/users');
+// var usersRouter = require('./routes/users');
 // var facelandmark = require('./routes/facelandmark');
+
+const productRouter = require ('./routes/productRoutes.js');
+const userRouter = require ('./routes/userRoutes.js');
+const orderRouter = require ('./routes/orderRoutes.js');
+const uploadRouter = require ('./routes/uploadRoutes.js');
 
 var app = express();
 
@@ -23,8 +28,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/', s3Router);
-app.use('/users', usersRouter);
+// app.use('/users', usersRouter);
 // app.use('/', facelandmark);
+
+
+app.use('/api/upload', uploadRouter);
+// app.use('/api/seed', seedRouter);
+app.use('/api/products', productRouter);
+app.use('/api/users', userRouter);
+app.use('/api/orders', orderRouter);
+
+app.use(express.static(path.join(__dirname, '/frontend/build')));
+app.get('*', (req, res) =>
+  res.sendFile(path.join(__dirname, '/frontend/build/index.html'))
+);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
