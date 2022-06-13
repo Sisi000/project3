@@ -14,6 +14,7 @@ const sharp = require("sharp");
 const S3 = require("aws-sdk/clients/s3");
 const fs = require("fs");
 const util = require("util");
+const Product = require("../db/models/productModel");
 const unlinkFile = util.promisify(fs.unlink);
 
 const bucketName = process.env.AWS_BUCKET;
@@ -103,5 +104,30 @@ router.post("/uploadurl", async (req, res, next) => {
   console.log("Added url is", uploadedUrl);
   res.send(resultVision);
 });
+
+router.post("/uploadproductimage", upload.single("image"), async (req, res, next) => {
+  const file2 = req.file;
+  const file2Name = req.file.filename + ".jpg";
+  console.log("file is", file2);
+
+    // resize and send to s3
+  await sharp(file2.path)
+    .resize(900, 900, { withoutEnlargement: true })
+    .toFile(`resized/${file2Name}`)
+    .then(async (file) => {
+      const result = await uploadFile(file2);
+      console.log("result is", result);
+
+      // mongodb
+      const resultMongo = await Product.updateOne({ image: result.Location });
+      console.log("resultMongo is", resultMongo);
+      // await unlinkFile(file2.path);
+      // await unlinkFile(`resized/${file2Name}`);
+      // console.log(file);
+      res.send({image: result.Location});
+    });
+
+});
+
 
 module.exports = router;

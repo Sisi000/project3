@@ -10,7 +10,7 @@ import "./footer.css";
 const Footer = () => {
 
     return (
-        <Navbar id = "footer" collapseOnSelect expand="lg" variant="dark" className='fixed-bottom'>
+        <Navbar id = "footer" collapseOnSelect expand="lg" variant="dark">
             <Container fluid>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">

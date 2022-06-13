@@ -124,21 +124,21 @@ export default function ProductEditScreen() {
   const uploadFileHandler = async (e, forImages) => {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
-    bodyFormData.append('file', file);
+    bodyFormData.append('image', file);
     try {
       dispatch({ type: 'UPLOAD_REQUEST' });
-      const { data } = await axios.post('/api/upload', bodyFormData, {
+      const { data } = await axios.post('/uploadproductimage', bodyFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           authorization: `Bearer ${userInfo.token}`,
         },
       });
       dispatch({ type: 'UPLOAD_SUCCESS' });
-
+     
       if (forImages) {
-        setImages([...images, data.secure_url]);
+        setImages([...images, data.image]);
       } else {
-        setImage(data.secure_url);
+        setImage(data.image);
       }
       toast.success('Image uploaded successfully. click Update to apply it');
     } catch (err) {

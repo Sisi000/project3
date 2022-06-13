@@ -32,7 +32,7 @@ app.use('/', s3Router);
 // app.use('/', facelandmark);
 
 
-app.use('/api/upload', uploadRouter);
+app.use('/api/upload', s3Router);
 // app.use('/api/seed', seedRouter);
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);

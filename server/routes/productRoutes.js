@@ -18,7 +18,7 @@ productRouter.post(
     const newProduct = new Product({
       name: 'sample name ' + Date.now(),
       slug: 'sample-name-' + Date.now(),
-      image: '/images/p1.jpg',
+      image: '/images/no-image-found.png',
       price: 0,
       category: 'sample category',
       brand: 'sample brand',
@@ -39,6 +39,7 @@ productRouter.put(
   expressAsyncHandler(async (req, res) => {
     const productId = req.params.id;
     const product = await Product.findById(productId);
+    console.log(product);
     if (product) {
       product.name = req.body.name;
       product.slug = req.body.slug;
@@ -108,7 +109,7 @@ productRouter.post(
   })
 );
 
-const PAGE_SIZE = 3;
+const PAGE_SIZE = 7;
 
 productRouter.get(
   '/admin',
