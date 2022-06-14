@@ -16,8 +16,8 @@ function UploadS3() {
       headers: { "Content-Type": "multipart/form-data" },
     });
 
-    alert("Suggested glasses are " + JSON.stringify(result.data.glassesType));
-    console.log("Suggested glasses are", result.data);
+    alert("Suggested glasses are " + JSON.stringify(result.data.results));
+    console.log("Suggested glasses are", result.data.results);
     return result.data;
   }
 

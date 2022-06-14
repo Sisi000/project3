@@ -133,6 +133,7 @@ export default function ProductEditScreen() {
           authorization: `Bearer ${userInfo.token}`,
         },
       });
+
       dispatch({ type: 'UPLOAD_SUCCESS' });
      
       if (forImages) {
