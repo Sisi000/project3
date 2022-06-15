@@ -20,7 +20,7 @@ productRouter.post(
       slug: '',
       image: '/images/no-image-found.png',
       price: 0,
-      frameShape: '',
+      category: '',
       brand: '',
       lensWidth: 0,
       lensHeight: 0,
@@ -58,7 +58,7 @@ productRouter.put(
       product.price = req.body.price;
       product.image = req.body.image;
       product.images = req.body.images;
-      product.frameShape = req.body.frameShape;
+      product.category = req.body.category;
       product.brand = req.body.brand;
       product.lensWidth = req.body.lensWidth;
       product.lensHeight = req.body.lensHeight;
@@ -163,7 +163,7 @@ productRouter.get(
     const { query } = req;
     const pageSize = query.pageSize || PAGE_SIZE;
     const page = query.page || 1;
-    const frameShape = query.frameShape || '';
+    const category = query.category || '';
     const price = query.price || '';
     const rating = query.rating || '';
     const order = query.order || '';
@@ -178,7 +178,7 @@ productRouter.get(
             },
           }
         : {};
-    const frameShapeFilter = frameShape && frameShape !== 'all' ? { frameShape } : {};
+    const categoryFilter = category && category !== 'all' ? { category } : {};
     const ratingFilter =
       rating && rating !== 'all'
         ? {
@@ -212,7 +212,7 @@ productRouter.get(
 
     const products = await Product.find({
       ...queryFilter,
-      ...frameShapeFilter,
+      ...categoryFilter,
       ...priceFilter,
       ...ratingFilter,
     })
@@ -222,7 +222,7 @@ productRouter.get(
 
     const countProducts = await Product.countDocuments({
       ...queryFilter,
-      ...frameShapeFilter,
+      ...categoryFilter,
       ...priceFilter,
       ...ratingFilter,
     });
@@ -236,10 +236,10 @@ productRouter.get(
 );
 
 productRouter.get(
-  '/frameshapes',
+  '/categories',
   expressAsyncHandler(async (req, res) => {
-    const frameShapes = await Product.find().distinct('frameShape');
-    res.send(frameShapes);
+    const categories = await Product.find().distinct('category');
+    res.send(categories);
   })
 );
 
