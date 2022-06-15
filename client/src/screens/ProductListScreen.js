@@ -163,10 +163,16 @@ export default function ProductListScreen() {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>NAME</th>
+                <th>Model</th>
+                <th>Color</th>
                 <th>PRICE</th>
-                <th>CATEGORY</th>
-                <th>BRAND</th>
+                <th>Frame shape</th>
+                <th>Brand</th>
+                <th>Width</th>
+                <th>Height</th>
+                <th>Bridge</th>
+                <th>Diagonal</th>
+                <th>Temple Lenght</th>
                 <th>ACTIONS</th>
               </tr>
             </thead>
@@ -174,10 +180,23 @@ export default function ProductListScreen() {
               {products.map((product) => (
                 <tr key={product._id}>
                   <td>{product._id}</td>
-                  <td>{product.name}</td>
+                  <td>{product.frameModel}</td>
+                  <td>{product.frameColor}</td>
                   <td>{product.price}</td>
-                  <td>{product.category}</td>
+                  <td className = "select">{product.frameShape}
+                     <select>
+                     <option value="rectangle">Rectangle</option>
+            <option value="aviator">Aviator</option>
+            <option value="rounds">Rounds</option>
+            <option value="ovals">Ovals</option>
+            <option value="other">Other</option>
+    </select></td>
                   <td>{product.brand}</td>
+                  <td>{product.frameMeasuredA}</td>
+                  <td>{product.frameMeasuredB}</td>
+                  <td>{product.frameMeasuredDBL}</td>
+                  <td>{product.frameMeasuredED}</td>
+                  <td>{product.frameMarkedTemple}</td>
                   <td>
                     <Button
                       type="button"
