@@ -12,8 +12,8 @@ productRouter.get('/', async (req, res) => {
 
 productRouter.post(
   '/',
-  // isAuth,
-  // isAdmin,
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const newProduct = new Product({
       name: 'sample name ' + Date.now(),

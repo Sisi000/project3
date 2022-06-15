@@ -105,7 +105,7 @@ router.post("/uploadurl", async (req, res, next) => {
   res.send(resultVision);
 });
 
-// upload product image to S3 and MongoDB
+// upload product image to S3
 router.post("/uploadproductimage", upload.single("image"), async (req, res, next) => {
   const file2 = req.file;
   const file2Name = req.file.filename + ".jpg";
@@ -119,9 +119,6 @@ router.post("/uploadproductimage", upload.single("image"), async (req, res, next
       const result = await uploadFile(file2);
       console.log("result is", result);
 
-      // mongodb
-      const resultMongo = await Product.updateOne({ image: result.Location });
-      console.log("resultMongo is", resultMongo);
       // await unlinkFile(file2.path);
       // await unlinkFile(`resized/${file2Name}`);
       // console.log(file);
