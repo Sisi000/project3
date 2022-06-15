@@ -105,11 +105,11 @@ router.post("/uploadurl", async (req, res, next) => {
   res.send(resultVision);
 });
 
+// upload product image to S3 and MongoDB
 router.post("/uploadproductimage", upload.single("image"), async (req, res, next) => {
   const file2 = req.file;
   const file2Name = req.file.filename + ".jpg";
   console.log("file is", file2);
-  console.log('filebodyname is', req.body.image)
 
     // resize and send to s3
   await sharp(file2.path)

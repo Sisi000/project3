@@ -16,16 +16,28 @@ productRouter.post(
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const newProduct = new Product({
-      name: 'sample name ' + Date.now(),
-      slug: 'sample-name-' + Date.now(),
+      name: '',
+      slug: '',
       image: '/images/no-image-found.png',
       price: 0,
-      category: 'sample category',
-      brand: 'sample brand',
+      frameShape: '',
+      brand: '',
+      lensWidth: 0,
+      lensHeight: 0,
+      bridge: 0,
+      lensDiagonal: 0,
+      templeLenght: 0,
+      eyeRatio: 0,
+      earFace: 0,
+      cheekChin: 0,
+      nose: 0,
+      frameColor: '',
+      prescriptionMin: 0,
+      prescriptionMax: 0,
       countInStock: 0,
       rating: 0,
       numReviews: 0,
-      description: 'sample description',
+      description: '',
     });
     const product = await newProduct.save();
     res.send({ message: 'Product Created', product });
@@ -46,8 +58,20 @@ productRouter.put(
       product.price = req.body.price;
       product.image = req.body.image;
       product.images = req.body.images;
-      product.category = req.body.category;
+      product.frameShape = req.body.frameShape;
       product.brand = req.body.brand;
+      product.lensWidth = req.body.lensWidth;
+      product.lensHeight = req.body.lensHeight;
+      product.bridge = req.body.bridge;
+      product.lensDiagonal = req.body.lensDiagonal;
+      product.templeLenght = req.body.templeLenght;
+      product.eyeRatio = req.body.eyeRatio;
+      product.earFace = req.body.earFace;
+      product.cheekChin = req.body.cheekChin;
+      product.nose = req.body.nose;
+      product.frameColor = req.body.frameColor;
+      product.prescriptionMin = req.body.prescriptionMin;
+      product.prescriptionMax = req.body.prescriptionMax;
       product.countInStock = req.body.countInStock;
       product.description = req.body.description;
       await product.save();
@@ -139,7 +163,7 @@ productRouter.get(
     const { query } = req;
     const pageSize = query.pageSize || PAGE_SIZE;
     const page = query.page || 1;
-    const category = query.category || '';
+    const frameShape = query.frameShape || '';
     const price = query.price || '';
     const rating = query.rating || '';
     const order = query.order || '';
@@ -154,7 +178,7 @@ productRouter.get(
             },
           }
         : {};
-    const categoryFilter = category && category !== 'all' ? { category } : {};
+    const frameShapeFilter = frameShape && frameShape !== 'all' ? { frameShape } : {};
     const ratingFilter =
       rating && rating !== 'all'
         ? {
@@ -188,7 +212,7 @@ productRouter.get(
 
     const products = await Product.find({
       ...queryFilter,
-      ...categoryFilter,
+      ...frameShapeFilter,
       ...priceFilter,
       ...ratingFilter,
     })
@@ -198,7 +222,7 @@ productRouter.get(
 
     const countProducts = await Product.countDocuments({
       ...queryFilter,
-      ...categoryFilter,
+      ...frameShapeFilter,
       ...priceFilter,
       ...ratingFilter,
     });
@@ -212,10 +236,10 @@ productRouter.get(
 );
 
 productRouter.get(
-  '/categories',
+  '/frameshapes',
   expressAsyncHandler(async (req, res) => {
-    const categories = await Product.find().distinct('category');
-    res.send(categories);
+    const frameShapes = await Product.find().distinct('frameShape');
+    res.send(frameShapes);
   })
 );
 

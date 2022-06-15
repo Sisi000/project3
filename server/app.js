@@ -12,7 +12,6 @@ var s3Router = require('./routes/s3');
 const productRouter = require ('./routes/productRoutes.js');
 const userRouter = require ('./routes/userRoutes.js');
 const orderRouter = require ('./routes/orderRoutes.js');
-const uploadRouter = require ('./routes/uploadRoutes.js');
 
 var app = express();
 
@@ -29,11 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/', s3Router);
 // app.use('/users', usersRouter);
-// app.use('/', facelandmark);
 
-
-app.use('/api/upload', s3Router);
-// app.use('/api/seed', seedRouter);
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);

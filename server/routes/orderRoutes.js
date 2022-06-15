@@ -69,15 +69,15 @@ orderRouter.get(
       },
       { $sort: { _id: 1 } },
     ]);
-    const productCategories = await Product.aggregate([
+    const productFrameShape = await Product.aggregate([
       {
         $group: {
-          _id: '$category',
+          _id: '$frameShape',
           count: { $sum: 1 },
         },
       },
     ]);
-    res.send({ users, orders, dailyOrders, productCategories });
+    res.send({ users, orders, dailyOrders, productFrameShape });
   })
 );
 
