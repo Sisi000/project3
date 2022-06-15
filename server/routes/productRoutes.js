@@ -12,16 +12,16 @@ productRouter.get('/', async (req, res) => {
 
 productRouter.post(
   '/',
-  isAuth,
-  isAdmin,
+  // isAuth,
+  // isAdmin,
   expressAsyncHandler(async (req, res) => {
     const newProduct = new Product({
-      name: '',
-      slug: '',
+      name: 'sample name ' + Date.now(),
+      slug: 'sample-name-' + Date.now(),
       image: '/images/no-image-found.png',
       price: 0,
-      category: '',
-      brand: '',
+      category: 'sample category',
+      brand: 'sample brand',
       lensWidth: 0,
       lensHeight: 0,
       bridge: 0,
@@ -31,13 +31,13 @@ productRouter.post(
       earFace: 0,
       cheekChin: 0,
       nose: 0,
-      frameColor: '',
+      frameColor: 'color',
       prescriptionMin: 0,
       prescriptionMax: 0,
       countInStock: 0,
       rating: 0,
       numReviews: 0,
-      description: '',
+      description: 'sample description',
     });
     const product = await newProduct.save();
     res.send({ message: 'Product Created', product });
