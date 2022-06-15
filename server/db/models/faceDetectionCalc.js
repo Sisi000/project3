@@ -1,6 +1,7 @@
 const vision = require('@google-cloud/vision');
 const sizeOf = require("image-size");
 const fs = require ('fs');
+const { kill } = require('process');
 //const uploadLocation="./testimages/"; ->Remove, using Jest now
 //const fname = "testimage.jpg" ->Remove, using Jest now
 
@@ -73,12 +74,15 @@ let glassesTestData=[
         "prescription":[0,10],}
     },//Shakira
 ]
-
+/*
+merge is the call for the merge function in mergesort
+left and right are sorted arrays to be merged
+*/
 function merge(left, right){
     let results=[]
         //Break out of loop if any of the array gets empty
         while(left.length && right.length){
-            if(left[0][0] < right[0][0]){//left less than right
+            if(left[0][0] < right[0][0]){//left less than right. Note that this checks values (the nested array)
                 results.push(left.shift())
             }else{//right less than left
                 results.push(right.shift())
@@ -86,7 +90,10 @@ function merge(left, right){
         }
     return [...results, ...left, ...right]//either left or right is empty, so this is sorted
 }
-
+/*
+mergesort is the main function for the Mergesort
+array is the initial unsorted array, breaks down and recurrses
+*/
 function mergesort(array){
 
     if(array.length ===1){
@@ -100,31 +107,60 @@ function mergesort(array){
 }
 
 
-
+/*
+euclideandistance calculates the eclid distance, general algo called each time we want to determin the distance to nodes in 3-d
+x1,y1,z1 => node 1 
+x2, y2, z2 => node 2
+*/
 function euclideandistance(x1,y1,z1,x2,y2,z2){
-    return Math.sqrt((x2-x1)**2+(y2-y1)**2+(z2-z1)**2)
+    return Math.sqrt((x2-x1)**2+(y2-y1)**2+(z2-z1)**2);
 }
-
+/*
+glassesToUserDataCalc is a general calculation that does a euclid distance calculation of n-degrees, NOTE that both n1 and n2 have to be the same size (both inputs same dimensions) or this will fail (see error test)
+glassesData is the general database data (entire thing)
+userData is the users personal fit data (or personal data)
+*/
 function glassesToUserDataCalc (glassesData, userData){//calculated euclidian distance from user data to glasses data
     if(glassesData.length != userData.length){
         return res.json(`problem with the user calculation`); 
     }
-    let sum = 0
+    let sum = 0;
     for(let i=0; i<userData.length; i++){
-        sum = (glassesData[i]-userData[i])**2+sum
+        sum = (glassesData[i]-userData[i])**2+sum;
     }
     return Math.sqrt(sum)
 }
-
+/*
+glassesDataReturn does the calculation for the euclid distance for ranking the glasses. 
+glassesData is the general database data (entire thing)
+userData is the users personal fit data (or personal data)
+n is the size of return. Default is shown. If no n is input, n here will be set to default
+*/
 function glassesDataReturn(glassesData, userData, n=10){
-    let results = []
+    let results = [];
     for(let i=0; i<glassesData.length; i++){
         let result = glassesToUserDataCalc(glassesTestData[i].data, userData)
-        results.push([result,glassesTestData[i].type])
+        if(results.length<n){
+            results.push([result,glassesTestData[i].type]);
+        }else if(results.length===n){
+            let maxLocation = 0;
+            let max=glassesData[0];
+            for(let j=0; j<glassesData.length; j++){
+                if(max<glassesData[j]){
+                    maxLocation=j;
+                    max=glassesData[0];
+                }
+            }
+            if(result<max){
+                results[maxLocation]=[result,glassesTestData[i].type];
+            }
+        }
     }
     return results
 }
-
+/*
+calculateUserData destructures the landmarks into positions for calculations
+*/
 function calculateUserData(imageInformation){
     let landmarks=imageInformation[0].faceAnnotations[0].landmarks
     //used for eye ratio
@@ -161,6 +197,7 @@ function calculateUserData(imageInformation){
 
     let forehead_gabella = landmarks[28].position
     
+    //ratios are calculated
     let leftEyeVertD=euclideandistance(left_eye_top.x, left_eye_top.y, left_eye_top.z,left_eye_bottom.x, left_eye_bottom.y, left_eye_bottom.z)
     let leftEyeHorrizD=euclideandistance(left_eye_right_corner.x, left_eye_right_corner.y, left_eye_right_corner.z,left_eye_left_corner.x, left_eye_left_corner.y, left_eye_left_corner.z)
     let rightEyeVertD=euclideandistance(right_eye_top.x, right_eye_top.y, right_eye_top.z,right_eye_bottom.x, right_eye_bottom.y, right_eye_bottom.z)
@@ -185,6 +222,8 @@ function calculateUserData(imageInformation){
     // console.log("Euclidiean distance for horizontal left eye dimension: ", leftEyeHorrizD)
     // console.log("The ratio of horizontal/vertical left eye dimensions is: ", leftEyeHorrizvsVertRatio)
     // console.log("The ratio of horizontal/vertical right eye dimensions is: ", rightEyeHorrizvsVertRatio)
+
+    //unique user values calculated
     console.log("The avg ratio of horizontal/vertical eye dimensions is: ", eyeRatioHorrizvsVertRatio)
     console.log("The ratio of horizontal/vertical ear to ear vs between eyes to chin is: ", earsToFaceHorrizvsVertRatio)
     console.log("The ratio of horizontal/horizontal cheek to cheek vs chin to chin is: ", cheekVsChinHorizRatio)
@@ -194,7 +233,7 @@ function calculateUserData(imageInformation){
 }
 
 async function facelandmark(req, res, next) {
-
+    //Api function initialized for google vision
     async function setEndpoint(request) {
         try{
             const result = await client.faceDetection(request);
@@ -205,7 +244,7 @@ async function facelandmark(req, res, next) {
             return res.status(500).json(`problem with the Google API`);
         }
     }
-
+    //specifications for image upload to google vision
     const client = new vision.ImageAnnotatorClient(config);
     //test for upload - needed for encode
     var imageFileUpload = req //fs.readFileSync(uploadLocation+fname); Remove, using Jest now
@@ -216,11 +255,15 @@ async function facelandmark(req, res, next) {
             content: Buffer.from(imageB64Upload, 'base64')
         }
     };  
+    //To detemine the image size in case we want to show nodes
     let originalImageSize = sizeOf(req);
+    //API call being made
     let imageInformation = await setEndpoint(request);
-
+    //Function to calculate unique user information
     let userData = calculateUserData(imageInformation)
+    //Unranked glasses for merge (with top n picks, UNORDERED)
     let rawResults = glassesDataReturn(glassesTestData,userData)
+    //Mergesort being called (with top n picks, ORDERED)
     let results = mergesort(rawResults)
 
     console.log("This is the unordered list: ", rawResults)
@@ -250,11 +293,15 @@ async function facelandmarkURL(req, res, next) {
     const clientOptions = {apiEndpoint: 'eu-vision.googleapis.com'};
     // Creates a client
     const client = new vision.ImageAnnotatorClient(config, clientOptions);
-
+    
+    //API call being made
     let imageInformation = await setEndpoint(imageURL);
 
+    //Function to calculate unique user information
     let userData = calculateUserData(imageInformation)
+    //Unranked glasses for merge (with top n picks, UNORDERED)
     let rawResults = glassesDataReturn(glassesTestData,userData)
+    //Mergesort being called (with top n picks, ORDERED)
     let results = mergesort(rawResults)
 
     console.log("This is the unordered list: ", rawResults)

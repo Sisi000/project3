@@ -16,16 +16,28 @@ productRouter.post(
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const newProduct = new Product({
-      name: 'sample name ' + Date.now(),
-      slug: 'sample-name-' + Date.now(),
+      name: '',
+      slug: '',
       image: '/images/no-image-found.png',
       price: 0,
-      category: 'sample category',
-      brand: 'sample brand',
+      category: '',
+      brand: '',
+      lensWidth: 0,
+      lensHeight: 0,
+      bridge: 0,
+      lensDiagonal: 0,
+      templeLenght: 0,
+      eyeRatio: 0,
+      earFace: 0,
+      cheekChin: 0,
+      nose: 0,
+      frameColor: '',
+      prescriptionMin: 0,
+      prescriptionMax: 0,
       countInStock: 0,
       rating: 0,
       numReviews: 0,
-      description: 'sample description',
+      description: '',
     });
     const product = await newProduct.save();
     res.send({ message: 'Product Created', product });
@@ -48,6 +60,18 @@ productRouter.put(
       product.images = req.body.images;
       product.category = req.body.category;
       product.brand = req.body.brand;
+      product.lensWidth = req.body.lensWidth;
+      product.lensHeight = req.body.lensHeight;
+      product.bridge = req.body.bridge;
+      product.lensDiagonal = req.body.lensDiagonal;
+      product.templeLenght = req.body.templeLenght;
+      product.eyeRatio = req.body.eyeRatio;
+      product.earFace = req.body.earFace;
+      product.cheekChin = req.body.cheekChin;
+      product.nose = req.body.nose;
+      product.frameColor = req.body.frameColor;
+      product.prescriptionMin = req.body.prescriptionMin;
+      product.prescriptionMax = req.body.prescriptionMax;
       product.countInStock = req.body.countInStock;
       product.description = req.body.description;
       await product.save();
