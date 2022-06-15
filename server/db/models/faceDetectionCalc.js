@@ -1,6 +1,7 @@
 const vision = require('@google-cloud/vision');
 const sizeOf = require("image-size");
 const fs = require ('fs');
+const { kill } = require('process');
 //const uploadLocation="./testimages/"; ->Remove, using Jest now
 //const fname = "testimage.jpg" ->Remove, using Jest now
 
@@ -102,25 +103,39 @@ function mergesort(array){
 
 
 function euclideandistance(x1,y1,z1,x2,y2,z2){
-    return Math.sqrt((x2-x1)**2+(y2-y1)**2+(z2-z1)**2)
+    return Math.sqrt((x2-x1)**2+(y2-y1)**2+(z2-z1)**2);
 }
 
 function glassesToUserDataCalc (glassesData, userData){//calculated euclidian distance from user data to glasses data
     if(glassesData.length != userData.length){
         return res.json(`problem with the user calculation`); 
     }
-    let sum = 0
+    let sum = 0;
     for(let i=0; i<userData.length; i++){
-        sum = (glassesData[i]-userData[i])**2+sum
+        sum = (glassesData[i]-userData[i])**2+sum;
     }
     return Math.sqrt(sum)
 }
 
 function glassesDataReturn(glassesData, userData, n=10){
-    let results = []
+    let results = [];
     for(let i=0; i<glassesData.length; i++){
         let result = glassesToUserDataCalc(glassesTestData[i].data, userData)
-        results.push([result,glassesTestData[i].type])
+        if(results.length<n){
+            results.push([result,glassesTestData[i].type]);
+        }else if(results.length===n){
+            let maxLocation = 0;
+            let max=glassesData[0];
+            for(let j=0; j<glassesData.length; j++){
+                if(max<glassesData[j]){
+                    maxLocation=j;
+                    max=glassesData[0];
+                }
+            }
+            if(result<max){
+                results[maxLocation]=[result,glassesTestData[i].type];
+            }
+        }
     }
     return results
 }
