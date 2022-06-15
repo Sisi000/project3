@@ -36,7 +36,6 @@ import UserEditScreen from "./screens/UserEditScreen";
 import MapScreen from "./screens/MapScreen";
 import logo from "./assets/logo.png";
 import About from "./components/About/about";
-import Home from "./components/Home/home";
 import Footer from "./components/Footer/footer";
 import UploadS3 from "./components/uploadS3/UploadS3";
 
@@ -74,8 +73,8 @@ function App() {
               ? "site-container active-cont d-flex flex-column full-box"
               : "site-container active-cont d-flex flex-column"
             : fullBox
-            ? "site-container d-flex flex-column full-box"
-            : "site-container d-flex flex-column"
+              ? "site-container d-flex flex-column full-box"
+              : "site-container d-flex flex-column"
         }
       >
         <ToastContainer position="bottom-center" limit={1} />
@@ -176,12 +175,13 @@ function App() {
           </Nav>
         </div>
         <main>
-          <Container className="mt-3">
-            <Routes>
-              <Route path="/product/:slug" element={<ProductScreen />} />
-              <Route path="/upload" element={<UploadS3 />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/cart" element={<CartScreen />} />
+
+          <Routes>
+           
+              <Route path="/product/:slug" element={ <Container className="mt-3"><ProductScreen /></Container>} />
+              <Route path="/upload" element={<Container className="mt-3"><UploadS3 /> </Container>} />
+              <Route path="/about" element={<Container className="mt-3"><About /></Container>} />
+              <Route path="/cart" element={<Container className="mt-3"><CartScreen /></Container>} />
               <Route path="/search" element={<SearchScreen />} />
               <Route path="/signin" element={<SigninScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
@@ -272,10 +272,10 @@ function App() {
                   </AdminRoute>
                 }
               ></Route>
+         
+            <Route path="/" element={<HomeScreen />} />
+          </Routes>
 
-              <Route path="/" element={<HomeScreen />} />
-            </Routes>
-          </Container>
         </main>
         <Footer />
       </div>

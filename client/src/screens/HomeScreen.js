@@ -1,12 +1,12 @@
 import { useEffect, useReducer, useState } from 'react';
 import axios from 'axios';
 import logger from 'use-reducer-logger';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Container, Row, Col } from "react-bootstrap";
 import Product from '../components/Product';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
+import Slider from "../components/Home/Slider"
 // import data from '../data';
 
 const reducer = (state, action) => {
@@ -44,27 +44,36 @@ function HomeScreen() {
     fetchData();
   }, []);
   return (
-    <div>
-      <Helmet>
-        <title>eyelovecoding</title>
-      </Helmet>
-      <h1>Featured Products</h1>
-      <div className="products">
-        {loading ? (
-          <LoadingBox />
-        ) : error ? (
-          <MessageBox variant="danger">{error}</MessageBox>
-        ) : (
-          <Row>
-            {products.map((product) => (
-              <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
-                <Product product={product}></Product>
-              </Col>
-            ))}
-          </Row>
-        )}
-      </div>
-    </div>
+    <>
+      <Container fluid style={{ padding:"0" }}>
+        <div>
+          < Slider />
+        </div>
+        <Container className="mt-3">
+          <div>
+            <Helmet>
+              <title>eyelovecoding</title>
+            </Helmet>
+            <h1>Featured Products</h1>
+            <div className="products">
+              {loading ? (
+                <LoadingBox />
+              ) : error ? (
+                <MessageBox variant="danger">{error}</MessageBox>
+              ) : (
+                <Row>
+                  {products.map((product) => (
+                    <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
+                      <Product product={product}></Product>
+                    </Col>
+                  ))}
+                </Row>
+              )}
+            </div>
+          </div>
+        </Container>
+      </Container>
+    </>
   );
 }
 export default HomeScreen;
