@@ -58,6 +58,7 @@ export default function ProductEditScreen() {
   const [slug, setSlug] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
+  const [imageS3Key, setImageS3Key] = useState("");
   const [images, setImages] = useState([]);
   const [category, setCategory] = useState("");
   const [countInStock, setCountInStock] = useState("");
@@ -85,6 +86,7 @@ export default function ProductEditScreen() {
         setSlug(data.slug);
         setPrice(data.price);
         setImage(data.image);
+        setImageS3Key(data.imageS3Key);
         setImages(data.images);
         setCategory(data.category);
         setCountInStock(data.countInStock);
@@ -125,6 +127,7 @@ export default function ProductEditScreen() {
           slug,
           price,
           image,
+          imageS3Key,
           images,
           category,
           brand,
@@ -161,6 +164,7 @@ export default function ProductEditScreen() {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
     bodyFormData.append("image", file);
+    bodyFormData.append("oldImageS3Key", imageS3Key);
     try {
       dispatch({ type: "UPLOAD_REQUEST" });
       const { data } = await axios.post("/uploadproductimage", bodyFormData, {
@@ -174,8 +178,10 @@ export default function ProductEditScreen() {
 
       if (forImages) {
         setImages([...images, data.image]);
+        setImageS3Key([...imageS3Key, data.imageS3Key]);
       } else {
         setImage(data.image);
+        setImageS3Key(data.imageS3Key);
       }
       toast.success("Image uploaded successfully. click Update to apply it");
     } catch (err) {
@@ -232,6 +238,14 @@ export default function ProductEditScreen() {
             <Form.Control
               value={image}
               onChange={(e) => setImage(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="imageS3Key">
+            <Form.Label>Image S3 Key</Form.Label>
+            <Form.Control
+              value={imageS3Key}
+              onChange={(e) => setImageS3Key(e.target.value)}
               required
             />
           </Form.Group>

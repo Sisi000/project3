@@ -100,32 +100,36 @@ router.post("/uploadurl", async (req, res, next) => {
 
   const resultVision = await facelandmarkURL(urlBody);
 
-  const uploadedUrl = await addUrl({URL: urlBody});
+  const uploadedUrl = await addUrl({ URL: urlBody });
   console.log("Added url is", uploadedUrl);
   res.send(resultVision);
 });
 
 // upload product image to S3
-router.post("/uploadproductimage", upload.single("image"), async (req, res, next) => {
-  const file2 = req.file;
-  const file2Name = req.file.filename + ".jpg";
-  console.log("file is", file2);
+router.post(
+  "/uploadproductimage",
+  upload.single("image"),
+  async (req, res, next) => {
+    const file2 = req.file;
+    const file2Name = req.file.filename + ".jpg";
+    const fileToDelete = req.body.oldImageS3Key;
 
     // resize and send to s3
-  await sharp(file2.path)
-    .resize(900, 900, { withoutEnlargement: true })
-    .toFile(`resized/${file2Name}`)
-    .then(async (file) => {
-      const result = await uploadFile(file2);
-      console.log("result is", result);
+    await sharp(file2.path)
+      .resize(900, 900, { withoutEnlargement: true })
+      .toFile(`resized/${file2Name}`)
+      .then(async (file) => {
+        const result = await uploadFile(file2);
 
-      // await unlinkFile(file2.path);
-      // await unlinkFile(`resized/${file2Name}`);
-      // console.log(file);
-      res.send({image: result.Location});
-    });
+        const deleteS3 = await s3
+          .deleteObject({ Key: fileToDelete, Bucket: bucketName })
+          .promise();
 
-});
-
+        // await unlinkFile(file2.path);
+        // await unlinkFile(`resized/${file2Name}`);
+        res.send({ image: result.Location, imageS3Key: result.Key });
+      });
+  }
+);
 
 module.exports = router;

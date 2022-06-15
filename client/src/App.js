@@ -36,7 +36,7 @@ import UserEditScreen from "./screens/UserEditScreen";
 import MapScreen from "./screens/MapScreen";
 import logo from "./assets/logo.png";
 import About from "./components/About/about";
-import Home from "./components/Home/home";
+// import Home from "./components/Home/home";
 import Footer from "./components/Footer/footer";
 import UploadS3 from "./components/uploadS3/UploadS3";
 
