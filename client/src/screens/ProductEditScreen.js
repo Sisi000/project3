@@ -1,40 +1,40 @@
-import React, { useContext, useEffect, useReducer, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import axios from 'axios';
-import { Store } from '../Store';
-import { getError } from '../utils';
-import Container from 'react-bootstrap/Container';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Form from 'react-bootstrap/Form';
-import { Helmet } from 'react-helmet-async';
-import LoadingBox from '../components/LoadingBox';
-import MessageBox from '../components/MessageBox';
-import Button from 'react-bootstrap/Button';
+import React, { useContext, useEffect, useReducer, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { Store } from "../Store";
+import { getError } from "../utils";
+import Container from "react-bootstrap/Container";
+import ListGroup from "react-bootstrap/ListGroup";
+import Form from "react-bootstrap/Form";
+import { Helmet } from "react-helmet-async";
+import LoadingBox from "../components/LoadingBox";
+import MessageBox from "../components/MessageBox";
+import Button from "react-bootstrap/Button";
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'FETCH_REQUEST':
+    case "FETCH_REQUEST":
       return { ...state, loading: true };
-    case 'FETCH_SUCCESS':
+    case "FETCH_SUCCESS":
       return { ...state, loading: false };
-    case 'FETCH_FAIL':
+    case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
-    case 'UPDATE_REQUEST':
+    case "UPDATE_REQUEST":
       return { ...state, loadingUpdate: true };
-    case 'UPDATE_SUCCESS':
+    case "UPDATE_SUCCESS":
       return { ...state, loadingUpdate: false };
-    case 'UPDATE_FAIL':
+    case "UPDATE_FAIL":
       return { ...state, loadingUpdate: false };
-    case 'UPLOAD_REQUEST':
-      return { ...state, loadingUpload: true, errorUpload: '' };
-    case 'UPLOAD_SUCCESS':
+    case "UPLOAD_REQUEST":
+      return { ...state, loadingUpload: true, errorUpload: "" };
+    case "UPLOAD_SUCCESS":
       return {
         ...state,
         loadingUpload: false,
-        errorUpload: '',
+        errorUpload: "",
       };
-    case 'UPLOAD_FAIL':
+    case "UPLOAD_FAIL":
       return { ...state, loadingUpload: false, errorUpload: action.payload };
 
     default:
@@ -51,23 +51,35 @@ export default function ProductEditScreen() {
   const [{ loading, error, loadingUpdate, loadingUpload }, dispatch] =
     useReducer(reducer, {
       loading: true,
-      error: '',
+      error: "",
     });
 
-  const [name, setName] = useState('');
-  const [slug, setSlug] = useState('');
-  const [price, setPrice] = useState('');
-  const [image, setImage] = useState('');
+  const [name, setName] = useState("");
+  const [slug, setSlug] = useState("");
+  const [price, setPrice] = useState("");
+  const [image, setImage] = useState("");
   const [images, setImages] = useState([]);
-  const [category, setCategory] = useState('');
-  const [countInStock, setCountInStock] = useState('');
-  const [brand, setBrand] = useState('');
-  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState("");
+  const [countInStock, setCountInStock] = useState("");
+  const [brand, setBrand] = useState("");
+  const [lensWidth, setLensWidth] = useState("");
+  const [lensHeight, setLensHeight] = useState("");
+  const [bridge, setBridge] = useState("");
+  const [lensDiagonal, setLensDiagonal] = useState("");
+  const [templeLength, setTempleLength] = useState("");
+  const [eyeRatio, setEyeRatio] = useState("");
+  const [earFace, setEarFace] = useState("");
+  const [cheekChin, setCheekChin] = useState("");
+  const [nose, setNose] = useState("");
+  const [frameColor, setFrameColor] = useState("");
+  const [prescriptionMin, setPrescriptionMin] = useState("");
+  const [prescriptionMax, setPrescriptionMax] = useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        dispatch({ type: 'FETCH_REQUEST' });
+        dispatch({ type: "FETCH_REQUEST" });
         const { data } = await axios.get(`/api/products/${productId}`);
         setName(data.name);
         setSlug(data.slug);
@@ -77,11 +89,23 @@ export default function ProductEditScreen() {
         setCategory(data.category);
         setCountInStock(data.countInStock);
         setBrand(data.brand);
+        setLensWidth(data.lensWidth);
+        setLensHeight(data.lensHeight);
+        setBridge(data.bridge);
+        setLensDiagonal(data.lensDiagonal);
+        setTempleLength(data.templeLength);
+        setEyeRatio(data.eyeRatio);
+        setEarFace(data.earFace);
+        setCheekChin(data.cheekChin);
+        setNose(data.nose);
+        setFrameColor(data.frameColor);
+        setPrescriptionMin(data.prescriptionMin);
+        setPrescriptionMax(data.prescriptionMax);
         setDescription(data.description);
-        dispatch({ type: 'FETCH_SUCCESS' });
+        dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
         dispatch({
-          type: 'FETCH_FAIL',
+          type: "FETCH_FAIL",
           payload: getError(err),
         });
       }
@@ -92,7 +116,7 @@ export default function ProductEditScreen() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      dispatch({ type: 'UPDATE_REQUEST' });
+      dispatch({ type: "UPDATE_REQUEST" });
       await axios.put(
         `/api/products/${productId}`,
         {
@@ -104,6 +128,18 @@ export default function ProductEditScreen() {
           images,
           category,
           brand,
+          lensWidth,
+          lensHeight,
+          bridge,
+          lensDiagonal,
+          templeLength,
+          eyeRatio,
+          earFace,
+          cheekChin,
+          nose,
+          frameColor,
+          prescriptionMin,
+          prescriptionMax,
           countInStock,
           description,
         },
@@ -112,39 +148,39 @@ export default function ProductEditScreen() {
         }
       );
       dispatch({
-        type: 'UPDATE_SUCCESS',
+        type: "UPDATE_SUCCESS",
       });
-      toast.success('Product updated successfully');
-      navigate('/admin/products');
+      toast.success("Product updated successfully");
+      navigate("/admin/products");
     } catch (err) {
       toast.error(getError(err));
-      dispatch({ type: 'UPDATE_FAIL' });
+      dispatch({ type: "UPDATE_FAIL" });
     }
   };
   const uploadFileHandler = async (e, forImages) => {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
-    bodyFormData.append('image', file);
+    bodyFormData.append("image", file);
     try {
-      dispatch({ type: 'UPLOAD_REQUEST' });
-      const { data } = await axios.post('/uploadproductimage', bodyFormData, {
+      dispatch({ type: "UPLOAD_REQUEST" });
+      const { data } = await axios.post("/uploadproductimage", bodyFormData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
           authorization: `Bearer ${userInfo.token}`,
         },
       });
 
-      dispatch({ type: 'UPLOAD_SUCCESS' });
-     
+      dispatch({ type: "UPLOAD_SUCCESS" });
+
       if (forImages) {
         setImages([...images, data.image]);
       } else {
         setImage(data.image);
       }
-      toast.success('Image uploaded successfully. click Update to apply it');
+      toast.success("Image uploaded successfully. click Update to apply it");
     } catch (err) {
       toast.error(getError(err));
-      dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
+      dispatch({ type: "UPLOAD_FAIL", payload: getError(err) });
     }
   };
   const deleteFileHandler = async (fileName, f) => {
@@ -152,7 +188,7 @@ export default function ProductEditScreen() {
     console.log(images);
     console.log(images.filter((x) => x !== fileName));
     setImages(images.filter((x) => x !== fileName));
-    toast.success('Image removed successfully. click Update to apply it');
+    toast.success("Image removed successfully. click Update to apply it");
   };
   return (
     <Container className="small-container">
@@ -241,6 +277,102 @@ export default function ProductEditScreen() {
             <Form.Control
               value={brand}
               onChange={(e) => setBrand(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="lensWidth">
+            <Form.Label>Lens Width</Form.Label>
+            <Form.Control
+              value={lensWidth}
+              onChange={(e) => setLensWidth(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="lensHeight">
+            <Form.Label>Lens Height</Form.Label>
+            <Form.Control
+              value={lensHeight}
+              onChange={(e) => setLensHeight(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="bridge">
+            <Form.Label>Bridge</Form.Label>
+            <Form.Control
+              value={bridge}
+              onChange={(e) => setBridge(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="lensDiagonal">
+            <Form.Label>Lens Diagonal</Form.Label>
+            <Form.Control
+              value={lensDiagonal}
+              onChange={(e) => setLensDiagonal(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="templeLength">
+            <Form.Label>Temple length</Form.Label>
+            <Form.Control
+              value={templeLength}
+              onChange={(e) => setTempleLength(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="eyeRatio">
+            <Form.Label>Eye Ratio H/V</Form.Label>
+            <Form.Control
+              value={eyeRatio}
+              onChange={(e) => setEyeRatio(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="earFace">
+            <Form.Label>Ear/Face</Form.Label>
+            <Form.Control
+              value={earFace}
+              onChange={(e) => setEarFace(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="cheekChin">
+            <Form.Label>Cheek/Chin</Form.Label>
+            <Form.Control
+              value={cheekChin}
+              onChange={(e) => setCheekChin(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="nose">
+            <Form.Label>Nose W/H</Form.Label>
+            <Form.Control
+              value={nose}
+              onChange={(e) => setNose(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="frameColor">
+            <Form.Label>Frame Color</Form.Label>
+            <Form.Control
+              value={frameColor}
+              onChange={(e) => setFrameColor(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="prescriptionMin">
+            <Form.Label>prescriptionMin</Form.Label>
+            <Form.Control
+              value={prescriptionMin}
+              onChange={(e) => setPrescriptionMin(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="prescriptionMax">
+            <Form.Label>Prescription Max</Form.Label>
+            <Form.Control
+              value={prescriptionMax}
+              onChange={(e) => setPrescriptionMax(e.target.value)}
               required
             />
           </Form.Group>

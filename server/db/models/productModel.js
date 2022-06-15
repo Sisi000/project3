@@ -23,7 +23,7 @@ const productSchema = new mongoose.Schema(
     lensHeight: { type: Number, required: true },
     bridge: { type: Number, required: true },
     lensDiagonal: { type: Number, required: true },
-    templeLenght: { type: Number, required: true },
+    templeLength: { type: Number, required: true },
     eyeRatio: { type: Number, required: true },
     earFace: { type: Number, required: true },
     cheekChin: { type: Number, required: true },

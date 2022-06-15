@@ -7,6 +7,7 @@ import UploadUrl from "../uploadUrl/UploadUrl";
 function UploadS3() {
   const [file, setFile] = useState();
   const [images, setImages] = useState([]);
+  const [resultData, setResultData] = useState([]);
 
   async function postImage({ image }) {
     const formData = new FormData();
@@ -16,11 +17,13 @@ function UploadS3() {
       headers: { "Content-Type": "multipart/form-data" },
     });
 
-    alert("Suggested glasses are " + JSON.stringify(result.data.results));
+    // alert("Suggested glasses are " + JSON.stringify(result.data.results));
     console.log("Suggested glasses are", result.data.results);
-    return result.data;
+    setResultData(result.data.results, ...resultData);
+    
+    return result.data.results;
   }
-
+  
   const submit = async (event) => {
     event.preventDefault();
     const result = await postImage({ image: file });
@@ -28,10 +31,11 @@ function UploadS3() {
     setFile(null);
     document.getElementById("selectedimage").value = "";
   };
-
+  
   const fileSelected = (event) => {
     const file = event.target.files[0];
     setFile(file);
+    document.getElementById("suggestedglasses").value = ""
   };
 
   // const showAlert = () => {
@@ -40,11 +44,11 @@ function UploadS3() {
 
   return (
     <div className="containers3">
-           <form className="forms3" onSubmit={submit}>
-      <div className="containerphoto">
-        <img className="imgphoto" src={imgphoto} alt="" />
-        <span>&nbsp;Choose Photo</span>
-      </div>
+      <form className="forms3" onSubmit={submit}>
+        <div className="containerphoto">
+          <img className="imgphoto" src={imgphoto} alt="" />
+          <span>&nbsp;Choose Photo</span>
+        </div>
         <input
           id="selectedimage"
           onChange={fileSelected}
@@ -66,7 +70,7 @@ function UploadS3() {
         <button className="button-4" type="submit">
           Submit
         </button>
-        {/* <div className="get-calc">{result}</div> */}
+        <div className="suggested-glasses" id="suggestedglasses">"Suggested glasses are " {resultData}</div>
       </form>
       <UploadUrl />
     </div>

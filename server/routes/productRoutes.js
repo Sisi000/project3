@@ -26,7 +26,7 @@ productRouter.post(
       lensHeight: 0,
       bridge: 0,
       lensDiagonal: 0,
-      templeLenght: 0,
+      templeLength: 0,
       eyeRatio: 0,
       earFace: 0,
       cheekChin: 0,
@@ -64,7 +64,7 @@ productRouter.put(
       product.lensHeight = req.body.lensHeight;
       product.bridge = req.body.bridge;
       product.lensDiagonal = req.body.lensDiagonal;
-      product.templeLenght = req.body.templeLenght;
+      product.templeLength = req.body.templeLength;
       product.eyeRatio = req.body.eyeRatio;
       product.earFace = req.body.earFace;
       product.cheekChin = req.body.cheekChin;
