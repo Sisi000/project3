@@ -104,7 +104,7 @@ let glassesTestData=[
     "price":450, //$
     },//Shakira
 ]
-
+//Test filters, currrently not used. These work
 let testRemove ={
     "color":["red","brown"]
 }
