@@ -24,7 +24,6 @@ function WebcamCapture() {
       headers: { "Content-Type": "multipart/form-data" },
     });
 
-    // alert("Suggested glasses are " + JSON.stringify(result.data.results));
     console.log("Suggested glasses are", result.data.results);
     setResultData(result.data.results, ...resultData);
 

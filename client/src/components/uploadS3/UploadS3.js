@@ -18,13 +18,12 @@ function UploadS3() {
       headers: { "Content-Type": "multipart/form-data" },
     });
 
-    // alert("Suggested glasses are " + JSON.stringify(result.data.results));
     console.log("Suggested glasses are", result.data.results);
     setResultData(result.data.results, ...resultData);
-    
+
     return result.data.results;
   }
-  
+
   const submit = async (event) => {
     event.preventDefault();
     const result = await postImage({ image: file });
@@ -32,16 +31,12 @@ function UploadS3() {
     setFile(null);
     document.getElementById("selectedimage").value = "";
   };
-  
+
   const fileSelected = (event) => {
     const file = event.target.files[0];
     setFile(file);
-    document.getElementById("suggestedglasses").value = ""
+    document.getElementById("suggestedglasses").value = "";
   };
-
-  // const showAlert = () => {
-  //   alert("Photo uploaded successfully");
-  // };
 
   return (
     <div className="containers3">
@@ -71,7 +66,9 @@ function UploadS3() {
         <button className="button-4" type="submit">
           Submit
         </button>
-        <div className="suggested-glasses" id="suggestedglasses">"Suggested glasses are " {resultData}</div>
+        <div className="suggested-glasses" id="suggestedglasses">
+          "Suggested glasses are " {resultData}
+        </div>
       </form>
       <UploadUrl />
       <WebcamCapture />

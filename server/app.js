@@ -1,19 +1,16 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var s3Router = require('./routes/s3');
-// var usersRouter = require('./routes/users');
-// var facelandmark = require('./routes/facelandmark');
-
+const indexRouter = require('./routes/index');
+const s3Router = require('./routes/s3');
 const productRouter = require ('./routes/productRoutes.js');
 const userRouter = require ('./routes/userRoutes.js');
 const orderRouter = require ('./routes/orderRoutes.js');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -27,8 +24,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/', s3Router);
-// app.use('/users', usersRouter);
-
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
