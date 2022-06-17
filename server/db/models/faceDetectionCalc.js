@@ -16,54 +16,156 @@ let glassesTestData=[
     {"type":"Glasses 1",
     "data":[2.4836,1.1581,0.7601,1.9322],
     "color":"blue",
-    "prescription":[0,8],//min size = 0, max size 10
+    "prescriptionMin":1,//min size = 0, max size 10
+    "prescriptionMax":8,
+    "weight":40,//grams
+    "frame":"square",
+    "price":450, //$
     },//Brad Pitt
     {"type":"Glasses 2",
     "data":[2.2740,1.2698,0.8955,2.2307],
     "color":"red",
-    "prescription":[0,5],
+    "prescriptionMin":0,
+    "prescriptionMax":9,
+    "weight":35,//grams
+    "frame":"circle",
+    "price":300, //$
     },//BTS
     {"type":"Glasses 3",
     "data":[2.4132,1.0822,0.8577,1.9868],
     "color":"brown",
-    "prescription":[0,7],
+    "prescriptionMin":2,
+    "prescriptionMax":7,
+    "weight":50,//grams
+    "frame":"square",
+    "price":250, //$
     },//Denzel Washington
     {"type":"Glasses 4",
     "data":[2.3881,1.1532,0.7524,2.0369],
     "color":"black",
-    "prescription":[0,10],
+    "prescriptionMin":0,
+    "prescriptionMax":10,
+    "weight":30,//grams
+    "frame":"oval",
+    "price":200, //$
     },//Dwayne Johnson
     {"type":"Glasses 5",
     "data":[2.4372,1.2571,0.7567,1.8846],
     "color":"black",
-    "prescription":[0,10],
+    "prescriptionMin":0,
+    "prescriptionMax":10,
+    "weight":35,//grams
+    "frame":"square",
+    "price":300, //$
     },//Eminem
     {"type":"Glasses 6",
     "data":[2.3847,1.2567,0.7788,2.1247],
     "color":"blue",
-    "prescription":[0,7],
+    "prescriptionMin":2,
+    "prescriptionMax":7,
+    "weight":25,//grams
+    "frame":"square",
+    "price":350, //$
     },//Gordon Ramsey
     {"type":"Glasses 7",
     "data":[2.3088,1.2542,0.7389,2.0332],
     "color":"brown",
-    "prescription":[0,10],
+    "prescriptionMin":1,
+    "prescriptionMax":10,
+    "weight":30,//grams
+    "frame":"square",
+    "price":300, //$
     },//Justin Trudeau
     {"type":"Glasses 8",
     "data":[2.0897,1.2618,0.7698,1.9015],
     "color":"black",
-    "prescription":[0,9],
+    "prescriptionMin":0,
+    "prescriptionMax":9,
+    "weight":55,//grams
+    "frame":"oval",
+    "price":400, //$
     },//Christian Ronaldo
     {"type":"Glasses 9",
     "data":[2.3786,1.1987,0.7553,2.1600],
     "color":"grey",
-    "prescription":[0,4],
+    "prescriptionMin":1,
+    "prescriptionMax":7,
+    "weight":45,//grams
+    "frame":"triangle",
+    "price":250, //$
     },//Serena Williams
     {"type":"Glasses 10",
     "data":[2.1103,1.2603,0.7584,2.1184],
     "color":"red",
-    "prescription":[0,10],
+    "prescriptionMin":2,
+    "prescriptionMax":10,
+    "weight":45,//grams
+    "frame":"oval",
+    "price":450, //$
     },//Shakira
 ]
+
+let testRemove ={
+    "color":["red","brown"]
+}
+let testRequired = {
+    "frame":["oval","square"]
+}
+let testMinimum = {
+    "prescriptionMax":[8]
+}
+let testMaximum = {
+    "weight":[50],
+    "price":[400]
+}
+
+/*
+filter is a function to filter results
+*/
+function filter (glasssesData, remove=null, required=null, minimum=null, maximum=null){ //default is null = no filters
+    if(remove){
+        for(let key in remove){//remove from que
+            for(let item of remove[key]){
+                if(glasssesData[key] === item){
+                    return false
+                }
+            }           
+        }
+    }
+    if(required){
+        let pass = false
+        for(let key in required){//required in que
+            for(let item of required[key]){
+                if(glasssesData[key] === item){
+                    pass = true
+                }
+            }
+        }
+        if(!pass){
+            return false
+        }
+    }
+    if(minimum){
+        for(let key in minimum){//minimum value for que
+            for(let item of minimum[key]){
+                console.log(glasssesData[key])
+                if(glasssesData[key] <= item){
+                    return false
+                }
+            }         
+        }
+    }
+    if(maximum){
+        for(let key in maximum){//max value for que
+            for(let item of maximum[key]){
+                if(glasssesData[key] >= item){
+                    return false
+                }
+            }         
+        }
+    }
+    return true
+}
 /*
 merge is the call for the merge function in mergesort
 left and right are sorted arrays to be merged
@@ -126,26 +228,29 @@ glassesData is the general database data (entire thing)
 userData is the users personal fit data (or personal data)
 n is the size of return. Default is shown. If no n is input, n here will be set to default
 */
-function glassesDataReturn(glassesData, userData, n=10){
+function glassesDataReturn(glassesData, userData, dataRemove = null, dataRequired = null, dataMinimum = null, dataMaximum = null, n=10){
     let results = [];
     for(let i=0; i<glassesData.length; i++){
-        let result = glassesToUserDataCalc(glassesTestData[i].data, userData)
-        if(results.length<n){
-            results.push([result,glassesTestData[i].type]);
-        }else if(results.length===n){
-            let maxLocation = 0;
-            let max=glassesData[0];
-            for(let j=0; j<glassesData.length; j++){
-                if(max<glassesData[j]){
-                    maxLocation=j;
-                    max=glassesData[0];
+        if(filter(glassesTestData[i], dataRemove , dataRequired, dataMinimum, dataMaximum)){//filters inserted here, default is null. May need to destructure better
+            let result = glassesToUserDataCalc(glassesTestData[i].data, userData)
+            if(results.length<n){
+                results.push([result,glassesTestData[i].type]);
+            }else if(results.length===n){
+                let maxLocation = 0;
+                let max=glassesData[0];
+                for(let j=0; j<glassesData.length; j++){
+                    if(max<glassesData[j]){
+                        maxLocation=j;
+                        max=glassesData[0];
+                    }
                 }
-            }
-            if(result<max){
-                results[maxLocation]=[result,glassesTestData[i].type];
+                if(result<max){
+                    results[maxLocation]=[result,glassesTestData[i].type];
+                }
             }
         }
     }
+
     return results
 }
 /*
@@ -214,10 +319,10 @@ function calculateUserData(imageInformation){
     // console.log("The ratio of horizontal/vertical right eye dimensions is: ", rightEyeHorrizvsVertRatio)
 
     //unique user values calculated
-    console.log("The avg ratio of horizontal/vertical eye dimensions is: ", eyeRatioHorrizvsVertRatio)
-    console.log("The ratio of horizontal/vertical ear to ear vs between eyes to chin is: ", earsToFaceHorrizvsVertRatio)
-    console.log("The ratio of horizontal/horizontal cheek to cheek vs chin to chin is: ", cheekVsChinHorizRatio)
-    console.log("The ratio of horizontal/horizontal nose width vs height is: ", noseWidthvsHeightRatio)
+    //console.log("The avg ratio of horizontal/vertical eye dimensions is: ", eyeRatioHorrizvsVertRatio)
+    //console.log("The ratio of horizontal/vertical ear to ear vs between eyes to chin is: ", earsToFaceHorrizvsVertRatio)
+    //console.log("The ratio of horizontal/horizontal cheek to cheek vs chin to chin is: ", cheekVsChinHorizRatio)
+    //console.log("The ratio of horizontal/horizontal nose width vs height is: ", noseWidthvsHeightRatio)
     
     return userData=[eyeRatioHorrizvsVertRatio,earsToFaceHorrizvsVertRatio,cheekVsChinHorizRatio,noseWidthvsHeightRatio]
 }
@@ -252,12 +357,12 @@ async function facelandmark(req, res, next) {
     //Function to calculate unique user information
     let userData = calculateUserData(imageInformation)
     //Unranked glasses for merge (with top n picks, UNORDERED)
-    let rawResults = glassesDataReturn(glassesTestData,userData)
+    let rawResults = glassesDataReturn(glassesTestData,userData)//No filters right now, add later
     //Mergesort being called (with top n picks, ORDERED)
     let results = mergesort(rawResults)
 
-    console.log("This is the unordered list: ", rawResults)
-    console.log("This is the ordered list: ",results)
+    //console.log("This is the unordered list: ", rawResults)
+    //console.log("This is the ordered list: ",results)
     
     return {results, originalImageSize}
 }
@@ -290,7 +395,7 @@ async function facelandmarkURL(req, res, next) {
     //Function to calculate unique user information
     let userData = calculateUserData(imageInformation)
     //Unranked glasses for merge (with top n picks, UNORDERED)
-    let rawResults = glassesDataReturn(glassesTestData,userData)
+    let rawResults = glassesDataReturn(glassesTestData,userData)//No filters right now, add later
     //Mergesort being called (with top n picks, ORDERED)
     let results = mergesort(rawResults)
 
