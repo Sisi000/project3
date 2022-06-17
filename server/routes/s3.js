@@ -28,11 +28,10 @@ const s3 = new S3({
   secretAccessKey,
 });
 
-// const upload2 = multer({ storage: storage2 });
 const upload = multer({ dest: "uploads/" });
 
-// const storage = multer.memoryStorage();
-// const upload = multer({ storage: storage });
+const storage = multer.memoryStorage();
+const uploadScreenshot = multer({ storage: storage });
 
 const { Schema, model } = mongoose;
 
@@ -92,6 +91,45 @@ router.post("/upload", upload.single("image"), async (req, res, next) => {
 
   res.status("Successfully uploaded!");
 });
+
+router.post("/uploadwebcam", uploadScreenshot.single("image"), async (req, res, next) => {
+  const file2 = req.body.image
+  const matches = file2.replace(/^data:image\/(png);base64,/, "") ; 
+  let buff = Buffer.from(matches, 'base64');
+  
+  console.log('Base64 image', buff);
+
+  // resize and send to google vision
+  await sharp(buff)
+    .resize(900, 900, { withoutEnlargement: true })
+    .toBuffer()
+    .then(async (resized) => {
+      const buffer = resized;
+      const resultVision = await facelandmark(buffer);
+      // console.log("resultVision is", resultVision);
+      const resultMongoVision = await Vision.create({ result: resultVision });
+      console.log("VisionMongo is", resultMongoVision);
+      res.send(resultVision);
+    });
+
+  // resize and send to s3
+  // await sharp(file2.path)
+  //   .resize(900, 900, { withoutEnlargement: true })
+  //   .toFile(`resized/${file2Name}`)
+  //   .then(async (file) => {
+  //     const result = await uploadFile(file2);
+
+  //     // mongodb
+  //     const resultMongo = await Photo.create({ location: result.Location });
+  //     // console.log("resultMongo is", resultMongo);
+  //     await unlinkFile(file2.path);
+  //     await unlinkFile(`resized/${file2Name}`);
+  //     // console.log(file);
+  //   });
+
+  res.status("Successfully uploaded!");
+});
+
 
 // upload Url to vision and mongoDB
 router.post("/uploadurl", async (req, res, next) => {

@@ -3,6 +3,7 @@ import axios from "axios";
 import "./UploadS3.css";
 import imgphoto from "../../assets/photo.png";
 import UploadUrl from "../uploadUrl/UploadUrl";
+import WebcamCapture from "../Webcam/Webcam";
 
 function UploadS3() {
   const [file, setFile] = useState();
@@ -73,6 +74,7 @@ function UploadS3() {
         <div className="suggested-glasses" id="suggestedglasses">"Suggested glasses are " {resultData}</div>
       </form>
       <UploadUrl />
+      <WebcamCapture />
     </div>
   );
 }
