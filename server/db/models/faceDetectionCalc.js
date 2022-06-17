@@ -15,63 +15,53 @@ var config = {credentials:
 let glassesTestData=[
     {"type":"Glasses 1",
     "data":[2.4836,1.1581,0.7601,1.9322],
-    "information":{
-        "color":"blue",
-        "prescription":[0,8],}//min size = 0, max size 10
+    "color":"blue",
+    "prescription":[0,8],//min size = 0, max size 10
     },//Brad Pitt
     {"type":"Glasses 2",
     "data":[2.2740,1.2698,0.8955,2.2307],
-    "information":{
-        "color":"red",
-        "prescription":[0,5],}
+    "color":"red",
+    "prescription":[0,5],
     },//BTS
     {"type":"Glasses 3",
     "data":[2.4132,1.0822,0.8577,1.9868],
-    "information":{
-        "color":"brown",
-        "prescription":[0,7],}
+    "color":"brown",
+    "prescription":[0,7],
     },//Denzel Washington
     {"type":"Glasses 4",
     "data":[2.3881,1.1532,0.7524,2.0369],
-    "information":{
-        "color":"black",
-        "prescription":[0,10],}
+    "color":"black",
+    "prescription":[0,10],
     },//Dwayne Johnson
     {"type":"Glasses 5",
     "data":[2.4372,1.2571,0.7567,1.8846],
-    "information":{
-        "color":"black",
-        "prescription":[0,10],}
+    "color":"black",
+    "prescription":[0,10],
     },//Eminem
     {"type":"Glasses 6",
     "data":[2.3847,1.2567,0.7788,2.1247],
-    "information":{
-        "color":"blue",
-        "prescription":[0,7],}
+    "color":"blue",
+    "prescription":[0,7],
     },//Gordon Ramsey
     {"type":"Glasses 7",
     "data":[2.3088,1.2542,0.7389,2.0332],
-    "information":{
-        "color":"brown",
-        "prescription":[0,10],}
+    "color":"brown",
+    "prescription":[0,10],
     },//Justin Trudeau
     {"type":"Glasses 8",
     "data":[2.0897,1.2618,0.7698,1.9015],
-    "information":{
-        "color":"black",
-        "prescription":[0,9],}
+    "color":"black",
+    "prescription":[0,9],
     },//Christian Ronaldo
     {"type":"Glasses 9",
     "data":[2.3786,1.1987,0.7553,2.1600],
-    "information":{
-        "color":"grey",
-        "prescription":[0,4],}
+    "color":"grey",
+    "prescription":[0,4],
     },//Serena Williams
     {"type":"Glasses 10",
     "data":[2.1103,1.2603,0.7584,2.1184],
-    "information":{
-        "color":"red",
-        "prescription":[0,10],}
+    "color":"red",
+    "prescription":[0,10],
     },//Shakira
 ]
 /*
