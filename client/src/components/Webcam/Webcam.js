@@ -11,8 +11,7 @@ const videoConstraints = {
 };
 
 function WebcamCapture() {
-  const [file, setFile] = useState();
-  const [images, setImages] = useState([]);
+  const [file, setFile] = useState("");
   const [resultData, setResultData] = useState([]);
   const webcamRef = React.useRef(null);
 
@@ -26,7 +25,6 @@ function WebcamCapture() {
 
     console.log("Suggested glasses are", result.data.results);
     setResultData(result.data.results, ...resultData);
-
     return result.data.results;
   }
 
@@ -38,14 +36,14 @@ function WebcamCapture() {
   const submit = async (event) => {
     event.preventDefault();
     const result = await postImage({ image: file });
-    setImages([result.images, ...images]);
+    setFile(result.image);
   };
 
   return (
     <div className="webcam-container">
       <form className="forms3" onSubmit={submit}>
         <div className="webcam-img">
-          {images === "" ? (
+          {file === "" ? (
             <Webcam
               audio={false}
               height={400}
@@ -55,17 +53,17 @@ function WebcamCapture() {
               videoConstraints={videoConstraints}
             />
           ) : (
-            <img src={images} alt="" />
+            <img src={file} alt="" />
           )}
         </div>
         <div>
-          {images !== "" ? (
+          {file !== "" ? (
             <button
               onClick={(e) => {
                 e.preventDefault();
-                setImages("");
+                setFile("");
               }}
-              className="webcam-btn"
+              className="button-5"
             >
               Retake Image
             </button>
@@ -75,7 +73,7 @@ function WebcamCapture() {
                 e.preventDefault();
                 capture();
               }}
-              className="webcam-btn"
+              className="button-5"
             >
               Capture
             </button>
@@ -91,4 +89,5 @@ function WebcamCapture() {
     </div>
   );
 }
+
 export default WebcamCapture;

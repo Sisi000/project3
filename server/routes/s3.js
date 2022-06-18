@@ -13,7 +13,7 @@ const sharp = require("sharp");
 const S3 = require("aws-sdk/clients/s3");
 const fs = require("fs");
 const util = require("util");
-const unlinkFile = util.promisify(fs.unlink);
+// const unlinkFile = util.promisify(fs.unlink);
 
 const bucketName = process.env.AWS_BUCKET;
 const region = process.env.AWS_BUCKET_REGION;
@@ -26,20 +26,17 @@ const s3 = new S3({
   secretAccessKey,
 });
 
-const upload = multer({ dest: "uploads/" });
 
 const storage = multer.memoryStorage();
-const uploadScreenshot = multer({ storage: storage });
+const upload = multer({ storage: storage });
 
 
 // upload image to vision, S3 and MongoDB
 router.post("/upload", upload.single("image"), async (req, res, next) => {
-  const file2 = req.file;
-  const file2Name = req.file.filename + ".jpg";
-  console.log("file is", file2);
-
+  const file = req.file;
+ 
   // resize and send to google vision
-  await sharp(file2.path)
+  await sharp(file.buffer)
     .resize(900, 900, { withoutEnlargement: true })
     .toBuffer()
     .then(async (resized) => {
@@ -47,20 +44,16 @@ router.post("/upload", upload.single("image"), async (req, res, next) => {
       const resultVision = await facelandmark(buffer);
       res.send(resultVision);
     });
-
-  await unlinkFile(file2.path);
-  await unlinkFile(`resized/${file2Name}`);
-
   res.status("Successfully uploaded!");
 });
 
 // upload image from webcam to vision
 router.post(
   "/uploadwebcam",
-  uploadScreenshot.single("image"),
+  upload.single("image"),
   async (req, res, next) => {
-    const file2 = req.body.image;
-    const matches = file2.replace(/^data:image\/(png);base64,/, "");
+    const file = req.body.image;
+    const matches = file.replace(/^data:image\/(png);base64,/, "");
     const buff = Buffer.from(matches, "base64");
     const resultVision = await facelandmark(buff);
     res.send(resultVision);
