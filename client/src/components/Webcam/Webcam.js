@@ -11,10 +11,10 @@ const videoConstraints = {
 };
 
 function WebcamCapture() {
+  const [file, setFile] = useState();
   const [images, setImages] = useState([]);
   const [resultData, setResultData] = useState([]);
   const webcamRef = React.useRef(null);
-
 
   async function postImage({ image }) {
     const formData = new FormData();
@@ -31,17 +31,14 @@ function WebcamCapture() {
   }
 
   const capture = React.useCallback(() => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    // console.log(imageSrc);
-    setImages(imageSrc);
+    const file = webcamRef.current.getScreenshot();
+    setFile(file);
   });
 
   const submit = async (event) => {
     event.preventDefault();
-    const result = await postImage({ image: images });
+    const result = await postImage({ image: file });
     setImages([result.images, ...images]);
-    // setFile(null);
-    // document.getElementById("selectedimage").value = "";
   };
 
   return (
@@ -87,7 +84,9 @@ function WebcamCapture() {
         <button className="button-4" type="submit">
           Submit
         </button>
-        <div className="suggested-glasses" id="suggestedglasses">"Suggested glasses are " {resultData}</div>
+        <div className="suggested-glasses" id="suggestedglasses">
+          "Suggested glasses are " {resultData}
+        </div>
       </form>
     </div>
   );
