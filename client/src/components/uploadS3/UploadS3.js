@@ -35,6 +35,7 @@ function UploadS3() {
   const fileSelected = (event) => {
     const file = event.target.files[0];
     setFile(file);
+    setResultData("");
     document.getElementById("suggestedglasses").value = "";
   };
 
@@ -62,12 +63,11 @@ function UploadS3() {
             </div>
           )}
         </div>
-        {/* <button className="button-4" type="submit" onClick={showAlert}> */}
-        <button className="button-4" type="submit">
+         <button className="button-4" type="submit">
           Submit
         </button>
         <div className="suggested-glasses" id="suggestedglasses">
-          "Suggested glasses are " {resultData}
+          Suggested glasses are<br/> {resultData}
         </div>
       </form>
       <UploadUrl />

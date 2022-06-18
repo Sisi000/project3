@@ -62,6 +62,7 @@ function WebcamCapture() {
               onClick={(e) => {
                 e.preventDefault();
                 setFile("");
+                setResultData("");
               }}
               className="button-5"
             >
@@ -83,7 +84,8 @@ function WebcamCapture() {
           Submit
         </button>
         <div className="suggested-glasses" id="suggestedglasses">
-          "Suggested glasses are " {resultData}
+          Suggested glasses are
+          <br /> {resultData}
         </div>
       </form>
     </div>
