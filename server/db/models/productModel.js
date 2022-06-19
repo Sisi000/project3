@@ -18,6 +18,7 @@ const productSchema = new mongoose.Schema(
     image: { type: String, required: true},
     imageS3Key: { type: String, required: true},
     images: [String],
+    additionalS3: [String],
     brand: { type: String, required: true },
     category: { type: String, required: true },
     lensWidth: { type: Number, required: true },

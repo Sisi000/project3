@@ -29,6 +29,7 @@ const s3 = new S3({
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+const uploadProduct = multer({ dest: "uploads/" });
 
 
 // upload image to vision, S3 and MongoDB
@@ -71,9 +72,10 @@ router.post("/uploadurl", async (req, res, next) => {
 // upload product image to S3
 router.post(
   "/uploadproductimage",
-  upload.single("image"),
+  uploadProduct.single("image"),
   async (req, res, next) => {
     const file2 = req.file;
+    console.log("file2 is", file2);
     const file2Name = req.file.filename + ".jpg";
     const fileToDelete = req.body.oldImageS3Key;
 
@@ -94,5 +96,36 @@ router.post(
       });
   }
 );
+
+router.post(
+  "/uploadadditionalimage",
+  uploadProduct.single("image"),
+  async (req, res, next) => {
+    const file2 = req.file;
+    console.log("file2 is", file2);
+    const file2Name = req.file.filename + ".jpg";
+    const fileToDelete = req.body.oldImageS3KeyA;
+    console.log("fileToDelete is", fileToDelete);
+   
+    // resize and send to s3
+    await sharp(file2.path)
+      .resize(900, 900, { withoutEnlargement: true })
+      .toFile(`resized/${file2Name}`)
+      .then(async (file) => {
+        const result = await uploadFile(file2);
+        console.log("result is", result.Location, result.Key);
+      
+        // await unlinkFile(file2.path);
+        // await unlinkFile(`resized/${file2Name}`);
+        res.send({ images: result.Location, additionalS3: result.Key });
+      })
+      
+      // if (fileToDelete !== "") {
+      //   const deleteS3 = await s3
+      //   .deleteObject({ Key: fileToDelete, Bucket: bucketName })
+      //   .promise();
+      // }
+     
+  });
 
 module.exports = router;

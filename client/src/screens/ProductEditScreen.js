@@ -11,6 +11,7 @@ import { Helmet } from "react-helmet-async";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import Button from "react-bootstrap/Button";
+import "./Screens.css";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -60,6 +61,7 @@ export default function ProductEditScreen() {
   const [image, setImage] = useState("");
   const [imageS3Key, setImageS3Key] = useState("");
   const [images, setImages] = useState([]);
+  const [additionalS3, setAdditionalS3] = useState([]);
   const [category, setCategory] = useState("");
   const [countInStock, setCountInStock] = useState("");
   const [brand, setBrand] = useState("");
@@ -88,6 +90,7 @@ export default function ProductEditScreen() {
         setImage(data.image);
         setImageS3Key(data.imageS3Key);
         setImages(data.images);
+        setAdditionalS3(data.additionalS3);
         setCategory(data.category);
         setCountInStock(data.countInStock);
         setBrand(data.brand);
@@ -129,6 +132,7 @@ export default function ProductEditScreen() {
           image,
           imageS3Key,
           images,
+          additionalS3,
           category,
           brand,
           lensWidth,
@@ -177,7 +181,7 @@ export default function ProductEditScreen() {
       dispatch({ type: "UPLOAD_SUCCESS" });
 
       if (forImages) {
-        setImages([...images, data.image]);
+        setImages([...image, data.image]);
         setImageS3Key([...imageS3Key, data.imageS3Key]);
       } else {
         setImage(data.image);
@@ -189,11 +193,46 @@ export default function ProductEditScreen() {
       dispatch({ type: "UPLOAD_FAIL", payload: getError(err) });
     }
   };
+
+  const uploadFileHandlerAdditional = async (e, forImages) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData()
+    bodyFormData.append("image", file);
+    console.log("file je", file);
+    bodyFormData.append("oldImageS3KeyA", additionalS3);
+    console.log("Additional oldImageS3KeyA je", additionalS3);
+    try {
+      dispatch({ type: "UPLOAD_REQUEST" });
+      const { data } = await axios.post("/uploadadditionalimage", bodyFormData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+
+      dispatch({ type: "UPLOAD_SUCCESS" });
+
+      if (forImages) {
+        setImages([...images, data.images]);
+        setAdditionalS3([...additionalS3, data.additionalS3]);
+      } else {
+        setImages(data.images);
+        setAdditionalS3(data.additionalS3);
+      }
+      toast.success("Image uploaded successfully. click Update to apply it");
+    } catch (err) {
+      toast.error(getError(err));
+      dispatch({ type: "UPLOAD_FAIL", payload: getError(err) });
+    }
+  };
+
   const deleteFileHandler = async (fileName, f) => {
     console.log(fileName, f);
     console.log(images);
     console.log(images.filter((x) => x !== fileName));
+    console.log(additionalS3.filter((x) => x !== fileName));
     setImages(images.filter((x) => x !== fileName));
+    setAdditionalS3(additionalS3.filter((x) => x !== fileName));
     toast.success("Image removed successfully. click Update to apply it");
   };
   return (
@@ -241,7 +280,7 @@ export default function ProductEditScreen() {
               required
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="imageS3Key">
+          <Form.Group className="mb-33" controlId="imageS3Key" >
             <Form.Label>Image S3 Key</Form.Label>
             <Form.Control
               value={imageS3Key}
@@ -269,11 +308,19 @@ export default function ProductEditScreen() {
               ))}
             </ListGroup>
           </Form.Group>
+          <Form.Group className="mb-3" controlId="additionalS3">
+            <Form.Label>Additional Image S3 Key</Form.Label>
+            <Form.Control
+              value={additionalS3}
+              onChange={(e) => setAdditionalS3(e.target.value)}
+              required
+            />
+             </Form.Group>
           <Form.Group className="mb-3" controlId="additionalImageFile">
             <Form.Label>Upload Aditional Image</Form.Label>
             <Form.Control
               type="file"
-              onChange={(e) => uploadFileHandler(e, true)}
+              onChange={(e) => uploadFileHandlerAdditional(e, true)}
             />
             {loadingUpload && <LoadingBox></LoadingBox>}
           </Form.Group>
