@@ -7,6 +7,8 @@ import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import Slider from "../components/Home/Slider"
+import Card from "../components/Home/Card"
+import TryOn from '../components/Home/tryOn';
 // import data from '../data';
 
 const reducer = (state, action) => {
@@ -45,9 +47,15 @@ function HomeScreen() {
   }, []);
   return (
     <>
-      <Container fluid style={{ padding:"0" }}>
+      <Container fluid style={{ padding: "0" }}>
         <div>
           < Slider />
+        </div>
+        <div>
+          <Card />
+        </div>
+        <div>
+          <TryOn />
         </div>
         <Container className="mt-3">
           <div>
