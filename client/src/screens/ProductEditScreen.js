@@ -196,19 +196,23 @@ export default function ProductEditScreen() {
 
   const uploadFileHandlerAdditional = async (e, forImages) => {
     const file = e.target.files[0];
-    const bodyFormData = new FormData()
+    const bodyFormData = new FormData();
     bodyFormData.append("image", file);
     console.log("file je", file);
     bodyFormData.append("oldImageS3KeyA", additionalS3);
     console.log("Additional oldImageS3KeyA je", additionalS3);
     try {
       dispatch({ type: "UPLOAD_REQUEST" });
-      const { data } = await axios.post("/uploadadditionalimage", bodyFormData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          authorization: `Bearer ${userInfo.token}`,
-        },
-      });
+      const { data } = await axios.post(
+        "/uploadadditionalimage",
+        bodyFormData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
 
       dispatch({ type: "UPLOAD_SUCCESS" });
 
@@ -276,18 +280,19 @@ export default function ProductEditScreen() {
             <Form.Label>Image File</Form.Label>
             <Form.Control
               value={image}
+              disabled={true}
               onChange={(e) => setImage(e.target.value)}
               required
             />
           </Form.Group>
-          <Form.Group className="mb-33" controlId="imageS3Key" >
-            <Form.Label>Image S3 Key</Form.Label>
-            <Form.Control
+          <div controlId="imageS3Key">
+            <div
               value={imageS3Key}
+              disabled={true}
               onChange={(e) => setImageS3Key(e.target.value)}
               required
             />
-          </Form.Group>
+          </div>
           <Form.Group className="mb-3" controlId="imageFile">
             <Form.Label>Upload Image</Form.Label>
             <Form.Control type="file" onChange={uploadFileHandler} />
@@ -308,14 +313,12 @@ export default function ProductEditScreen() {
               ))}
             </ListGroup>
           </Form.Group>
-          <Form.Group className="mb-3" controlId="additionalS3">
-            <Form.Label>Additional Image S3 Key</Form.Label>
-            <Form.Control
+          <div className="mb-3" controlId="additionalS3">
+            <div
               value={additionalS3}
               onChange={(e) => setAdditionalS3(e.target.value)}
-              required
             />
-             </Form.Group>
+          </div>
           <Form.Group className="mb-3" controlId="additionalImageFile">
             <Form.Label>Upload Aditional Image</Form.Label>
             <Form.Control
