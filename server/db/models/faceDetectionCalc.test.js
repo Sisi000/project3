@@ -18,8 +18,6 @@ test("Tests for image submit to Google API", async () => {
 })
 
 test("Tests for URL submit to Google API", async () => {
-    let returnImageRank1 = 'Glasses 7';
-    let returnImageRank2 = 'Glasses 4';
     //console.log("api keys: ", process.env.GOOGLE_API_EMAIL)
     //console.log("api keys: ", process.env.GOOGLE_API_KEY)
 
