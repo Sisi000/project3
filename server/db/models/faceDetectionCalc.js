@@ -149,7 +149,7 @@ function filter (glasssesData, remove=null, required=null, minimum=null, maximum
         for(let key in minimum){//minimum value for que
             for(let item of minimum[key]){
                 console.log(glasssesData[key])
-                if(glasssesData[key] <= item){
+                if(glasssesData[key] < item){
                     return false
                 }
             }         
@@ -158,7 +158,7 @@ function filter (glasssesData, remove=null, required=null, minimum=null, maximum
     if(maximum){
         for(let key in maximum){//max value for que
             for(let item of maximum[key]){
-                if(glasssesData[key] >= item){
+                if(glasssesData[key] > item){
                     return false
                 }
             }         
@@ -213,7 +213,7 @@ glassesData is the general database data (entire thing)
 userData is the users personal fit data (or personal data)
 */
 function glassesToUserDataCalc (glassesData, userData){//calculated euclidian distance from user data to glasses data
-    if(glassesData.length != userData.length){
+    if(glassesData.length !== userData.length){
         return res.json(`problem with the user calculation`); 
     }
     let sum = 0;
@@ -231,10 +231,10 @@ n is the size of return. Default is shown. If no n is input, n here will be set 
 function glassesDataReturn(glassesData, userData, dataRemove = null, dataRequired = null, dataMinimum = null, dataMaximum = null, n=10){
     let results = [];
     for(let i=0; i<glassesData.length; i++){
-        if(filter(glassesTestData[i], dataRemove , dataRequired, dataMinimum, dataMaximum)){//filters inserted here, default is null. May need to destructure better
-            let result = glassesToUserDataCalc(glassesTestData[i].data, userData)
+        if(filter(glassesData[i], dataRemove , dataRequired, dataMinimum, dataMaximum)){//filters inserted here, default is null. May need to destructure better
+            let result = glassesToUserDataCalc(glassesData[i].data, userData)
             if(results.length<n){
-                results.push([result,glassesTestData[i].type]);
+                results.push([result,glassesData[i].type]);
             }else if(results.length===n){
                 let maxLocation = 0;
                 let max=glassesData[0];
@@ -245,7 +245,7 @@ function glassesDataReturn(glassesData, userData, dataRemove = null, dataRequire
                     }
                 }
                 if(result<max){
-                    results[maxLocation]=[result,glassesTestData[i].type];
+                    results[maxLocation]=[result,glassesData[i].type];
                 }
             }
         }
@@ -363,8 +363,7 @@ async function facelandmark(req, res, next) {
 
     //console.log("This is the unordered list: ", rawResults)
     //console.log("This is the ordered list: ",results)
-    
-    return {results, originalImageSize}
+    return [results, originalImageSize]
 }
 
 async function facelandmarkURL(req, res, next) {
@@ -399,13 +398,19 @@ async function facelandmarkURL(req, res, next) {
     //Mergesort being called (with top n picks, ORDERED)
     let results = mergesort(rawResults)
 
-    console.log("This is the unordered list: ", rawResults)
-    console.log("This is the ordered list: ",results)
+    //console.log("This is the unordered list: ", rawResults)
+    //console.log("This is the ordered list: ",results)
     
-    return {results}
+    return [results]
 }
 
 module.exports = {
     facelandmark,
-    facelandmarkURL
+    facelandmarkURL,
+    filter,
+    merge,
+    mergesort,
+    euclideandistance,
+    glassesToUserDataCalc,
+    glassesDataReturn
 }
