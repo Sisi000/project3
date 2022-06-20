@@ -59,6 +59,7 @@ productRouter.put(
       product.image = req.body.image;
       product.imageS3Key = req.body.imageS3Key;
       product.images = req.body.images;
+      product.additionalS3 = req.body.additionalS3;
       product.category = req.body.category;
       product.brand = req.body.brand;
       product.lensWidth = req.body.lensWidth;

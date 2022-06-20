@@ -187,10 +187,10 @@ function App() {
               <Route path="/signup" element={<SignupScreen />} />
               <Route
                 path="/profile"
-                element={
+                element={<Container className="mt-3">
                   <ProtectedRoute>
                     <ProfileScreen />
-                  </ProtectedRoute>
+                  </ProtectedRoute></Container>
                 }
               />
               <Route
@@ -201,75 +201,75 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route path="/placeorder" element={<PlaceOrderScreen />} />
+              <Route path="/placeorder" element={<Container className="mt-3"><PlaceOrderScreen /></Container>} />
               <Route
                 path="/order/:id"
-                element={
+                element={<Container className="mt-3">
                   <ProtectedRoute>
                     <OrderScreen />
-                  </ProtectedRoute>
+                  </ProtectedRoute></Container>
                 }
               ></Route>
               <Route
                 path="/orderhistory"
-                element={
+                element={<Container className="mt-3">
                   <ProtectedRoute>
                     <OrderHistoryScreen />
-                  </ProtectedRoute>
+                  </ProtectedRoute></Container>
                 }
               ></Route>
               <Route
                 path="/shipping"
-                element={<ShippingAddressScreen />}
+                element={<Container className="mt-3"><ShippingAddressScreen /></Container>}
               ></Route>
-              <Route path="/payment" element={<PaymentMethodScreen />}></Route>
+              <Route path="/payment" element={<Container className="mt-3"><PaymentMethodScreen /></Container>}></Route>
               {/* Admin Routes */}
               <Route
                 path="/admin/dashboard"
-                element={
+                element={<Container className="mt-3">
                   <AdminRoute>
                     <DashboardScreen />
-                  </AdminRoute>
+                  </AdminRoute></Container>
                 }
               ></Route>
               <Route
                 path="/admin/orders"
-                element={
+                element={<Container className="mt-3">
                   <AdminRoute>
                     <OrderListScreen />
-                  </AdminRoute>
+                  </AdminRoute></Container>
                 }
               ></Route>
               <Route
                 path="/admin/users"
-                element={
+                element={<Container className="mt-3">
                   <AdminRoute>
                     <UserListScreen />
-                  </AdminRoute>
+                  </AdminRoute></Container>
                 }
               ></Route>
               <Route
                 path="/admin/products"
-                element={
+                element={<Container className="mt-3">
                   <AdminRoute>
                     <ProductListScreen />
-                  </AdminRoute>
+                  </AdminRoute></Container>
                 }
               ></Route>
               <Route
                 path="/admin/product/:id"
-                element={
+                element={<Container className="mt-3">
                   <AdminRoute>
                     <ProductEditScreen />
-                  </AdminRoute>
+                  </AdminRoute></Container>
                 }
               ></Route>
               <Route
                 path="/admin/user/:id"
-                element={
+                element={<Container className="mt-3">
                   <AdminRoute>
                     <UserEditScreen />
-                  </AdminRoute>
+                  </AdminRoute></Container>
                 }
               ></Route>
          

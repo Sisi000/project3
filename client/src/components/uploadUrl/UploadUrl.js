@@ -29,11 +29,10 @@ class UploadUrl extends Component {
     event.preventDefault();
     const { URL } = this.state;
     await axios.post("/uploadurl", { URL }).then((res) => {
-      console.log(res);
-      console.log(res.data);
-      // window.location = "/retrieve" //This line of code will redirect you once the submission is succeed
-      alert("Suggested glasses are " + JSON.stringify(res.data.glassesType));
-      console.log("Suggested glasses are", res.data);
+         // window.location = "/retrieve" //This line of code will redirect you once the submission is succeed
+      // alert("Suggested glasses are " + JSON.stringify(res.data.results));
+      alert("Suggested glasses are " + res.data.results);
+      // console.log("Suggested glasses are", res.data.results);
       this.setState({
         URL: "",
       });
