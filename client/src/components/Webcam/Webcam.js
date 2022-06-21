@@ -23,9 +23,9 @@ function WebcamCapture() {
       headers: { "Content-Type": "multipart/form-data" },
     });
 
-    console.log("Suggested glasses are", result.data.results);
-    setResultData(result.data.results, ...resultData);
-    return result.data.results;
+    console.log("Suggested glasses are", result.data[0]);
+    setResultData([result.data, ...resultData]);
+    return result.data;
   }
 
   const capture = React.useCallback(() => {

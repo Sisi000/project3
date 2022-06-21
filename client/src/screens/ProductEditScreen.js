@@ -299,7 +299,7 @@ export default function ProductEditScreen() {
             {loadingUpload && <LoadingBox></LoadingBox>}
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="additionalImage">
+          <Form.Group className="mb-3" controlId="images">
             <Form.Label>Additional Images</Form.Label>
             {images.length === 0 && <MessageBox>No image</MessageBox>}
             <ListGroup variant="flush">
@@ -320,7 +320,7 @@ export default function ProductEditScreen() {
             />
           </div>
           <Form.Group className="mb-3" controlId="additionalImageFile">
-            <Form.Label>Upload Aditional Image</Form.Label>
+            <Form.Label>Upload Additional Image</Form.Label>
             <Form.Control
               type="file"
               onChange={(e) => uploadFileHandlerAdditional(e, true)}
@@ -425,7 +425,7 @@ export default function ProductEditScreen() {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="prescriptionMin">
-            <Form.Label>prescriptionMin</Form.Label>
+            <Form.Label>Prescription Min</Form.Label>
             <Form.Control
               value={prescriptionMin}
               onChange={(e) => setPrescriptionMin(e.target.value)}

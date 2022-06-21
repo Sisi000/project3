@@ -64,7 +64,7 @@ router.post(
     const products = await Product.find();
 
     const resultVision = await facelandmark(buff, products);
-
+console.log("resultvision is", resultVision);
     res.send(resultVision);
     res.status("Successfully uploaded!");
   }
@@ -77,7 +77,7 @@ router.post("/uploadurl", async (req, res, next) => {
   const products = await Product.find();
 
   const resultVision = await facelandmarkURL(urlBody,products);
-
+console.log("resultvision is", resultVision);
   res.send(resultVision);
   
 });

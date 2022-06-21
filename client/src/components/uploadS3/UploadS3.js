@@ -18,10 +18,10 @@ function UploadS3() {
       headers: { "Content-Type": "multipart/form-data" },
     });
 
-    console.log("Suggested glasses are", result.data.results);
-    setResultData(result.data.results, ...resultData);
+    console.log("Suggested glasses are", result.data[0]);
+    setResultData([result.data, ...resultData]);
 
-    return result.data.results;
+    return result.data;
   }
 
   const submit = async (event) => {

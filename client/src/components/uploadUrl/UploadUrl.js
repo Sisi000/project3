@@ -31,7 +31,7 @@ class UploadUrl extends Component {
     await axios.post("/uploadurl", { URL }).then((res) => {
          // window.location = "/retrieve" //This line of code will redirect you once the submission is succeed
       // alert("Suggested glasses are " + JSON.stringify(res.data.results));
-      alert("Suggested glasses are " + res.data.results);
+      alert("Suggested glasses are " + res.data);
       // console.log("Suggested glasses are", res.data.results);
       this.setState({
         URL: "",
