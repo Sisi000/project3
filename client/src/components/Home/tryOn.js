@@ -2,23 +2,28 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Card } from "react-bootstrap";
 import Images from "../../assets/tryon.jpg"
-
+import Images2 from "../../assets/tryon2.jpg"
 function TryOn() {
   return (
-    <Container fluid>
+    <Container fluid style={{ padding: "0" }} className="pb-5">
+      
 
-      <Card className="text-bold px-0">
-        <Card.Img src={Images} alt="Card image" />
+      <Card>
+     
+        <Card.Img src={Images2} alt="Card image" />
         <Card.ImgOverlay>
-          <Card.Body className='text-center'>
-            <Card.Title className='bold'>VIRTUAL TRY-ON</Card.Title>
-            <Card.Text className="bg-info">We have a huge range of products which are available to virtually try on from the comfort of your own home.
-              Simply select one of the amazing products found in these Virtual Try On collections, click the virtual try on
-              button and enable your camera. Finding the perfect frame has never been so easy!
-            </Card.Text>
+          <Card.Body className='position-absolute bottom-0 end-10 mx-5 mb-5 pb-5 px-5'>
+            <a className="btn btn-warning btn-lg mx-5 mb-5 px-5" href="/upload" role="button"><h1>VIRTUAL TRY-ON</h1></a>
+          </Card.Body>
+        </Card.ImgOverlay>
+      </Card>
 
-            <a className="btn btn-primary" href="/upload" role="button">TRY ON NOW</a>
-
+      <Card>
+        <Card.Img src={Images} alt="Card image" />
+        <Card.ImgOverlay >
+          <Card.Body className='position-absolute bottom-0 end-0 mx-5 mb-5 pb-5 px-5'>
+           
+            <a className="btn btn-lg btn-primary mx-5 mb-5 px-5" href="/upload" role="button"><h1>VIRTUAL TRY-ON</h1></a>
           </Card.Body>
         </Card.ImgOverlay>
       </Card>
