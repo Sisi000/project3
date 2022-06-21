@@ -13,6 +13,7 @@ const sharp = require("sharp");
 const S3 = require("aws-sdk/clients/s3");
 const fs = require("fs");
 const util = require("util");
+const Product = require("../db/models/productModel.js");
 // const unlinkFile = util.promisify(fs.unlink);
 
 const bucketName = process.env.AWS_BUCKET;
@@ -42,7 +43,10 @@ router.post("/upload", upload.single("image"), async (req, res, next) => {
     .toBuffer()
     .then(async (resized) => {
       const buffer = resized;
-      const resultVision = await facelandmark(buffer);
+
+      const products = await Product.find();
+
+      const resultVision = await facelandmark(buffer, products);
       res.send(resultVision);
     });
   res.status("Successfully uploaded!");
@@ -56,7 +60,10 @@ router.post(
     const file = req.body.image;
     const matches = file.replace(/^data:image\/(png);base64,/, "");
     const buff = Buffer.from(matches, "base64");
-    const resultVision = await facelandmark(buff);
+
+    const products = await Product.find();
+
+    const resultVision = await facelandmark(buff, products);
     res.send(resultVision);
     res.status("Successfully uploaded!");
   }
@@ -64,9 +71,14 @@ router.post(
 
 // upload Url to vision
 router.post("/uploadurl", async (req, res, next) => {
-  const urlBody = req.body.URL;
-  const resultVision = await facelandmarkURL(urlBody);
+  //const urlBody = req.body.URL;
+  const urlBody = "https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg?w=1575"
+  
+  const products = await Product.find();
+
+  const resultVision = await facelandmarkURL(urlBody,products);
   res.send(resultVision);
+  
 });
 
 // upload product image to S3

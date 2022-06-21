@@ -15,7 +15,7 @@ var config = {credentials:
         private_key:process.env.GOOGLE_API_KEY,
     }
 };
-
+/*
 let glassesTestData=[
     {"type":"Glasses 1",
     "data":[2.4836,1.1581,0.7601,1.9322],
@@ -122,6 +122,7 @@ let testMaximum = {
     "weight":[50],
     "price":[400]
 }
+*/
 
 /*
 filter is a function to filter results
@@ -235,11 +236,12 @@ n is the size of return. Default is shown. If no n is input, n here will be set 
 function glassesDataReturn(glassesData, userData, dataRemove = null, dataRequired = null, dataMinimum = null, dataMaximum = null, n=3){
     let results = [];
     for(let i=0; i<glassesData.length; i++){
-        let dataArray=[glassesData[i].eyeRatio,glassesData[i].earFaceRatio,glassesData[i].cheekChinRatio,glassesData[i].noseRatio] //fitting user data to [a,b,c,d] format
+        let dataArray=[glassesData[i].eyeRatio, glassesData[i].earFaceRatio, glassesData[i].cheekChinRatio, glassesData[i].noseRatio] //fitting user data to [a,b,c,d] format
+        //console.log(dataArray)
         if(filter(dataArray, dataRemove , dataRequired, dataMinimum, dataMaximum)){//filters inserted here, default is null. May need to destructure better
             let result = glassesToUserDataCalc(dataArray, userData)
             if(results.length<n){//if array is less than return requirements, push in
-                results.push([result,glassesData[i].name]);
+                results.push([result,glassesData[i]._id]);
             }else{//if array is == return requirements, we need to take out the largest one and replace with new value (if less than max)
                 let maxLocation = 0;
                 let max=results[0][0];
@@ -254,7 +256,7 @@ function glassesDataReturn(glassesData, userData, dataRemove = null, dataRequire
                     }
                 }
                 if(result<max){
-                    results[maxLocation]=[result,glassesData[i].name];
+                    results[maxLocation]=[result,glassesData[i]._id];
                     //console.log("Fixed :",results)
                 }
             }
@@ -372,14 +374,15 @@ async function facelandmark(imageFile, dataBaseProducts, n=3) {
     let results = mergesort(rawResults)
 
     //console.log("This is the unordered list: ", rawResults)
-    //console.log("This is the ordered list: ",results)
+    console.log("This is the ordered list: ",results)
     return [results, originalImageSize]
 }
 
 async function facelandmarkURL(url, dataBaseProducts, n=3) {
     //Image URL for google - Requires body to have a key value pair URL:<URL>
     let imageURL = url
-    
+    //console.log("Database: ",dataBaseProducts)
+    //console.log("cheekChin: ",dataBaseProducts[0].earFace)
     //Image original size for google - Checked on front end prior to submit - Requires body to have a key value pair originalImageSize:<originalImageSize> 
     //let originalImageSize = req.body.originalImageSize;
 
@@ -410,7 +413,7 @@ async function facelandmarkURL(url, dataBaseProducts, n=3) {
     let results = mergesort(rawResults)
 
     //console.log("This is the unordered list: ", rawResults)
-    //console.log("This is the ordered list: ",results)
+    console.log("This is the ordered list: ",results)
     
     return [results]
 }

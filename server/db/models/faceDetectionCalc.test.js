@@ -13,8 +13,8 @@ test("Tests for image submit to Google API", async () => {
     expect(facelandmarkResult[1].height).toEqual(returnImageSize.height)
     expect(facelandmarkResult[1].width).toEqual(returnImageSize.width)
     expect(facelandmarkResult[1].name).toEqual(returnImageSize.name)
-    expect(facelandmarkResult[0][0][1]).toEqual(dataBaseProducts[3].name)
-    expect(facelandmarkResult[0][1][1]).toEqual(dataBaseProducts[5].name)
+    expect(facelandmarkResult[0][0][1]).toEqual(dataBaseProducts[3]._id)
+    expect(facelandmarkResult[0][1][1]).toEqual(dataBaseProducts[5]._id)
 })
 
 test("Tests for URL submit to Google API", async () => {
@@ -97,7 +97,7 @@ test("Used for testing glassesDataReturn for unranked list return", () => {
     let userData1 = [2,1,1,2];
 
     let testData1 = [
-        {"name":"Glasses 8",
+        {"_id":"Glasses 8",
         //"data":[2,1,1,2],
         "eyeRatio":2,
         "earFaceRatio":1,
@@ -110,7 +110,7 @@ test("Used for testing glassesDataReturn for unranked list return", () => {
         "frame":"oval",
         "price":400, //$
         },//Christian Ronaldo
-        {"name":"Glasses 9",
+        {"_id":"Glasses 9",
         //"data":[4,2,2,4],
         "eyeRatio":4,
         "earFaceRatio":2,
@@ -123,7 +123,7 @@ test("Used for testing glassesDataReturn for unranked list return", () => {
         "frame":"triangle",
         "price":250, //$
         },//Serena Williams
-        {"name":"Glasses 10",
+        {"_id":"Glasses 10",
         //"data":[3,1,1,2],
         "eyeRatio":3,
         "earFaceRatio":1,
@@ -141,16 +141,16 @@ test("Used for testing glassesDataReturn for unranked list return", () => {
     let testResult1 = glassesDataReturn(testData1,userData1)
     //console.log(testResult1)
     expect(testResult1).toBeDefined()
-    expect(testResult1[0][1]).toEqual(testData1[0].name)
-    expect(testResult1[1][1]).toEqual(testData1[1].name)
-    expect(testResult1[2][1]).toEqual(testData1[2].name)
+    expect(testResult1[0][1]).toEqual(testData1[0]._id)
+    expect(testResult1[1][1]).toEqual(testData1[1]._id)
+    expect(testResult1[2][1]).toEqual(testData1[2]._id)
     expect(testResult1[0][0]).toEqual(0)
     expect(testResult1[2][0]).toEqual(1)
 })
 
 test("Used for testing filter", () => {
     let glassesTestData1=[
-        {"type":"Glasses 1",
+        {"_id":"Glasses 1",
         //"data":[2.4836,1.1581,0.7601,1.9322],
         "eyeRatio":2.4836,
         "earFaceRatio":1.1581,
@@ -163,7 +163,7 @@ test("Used for testing filter", () => {
         "frame":"square",
         "price":450, //$
         },//Brad Pitt
-        {"type":"Glasses 2",
+        {"_id":"Glasses 2",
         //"data":[2.2740,1.2698,0.8955,2.2307],
         "eyeRatio":2.2740,
         "earFaceRatio":1.2698,
@@ -176,7 +176,7 @@ test("Used for testing filter", () => {
         "frame":"circle",
         "price":300, //$
         },//BTS
-        {"type":"Glasses 3",
+        {"_id":"Glasses 3",
         //"data":[2.4132,1.0822,0.8577,1.9868],
         "eyeRatio":2.4132,
         "earFaceRatio":1.0822,
@@ -189,7 +189,7 @@ test("Used for testing filter", () => {
         "frame":"square",
         "price":250, //$
         },//Denzel Washington
-        {"type":"Glasses 4",
+        {"_id":"Glasses 4",
         //"data":[2.3881,1.1532,0.7524,2.0369],
         "eyeRatio":2.3881,
         "earFaceRatio":1.1532,
@@ -202,7 +202,7 @@ test("Used for testing filter", () => {
         "frame":"oval",
         "price":200, //$
         },//Dwayne Johnson
-        {"type":"Glasses 5",
+        {"_id":"Glasses 5",
         //"data":[2.4372,1.2571,0.7567,1.8846],
         "eyeRatio":2.4372,
         "earFaceRatio":1.2571,
@@ -215,7 +215,7 @@ test("Used for testing filter", () => {
         "frame":"square",
         "price":300, //$
         },//Eminem
-        {"type":"Glasses 6",
+        {"_id":"Glasses 6",
         //"data":[2.3847,1.2567,0.7788,2.1247],
         "eyeRatio":2.3847,
         "earFaceRatio":1.2567,
@@ -228,7 +228,7 @@ test("Used for testing filter", () => {
         "frame":"square",
         "price":350, //$
         },//Gordon Ramsey
-        {"type":"Glasses 7",
+        {"_id":"Glasses 7",
         //"data":[2.3088,1.2542,0.7389,2.0332],
         "eyeRatio":2.3088,
         "earFaceRatio":1.2542,
@@ -241,7 +241,7 @@ test("Used for testing filter", () => {
         "frame":"square",
         "price":300, //$
         },//Justin Trudeau
-        {"type":"Glasses 8",
+        {"_id":"Glasses 8",
         //"data":[2.0897,1.2618,0.7698,1.9015],
         "eyeRatio":2.0897,
         "earFaceRatio":1.2618,
@@ -254,7 +254,7 @@ test("Used for testing filter", () => {
         "frame":"oval",
         "price":400, //$
         },//Christian Ronaldo
-        {"type":"Glasses 9",
+        {"_id":"Glasses 9",
         //"data":[2.3786,1.1987,0.7553,2.1600],
         "eyeRatio":2.3786,
         "earFaceRatio":1.1987,
@@ -267,7 +267,7 @@ test("Used for testing filter", () => {
         "frame":"triangle",
         "price":250, //$
         },//Serena Williams
-        {"type":"Glasses 10",
+        {"_id":"Glasses 10",
         //"data":[2.1103,1.2603,0.7584,2.1184],
         "eyeRatio":2.1103,
         "earFaceRatio":1.2603,
