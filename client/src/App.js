@@ -33,6 +33,7 @@ import ProductEditScreen from "./screens/ProductEditScreen";
 import OrderListScreen from "./screens/OrderListScreen";
 import UserListScreen from "./screens/UserListScreen";
 import UserEditScreen from "./screens/UserEditScreen";
+import FilterUpload from "./screens/FilterUpload";
 import MapScreen from "./screens/MapScreen";
 import logo from "./assets/logo.png";
 import About from "./components/About/about";
@@ -100,6 +101,7 @@ function App() {
                   <Nav.Link href="/">Home</Nav.Link>
                   <Nav.Link href="/about">About</Nav.Link>
                   <Nav.Link href="/upload">Upload</Nav.Link>
+                  <Nav.Link href="/filter">Filter</Nav.Link>
                   <Link to="/cart" className="nav-link">
                     Cart
                     {cart.cartItems.length > 0 && (
@@ -180,6 +182,7 @@ function App() {
            
               <Route path="/product/:slug" element={ <Container className="mt-3"><ProductScreen /></Container>} />
               <Route path="/upload" element={<Container className="mt-3"><UploadS3 /> </Container>} />
+              <Route path="/filter" element={<Container className="mt-3"><FilterUpload /> </Container>} />
               <Route path="/about" element={<Container className="mt-3"><About /></Container>} />
               <Route path="/cart" element={<Container className="mt-3"><CartScreen /></Container>} />
               <Route path="/search" element={<SearchScreen />} />
