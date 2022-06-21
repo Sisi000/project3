@@ -64,6 +64,7 @@ router.post(
     const products = await Product.find();
 
     const resultVision = await facelandmark(buff, products);
+
     res.send(resultVision);
     res.status("Successfully uploaded!");
   }
@@ -71,12 +72,12 @@ router.post(
 
 // upload Url to vision
 router.post("/uploadurl", async (req, res, next) => {
-  //const urlBody = req.body.URL;
-  const urlBody = "https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg?w=1575"
+  const urlBody = req.body.URL;
   
   const products = await Product.find();
 
   const resultVision = await facelandmarkURL(urlBody,products);
+
   res.send(resultVision);
   
 });
