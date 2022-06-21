@@ -1,7 +1,5 @@
 const vision = require('@google-cloud/vision');
 const sizeOf = require("image-size");
-//const uploadLocation="./testimages/"; ->Remove, using Jest now
-//const fname = "testimage.jpg" ->Remove, using Jest now
 
 var config = {credentials:
     {
@@ -9,114 +7,6 @@ var config = {credentials:
         private_key:process.env.GOOGLE_API_KEY,
     }
 };
-/*
-let glassesTestData=[
-    {"type":"Glasses 1",
-    "data":[2.4836,1.1581,0.7601,1.9322],
-    "color":"blue",
-    "prescriptionMin":1,//min size = 0, max size 10
-    "prescriptionMax":8,
-    "weight":40,//grams
-    "frame":"square",
-    "price":450, //$
-    },//Brad Pitt
-    {"type":"Glasses 2",
-    "data":[2.2740,1.2698,0.8955,2.2307],
-    "color":"red",
-    "prescriptionMin":0,
-    "prescriptionMax":9,
-    "weight":35,//grams
-    "frame":"circle",
-    "price":300, //$
-    },//BTS
-    {"type":"Glasses 3",
-    "data":[2.4132,1.0822,0.8577,1.9868],
-    "color":"brown",
-    "prescriptionMin":2,
-    "prescriptionMax":7,
-    "weight":50,//grams
-    "frame":"square",
-    "price":250, //$
-    },//Denzel Washington
-    {"type":"Glasses 4",
-    "data":[2.3881,1.1532,0.7524,2.0369],
-    "color":"black",
-    "prescriptionMin":0,
-    "prescriptionMax":10,
-    "weight":30,//grams
-    "frame":"oval",
-    "price":200, //$
-    },//Dwayne Johnson
-    {"type":"Glasses 5",
-    "data":[2.4372,1.2571,0.7567,1.8846],
-    "color":"black",
-    "prescriptionMin":0,
-    "prescriptionMax":10,
-    "weight":35,//grams
-    "frame":"square",
-    "price":300, //$
-    },//Eminem
-    {"type":"Glasses 6",
-    "data":[2.3847,1.2567,0.7788,2.1247],
-    "color":"blue",
-    "prescriptionMin":2,
-    "prescriptionMax":7,
-    "weight":25,//grams
-    "frame":"square",
-    "price":350, //$
-    },//Gordon Ramsey
-    {"type":"Glasses 7",
-    "data":[2.3088,1.2542,0.7389,2.0332],
-    "color":"brown",
-    "prescriptionMin":1,
-    "prescriptionMax":10,
-    "weight":30,//grams
-    "frame":"square",
-    "price":300, //$
-    },//Justin Trudeau
-    {"type":"Glasses 8",
-    "data":[2.0897,1.2618,0.7698,1.9015],
-    "color":"black",
-    "prescriptionMin":0,
-    "prescriptionMax":9,
-    "weight":55,//grams
-    "frame":"oval",
-    "price":400, //$
-    },//Christian Ronaldo
-    {"type":"Glasses 9",
-    "data":[2.3786,1.1987,0.7553,2.1600],
-    "color":"grey",
-    "prescriptionMin":1,
-    "prescriptionMax":7,
-    "weight":45,//grams
-    "frame":"triangle",
-    "price":250, //$
-    },//Serena Williams
-    {"type":"Glasses 10",
-    "data":[2.1103,1.2603,0.7584,2.1184],
-    "color":"red",
-    "prescriptionMin":2,
-    "prescriptionMax":10,
-    "weight":45,//grams
-    "frame":"oval",
-    "price":450, //$
-    },//Shakira
-]
-//Test filters, currrently not used. These work
-let testRemove ={
-    "frameColor":["red","brown"]
-}
-let testRequired = {
-    "frame":["oval","square"]
-}
-let testMinimum = {
-    "prescriptionMax":[8]
-}
-let testMaximum = {
-    "weight":[50],
-    "price":[400]
-}
-*/
 
 /*
 filter is a function to filter results
@@ -231,7 +121,7 @@ function glassesDataReturn(glassesData, userData, dataRemove = null, dataRequire
     let results = [];
     for(let i=0; i<glassesData.length; i++){
         let dataArray=[glassesData[i].eyeRatio, glassesData[i].earFaceRatio, glassesData[i].cheekChinRatio, glassesData[i].noseRatio] //fitting user data to [a,b,c,d] format
-        //console.log(dataArray)
+
         if(filter(dataArray, dataRemove , dataRequired, dataMinimum, dataMaximum)){//filters inserted here, default is null. May need to destructure better
             let result = glassesToUserDataCalc(dataArray, userData)
             if(results.length<n){//if array is less than return requirements, push in
@@ -239,19 +129,15 @@ function glassesDataReturn(glassesData, userData, dataRemove = null, dataRequire
             }else{//if array is == return requirements, we need to take out the largest one and replace with new value (if less than max)
                 let maxLocation = 0;
                 let max=results[0][0];
-                //onsole.log("Result: ", result)
-                //console.log("Max: ", max)
-                //console.log("Initial results: ",results)
+
                 for(let j=1; j<results.length; j++){
                     if(max<results[j][0]){
                         maxLocation=j;
                         max=results[j][0];
-                        //console.log("Max New: ", max)
                     }
                 }
                 if(result<max){
                     results[maxLocation]=[result,glassesData[i]._id];
-                    //console.log("Fixed :",results)
                 }
             }
         }
@@ -338,17 +224,17 @@ async function facelandmark(imageFile, dataBaseProducts, n=3) {
     async function setEndpoint(request) {
         try{
             const result = await client.faceDetection(request);
-            //console.log(result)
+
             return result
         } catch(error) {
-            //console.log(error);
+            console.log(error);
             return res.status(500).json(`problem with the Google API`);
         }
     }
     //specifications for image upload to google vision
     const client = new vision.ImageAnnotatorClient(config);
     //test for upload - needed for encode
-    var imageFileUpload = imageFile //fs.readFileSync(uploadLocation+fname); Remove, using Jest now
+    var imageFileUpload = imageFile 
     //defines internal file 
     var imageB64Upload = Buffer.from(imageFileUpload).toString('base64');
     const request = {
@@ -368,22 +254,20 @@ async function facelandmark(imageFile, dataBaseProducts, n=3) {
     let results = mergesort(rawResults)
 
     //console.log("This is the unordered list: ", rawResults)
-    console.log("This is the ordered list: ",results)
+    //console.log("This is the ordered list: ",results)
     return [results, originalImageSize]
 }
 
 async function facelandmarkURL(url, dataBaseProducts, n=3) {
     //Image URL for google - Requires body to have a key value pair URL:<URL>
     let imageURL = url
-    //console.log("Database: ",dataBaseProducts)
-    //console.log("cheekChin: ",dataBaseProducts[0].earFace)
+
     //Image original size for google - Checked on front end prior to submit - Requires body to have a key value pair originalImageSize:<originalImageSize> 
-    //let originalImageSize = req.body.originalImageSize;
 
     async function setEndpoint(imageURL) {
         try{
             const result = await client.faceDetection(`${imageURL}`);
-            //console.log(result)
+            
             return result
         } catch(error) {
             console.log(error);
@@ -407,7 +291,7 @@ async function facelandmarkURL(url, dataBaseProducts, n=3) {
     let results = mergesort(rawResults)
 
     //console.log("This is the unordered list: ", rawResults)
-    console.log("This is the ordered list: ",results)
+    //console.log("This is the ordered list: ",results)
     
     return [results]
 }

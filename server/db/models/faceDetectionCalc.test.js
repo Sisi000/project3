@@ -8,7 +8,8 @@ test("Tests for image submit to Google API", async () => {
 
     let imageFileUpload = fs.readFileSync("./testimages/testimage.jpg"); 
     let facelandmarkResult = await facelandmark(imageFileUpload, dataBaseProducts);
-    console.log(facelandmarkResult)
+    //console.log(facelandmarkResult)
+    
     expect(facelandmarkResult).toBeDefined()
     expect(facelandmarkResult[1].height).toEqual(returnImageSize.height)
     expect(facelandmarkResult[1].width).toEqual(returnImageSize.width)
@@ -347,3 +348,112 @@ test("Used for testing filter", () => {
     }
 })
 
+
+/* Old test data
+let glassesTestData=[
+    {"type":"Glasses 1",
+    "data":[2.4836,1.1581,0.7601,1.9322],
+    "color":"blue",
+    "prescriptionMin":1,//min size = 0, max size 10
+    "prescriptionMax":8,
+    "weight":40,//grams
+    "frame":"square",
+    "price":450, //$
+    },//Brad Pitt
+    {"type":"Glasses 2",
+    "data":[2.2740,1.2698,0.8955,2.2307],
+    "color":"red",
+    "prescriptionMin":0,
+    "prescriptionMax":9,
+    "weight":35,//grams
+    "frame":"circle",
+    "price":300, //$
+    },//BTS
+    {"type":"Glasses 3",
+    "data":[2.4132,1.0822,0.8577,1.9868],
+    "color":"brown",
+    "prescriptionMin":2,
+    "prescriptionMax":7,
+    "weight":50,//grams
+    "frame":"square",
+    "price":250, //$
+    },//Denzel Washington
+    {"type":"Glasses 4",
+    "data":[2.3881,1.1532,0.7524,2.0369],
+    "color":"black",
+    "prescriptionMin":0,
+    "prescriptionMax":10,
+    "weight":30,//grams
+    "frame":"oval",
+    "price":200, //$
+    },//Dwayne Johnson
+    {"type":"Glasses 5",
+    "data":[2.4372,1.2571,0.7567,1.8846],
+    "color":"black",
+    "prescriptionMin":0,
+    "prescriptionMax":10,
+    "weight":35,//grams
+    "frame":"square",
+    "price":300, //$
+    },//Eminem
+    {"type":"Glasses 6",
+    "data":[2.3847,1.2567,0.7788,2.1247],
+    "color":"blue",
+    "prescriptionMin":2,
+    "prescriptionMax":7,
+    "weight":25,//grams
+    "frame":"square",
+    "price":350, //$
+    },//Gordon Ramsey
+    {"type":"Glasses 7",
+    "data":[2.3088,1.2542,0.7389,2.0332],
+    "color":"brown",
+    "prescriptionMin":1,
+    "prescriptionMax":10,
+    "weight":30,//grams
+    "frame":"square",
+    "price":300, //$
+    },//Justin Trudeau
+    {"type":"Glasses 8",
+    "data":[2.0897,1.2618,0.7698,1.9015],
+    "color":"black",
+    "prescriptionMin":0,
+    "prescriptionMax":9,
+    "weight":55,//grams
+    "frame":"oval",
+    "price":400, //$
+    },//Christian Ronaldo
+    {"type":"Glasses 9",
+    "data":[2.3786,1.1987,0.7553,2.1600],
+    "color":"grey",
+    "prescriptionMin":1,
+    "prescriptionMax":7,
+    "weight":45,//grams
+    "frame":"triangle",
+    "price":250, //$
+    },//Serena Williams
+    {"type":"Glasses 10",
+    "data":[2.1103,1.2603,0.7584,2.1184],
+    "color":"red",
+    "prescriptionMin":2,
+    "prescriptionMax":10,
+    "weight":45,//grams
+    "frame":"oval",
+    "price":450, //$
+    },//Shakira
+]
+//Test filters, currrently not used. These work
+let testRemove ={
+    "frameColor":["red","brown"]
+}
+let testRequired = {
+    "frame":["oval","square"]
+}
+let testMinimum = {
+    "prescriptionMax":[8]
+}
+let testMaximum = {
+    "weight":[50],
+    "price":[400]
+}
+*/
