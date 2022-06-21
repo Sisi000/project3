@@ -1,11 +1,5 @@
 const vision = require('@google-cloud/vision');
 const sizeOf = require("image-size");
-const fs = require ('fs');
-const { kill } = require('process');
-const express = require("express");
-const expressAsyncHandler = require("express-async-handler");
-
-const Product = require("./productModel.js");
 //const uploadLocation="./testimages/"; ->Remove, using Jest now
 //const fname = "testimage.jpg" ->Remove, using Jest now
 

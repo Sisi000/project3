@@ -1,6 +1,6 @@
 const {facelandmark, facelandmarkURL, filter, merge, mergesort, euclideandistance, glassesToUserDataCalc, glassesDataReturn } = require("./faceDetectionCalc");
 const fs = require ('fs');
-const dataBaseProducts = require("./dataBaseProducts.json")
+const dataBaseProducts = require("./testData/dataBaseProducts.json")
 
 test("Tests for image submit to Google API", async () => {
 
