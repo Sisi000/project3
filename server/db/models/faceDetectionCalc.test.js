@@ -1,20 +1,20 @@
 const {facelandmark, facelandmarkURL, filter, merge, mergesort, euclideandistance, glassesToUserDataCalc, glassesDataReturn } = require("./faceDetectionCalc");
 const fs = require ('fs');
-
+const dataBaseProducts = require("./dataBaseProducts.json")
 
 test("Tests for image submit to Google API", async () => {
+
     let returnImageSize = { height: 849, width: 849, type: 'jpg' }
-    let returnImageRank1 = 'Glasses 7';
-    let returnImageRank2 = 'Glasses 4';
 
     let imageFileUpload = fs.readFileSync("./testimages/testimage.jpg"); 
-    let facelandmarkResult = await facelandmark(imageFileUpload);
+    let facelandmarkResult = await facelandmark(imageFileUpload, dataBaseProducts);
+    console.log(facelandmarkResult)
     expect(facelandmarkResult).toBeDefined()
     expect(facelandmarkResult[1].height).toEqual(returnImageSize.height)
     expect(facelandmarkResult[1].width).toEqual(returnImageSize.width)
-    expect(facelandmarkResult[1].type).toEqual(returnImageSize.type)
-    expect(facelandmarkResult[0][0][1]).toEqual(returnImageRank1)
-    expect(facelandmarkResult[0][1][1]).toEqual(returnImageRank2)
+    expect(facelandmarkResult[1].name).toEqual(returnImageSize.name)
+    expect(facelandmarkResult[0][0][1]).toEqual(dataBaseProducts[3].name)
+    expect(facelandmarkResult[0][1][1]).toEqual(dataBaseProducts[5].name)
 })
 
 test("Tests for URL submit to Google API", async () => {
@@ -22,7 +22,8 @@ test("Tests for URL submit to Google API", async () => {
     //console.log("api keys: ", process.env.GOOGLE_API_KEY)
 
     let URL = "https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg?w=1575"; 
-    let facelandmarkResultURL = await facelandmarkURL(URL);
+    let facelandmarkResultURL = await facelandmarkURL(URL,dataBaseProducts);
+    //console.log(facelandmarkResultURL)
     expect(facelandmarkResultURL).toBeDefined()
 })
 
@@ -94,28 +95,41 @@ test("Used for testing glassesToUserDataCalc for user to database Euclid Distanc
 
 test("Used for testing glassesDataReturn for unranked list return", () => {
     let userData1 = [2,1,1,2];
+
     let testData1 = [
-        {"type":"Glasses 8",
-        "data":[2,1,1,2],
-        "color":"black",
+        {"name":"Glasses 8",
+        //"data":[2,1,1,2],
+        "eyeRatio":2,
+        "earFaceRatio":1,
+        "cheekChinRatio":1,
+        "noseRatio":2,
+        "frameColor":"black",
         "prescriptionMin":0,
         "prescriptionMax":9,
         "weight":55,//grams
         "frame":"oval",
         "price":400, //$
         },//Christian Ronaldo
-        {"type":"Glasses 9",
-        "data":[4,2,2,4],
-        "color":"grey",
+        {"name":"Glasses 9",
+        //"data":[4,2,2,4],
+        "eyeRatio":4,
+        "earFaceRatio":2,
+        "cheekChinRatio":2,
+        "noseRatio":4,
+        "frameColor":"grey",
         "prescriptionMin":1,
         "prescriptionMax":7,
         "weight":45,//grams
         "frame":"triangle",
         "price":250, //$
         },//Serena Williams
-        {"type":"Glasses 10",
-        "data":[3,1,1,2],
-        "color":"red",
+        {"name":"Glasses 10",
+        //"data":[3,1,1,2],
+        "eyeRatio":3,
+        "earFaceRatio":1,
+        "cheekChinRatio":1,
+        "noseRatio":2,
+        "frameColor":"red",
         "prescriptionMin":2,
         "prescriptionMax":10,
         "weight":45,//grams
@@ -127,9 +141,9 @@ test("Used for testing glassesDataReturn for unranked list return", () => {
     let testResult1 = glassesDataReturn(testData1,userData1)
     //console.log(testResult1)
     expect(testResult1).toBeDefined()
-    expect(testResult1[0][1]).toEqual(testData1[0].type)
-    expect(testResult1[1][1]).toEqual(testData1[1].type)
-    expect(testResult1[2][1]).toEqual(testData1[2].type)
+    expect(testResult1[0][1]).toEqual(testData1[0].name)
+    expect(testResult1[1][1]).toEqual(testData1[1].name)
+    expect(testResult1[2][1]).toEqual(testData1[2].name)
     expect(testResult1[0][0]).toEqual(0)
     expect(testResult1[2][0]).toEqual(1)
 })
@@ -137,8 +151,12 @@ test("Used for testing glassesDataReturn for unranked list return", () => {
 test("Used for testing filter", () => {
     let glassesTestData1=[
         {"type":"Glasses 1",
-        "data":[2.4836,1.1581,0.7601,1.9322],
-        "color":"blue",
+        //"data":[2.4836,1.1581,0.7601,1.9322],
+        "eyeRatio":2.4836,
+        "earFaceRatio":1.1581,
+        "cheekChinRatio":0.7601,
+        "noseRatio":1.9322,
+        "frameColor":"blue",
         "prescriptionMin":1,//min size = 0, max size 10
         "prescriptionMax":8,
         "weight":40,//grams
@@ -146,8 +164,12 @@ test("Used for testing filter", () => {
         "price":450, //$
         },//Brad Pitt
         {"type":"Glasses 2",
-        "data":[2.2740,1.2698,0.8955,2.2307],
-        "color":"red",
+        //"data":[2.2740,1.2698,0.8955,2.2307],
+        "eyeRatio":2.2740,
+        "earFaceRatio":1.2698,
+        "cheekChinRatio":0.8955,
+        "noseRatio":2.2307,
+        "frameColor":"red",
         "prescriptionMin":0,
         "prescriptionMax":9,
         "weight":35,//grams
@@ -155,8 +177,12 @@ test("Used for testing filter", () => {
         "price":300, //$
         },//BTS
         {"type":"Glasses 3",
-        "data":[2.4132,1.0822,0.8577,1.9868],
-        "color":"brown",
+        //"data":[2.4132,1.0822,0.8577,1.9868],
+        "eyeRatio":2.4132,
+        "earFaceRatio":1.0822,
+        "cheekChinRatio":0.8577,
+        "noseRatio":1.9868,
+        "frameColor":"brown",
         "prescriptionMin":2,
         "prescriptionMax":7,
         "weight":50,//grams
@@ -164,8 +190,12 @@ test("Used for testing filter", () => {
         "price":250, //$
         },//Denzel Washington
         {"type":"Glasses 4",
-        "data":[2.3881,1.1532,0.7524,2.0369],
-        "color":"black",
+        //"data":[2.3881,1.1532,0.7524,2.0369],
+        "eyeRatio":2.3881,
+        "earFaceRatio":1.1532,
+        "cheekChinRatio":0.7524,
+        "noseRatio":2.0369,
+        "frameColor":"black",
         "prescriptionMin":0,
         "prescriptionMax":10,
         "weight":30,//grams
@@ -173,8 +203,12 @@ test("Used for testing filter", () => {
         "price":200, //$
         },//Dwayne Johnson
         {"type":"Glasses 5",
-        "data":[2.4372,1.2571,0.7567,1.8846],
-        "color":"black",
+        //"data":[2.4372,1.2571,0.7567,1.8846],
+        "eyeRatio":2.4372,
+        "earFaceRatio":1.2571,
+        "cheekChinRatio":0.7567,
+        "noseRatio":1.8846,
+        "frameColor":"black",
         "prescriptionMin":0,
         "prescriptionMax":10,
         "weight":35,//grams
@@ -182,8 +216,12 @@ test("Used for testing filter", () => {
         "price":300, //$
         },//Eminem
         {"type":"Glasses 6",
-        "data":[2.3847,1.2567,0.7788,2.1247],
-        "color":"blue",
+        //"data":[2.3847,1.2567,0.7788,2.1247],
+        "eyeRatio":2.3847,
+        "earFaceRatio":1.2567,
+        "cheekChinRatio":0.7788,
+        "noseRatio":2.1247,
+        "frameColor":"blue",
         "prescriptionMin":2,
         "prescriptionMax":7,
         "weight":25,//grams
@@ -191,8 +229,12 @@ test("Used for testing filter", () => {
         "price":350, //$
         },//Gordon Ramsey
         {"type":"Glasses 7",
-        "data":[2.3088,1.2542,0.7389,2.0332],
-        "color":"brown",
+        //"data":[2.3088,1.2542,0.7389,2.0332],
+        "eyeRatio":2.3088,
+        "earFaceRatio":1.2542,
+        "cheekChinRatio":0.7389,
+        "noseRatio":2.0332,
+        "frameColor":"brown",
         "prescriptionMin":1,
         "prescriptionMax":10,
         "weight":30,//grams
@@ -200,8 +242,12 @@ test("Used for testing filter", () => {
         "price":300, //$
         },//Justin Trudeau
         {"type":"Glasses 8",
-        "data":[2.0897,1.2618,0.7698,1.9015],
-        "color":"black",
+        //"data":[2.0897,1.2618,0.7698,1.9015],
+        "eyeRatio":2.0897,
+        "earFaceRatio":1.2618,
+        "cheekChinRatio":0.7698,
+        "noseRatio":1.9015,
+        "frameColor":"black",
         "prescriptionMin":0,
         "prescriptionMax":9,
         "weight":55,//grams
@@ -209,8 +255,12 @@ test("Used for testing filter", () => {
         "price":400, //$
         },//Christian Ronaldo
         {"type":"Glasses 9",
-        "data":[2.3786,1.1987,0.7553,2.1600],
-        "color":"grey",
+        //"data":[2.3786,1.1987,0.7553,2.1600],
+        "eyeRatio":2.3786,
+        "earFaceRatio":1.1987,
+        "cheekChinRatio":0.7553,
+        "noseRatio":2.1600,
+        "frameColor":"grey",
         "prescriptionMin":1,
         "prescriptionMax":7,
         "weight":45,//grams
@@ -218,8 +268,12 @@ test("Used for testing filter", () => {
         "price":250, //$
         },//Serena Williams
         {"type":"Glasses 10",
-        "data":[2.1103,1.2603,0.7584,2.1184],
-        "color":"red",
+        //"data":[2.1103,1.2603,0.7584,2.1184],
+        "eyeRatio":2.1103,
+        "earFaceRatio":1.2603,
+        "cheekChinRatio":0.7584,
+        "noseRatio":2.1184,
+        "frameColor":"red",
         "prescriptionMin":2,
         "prescriptionMax":10,
         "weight":45,//grams
@@ -229,7 +283,7 @@ test("Used for testing filter", () => {
     ]
 
     let testRemove ={
-        "color":["red","brown"]
+        "frameColor":["red","brown"]
     }
     let testRequired = {
         "frame":["oval","square"]
@@ -292,3 +346,4 @@ test("Used for testing filter", () => {
         expect(testResult6).toBeTruthy()
     }
 })
+

@@ -2,6 +2,10 @@ const vision = require('@google-cloud/vision');
 const sizeOf = require("image-size");
 const fs = require ('fs');
 const { kill } = require('process');
+const express = require("express");
+const expressAsyncHandler = require("express-async-handler");
+
+const Product = require("./productModel.js");
 //const uploadLocation="./testimages/"; ->Remove, using Jest now
 //const fname = "testimage.jpg" ->Remove, using Jest now
 
@@ -106,7 +110,7 @@ let glassesTestData=[
 ]
 //Test filters, currrently not used. These work
 let testRemove ={
-    "color":["red","brown"]
+    "frameColor":["red","brown"]
 }
 let testRequired = {
     "frame":["oval","square"]
@@ -148,7 +152,7 @@ function filter (glasssesData, remove=null, required=null, minimum=null, maximum
     if(minimum){
         for(let key in minimum){//minimum value for que
             for(let item of minimum[key]){
-                console.log(glasssesData[key])
+                //console.log(glasssesData[key])
                 if(glasssesData[key] < item){
                     return false
                 }
@@ -228,24 +232,30 @@ glassesData is the general database data (entire thing)
 userData is the users personal fit data (or personal data)
 n is the size of return. Default is shown. If no n is input, n here will be set to default
 */
-function glassesDataReturn(glassesData, userData, dataRemove = null, dataRequired = null, dataMinimum = null, dataMaximum = null, n=10){
+function glassesDataReturn(glassesData, userData, dataRemove = null, dataRequired = null, dataMinimum = null, dataMaximum = null, n=3){
     let results = [];
     for(let i=0; i<glassesData.length; i++){
-        if(filter(glassesData[i], dataRemove , dataRequired, dataMinimum, dataMaximum)){//filters inserted here, default is null. May need to destructure better
-            let result = glassesToUserDataCalc(glassesData[i].data, userData)
-            if(results.length<n){
-                results.push([result,glassesData[i].type]);
-            }else if(results.length===n){
+        let dataArray=[glassesData[i].eyeRatio,glassesData[i].earFaceRatio,glassesData[i].cheekChinRatio,glassesData[i].noseRatio] //fitting user data to [a,b,c,d] format
+        if(filter(dataArray, dataRemove , dataRequired, dataMinimum, dataMaximum)){//filters inserted here, default is null. May need to destructure better
+            let result = glassesToUserDataCalc(dataArray, userData)
+            if(results.length<n){//if array is less than return requirements, push in
+                results.push([result,glassesData[i].name]);
+            }else{//if array is == return requirements, we need to take out the largest one and replace with new value (if less than max)
                 let maxLocation = 0;
-                let max=glassesData[0];
-                for(let j=0; j<glassesData.length; j++){
-                    if(max<glassesData[j]){
+                let max=results[0][0];
+                //onsole.log("Result: ", result)
+                //console.log("Max: ", max)
+                //console.log("Initial results: ",results)
+                for(let j=1; j<results.length; j++){
+                    if(max<results[j][0]){
                         maxLocation=j;
-                        max=glassesData[0];
+                        max=results[j][0];
+                        //console.log("Max New: ", max)
                     }
                 }
                 if(result<max){
-                    results[maxLocation]=[result,glassesData[i].type];
+                    results[maxLocation]=[result,glassesData[i].name];
+                    //console.log("Fixed :",results)
                 }
             }
         }
@@ -327,7 +337,7 @@ function calculateUserData(imageInformation){
     return userData=[eyeRatioHorrizvsVertRatio,earsToFaceHorrizvsVertRatio,cheekVsChinHorizRatio,noseWidthvsHeightRatio]
 }
 
-async function facelandmark(req, res, next) {
+async function facelandmark(imageFile, dataBaseProducts, n=3) {
     //Api function initialized for google vision
     async function setEndpoint(request) {
         try{
@@ -342,7 +352,7 @@ async function facelandmark(req, res, next) {
     //specifications for image upload to google vision
     const client = new vision.ImageAnnotatorClient(config);
     //test for upload - needed for encode
-    var imageFileUpload = req //fs.readFileSync(uploadLocation+fname); Remove, using Jest now
+    var imageFileUpload = imageFile //fs.readFileSync(uploadLocation+fname); Remove, using Jest now
     //defines internal file 
     var imageB64Upload = Buffer.from(imageFileUpload).toString('base64');
     const request = {
@@ -351,13 +361,13 @@ async function facelandmark(req, res, next) {
         }
     };  
     //To detemine the image size in case we want to show nodes
-    let originalImageSize = sizeOf(req);
+    let originalImageSize = sizeOf(imageFile);
     //API call being made
     let imageInformation = await setEndpoint(request);
     //Function to calculate unique user information
     let userData = calculateUserData(imageInformation)
     //Unranked glasses for merge (with top n picks, UNORDERED)
-    let rawResults = glassesDataReturn(glassesTestData,userData)//No filters right now, add later
+    let rawResults = glassesDataReturn(dataBaseProducts,userData)//No filters right now, add later
     //Mergesort being called (with top n picks, ORDERED)
     let results = mergesort(rawResults)
 
@@ -366,16 +376,17 @@ async function facelandmark(req, res, next) {
     return [results, originalImageSize]
 }
 
-async function facelandmarkURL(req, res, next) {
+async function facelandmarkURL(url, dataBaseProducts, n=3) {
     //Image URL for google - Requires body to have a key value pair URL:<URL>
-    let imageURL = req
+    let imageURL = url
+    
     //Image original size for google - Checked on front end prior to submit - Requires body to have a key value pair originalImageSize:<originalImageSize> 
     //let originalImageSize = req.body.originalImageSize;
 
     async function setEndpoint(imageURL) {
         try{
             const result = await client.faceDetection(`${imageURL}`);
-            console.log(result)
+            //console.log(result)
             return result
         } catch(error) {
             console.log(error);
@@ -394,7 +405,7 @@ async function facelandmarkURL(req, res, next) {
     //Function to calculate unique user information
     let userData = calculateUserData(imageInformation)
     //Unranked glasses for merge (with top n picks, UNORDERED)
-    let rawResults = glassesDataReturn(glassesTestData,userData)//No filters right now, add later
+    let rawResults = glassesDataReturn(dataBaseProducts,userData)//No filters right now, add later
     //Mergesort being called (with top n picks, ORDERED)
     let results = mergesort(rawResults)
 
