@@ -71,11 +71,12 @@ export const ratings = [
   },
 ];
 
-export default function SearchScreen() {
+export default function FilterUpload() {
   const navigate = useNavigate();
   const { search } = useLocation();
-  const sp = new URLSearchParams(search); // /search?category=Shirts
+  const sp = new URLSearchParams(search); // /search?category=Oval
   const category = sp.get('category') || 'all';
+  const frameColor = sp.get('frameColor') || 'all';
   const query = sp.get('query') || 'all';
   const price = sp.get('price') || 'all';
   const rating = sp.get('rating') || 'all';
@@ -92,7 +93,7 @@ export default function SearchScreen() {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          `/api/products/search?page=${page}&query=${query}&category=${category}&price=${price}&rating=${rating}&order=${order}`
+          `/api/products/search?page=${page}&query=${query}&category=${category}&frameColor=${frameColor}&price=${price}&rating=${rating}&order=${order}`
         );
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
@@ -103,7 +104,7 @@ export default function SearchScreen() {
       }
     };
     fetchData();
-  }, [category, error, order, page, price, query, rating]);
+  }, [category, frameColor, error, order, page, price, query, rating]);
 
   const [categories, setCategories] = useState([]);
   useEffect(() => {
@@ -118,14 +119,28 @@ export default function SearchScreen() {
     fetchCategories();
   }, [dispatch]);
 
+  const [frameColors, setFrameColors] = useState([]);
+  useEffect(() => {
+    const fetchFrameColors = async () => {
+      try {
+        const { data } = await axios.get(`/api/products/framecolors`);
+        setFrameColors(data);
+      } catch (err) {
+        toast.error(getError(err));
+      }
+    };
+    fetchFrameColors();
+  }, [dispatch]);
+
   const getFilterUrl = (filter) => {
     const filterPage = filter.page || page;
     const filterCategory = filter.category || category;
+    const filterFrameColor = filter.frameColor || frameColor;
     const filterQuery = filter.query || query;
     const filterRating = filter.rating || rating;
     const filterPrice = filter.price || price;
     const sortOrder = filter.order || order;
-    return `/search?category=${filterCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
+    return `/search?category=${filterCategory}&query=${filterQuery}&frameColor=${filterFrameColor}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
   };
   return (
     <div>
@@ -134,7 +149,7 @@ export default function SearchScreen() {
       </Helmet>
       <Row>
         <Col md={3}>
-          <h3>Department</h3>
+          <h3>Frame Shapes</h3>
           <div>
             <ul>
               <li>
@@ -150,6 +165,29 @@ export default function SearchScreen() {
                   <Link
                     className={c === category ? 'text-bold' : ''}
                     to={getFilterUrl({ category: c })}
+                  >
+                    {c}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <h3>Frame Color</h3>
+          <div>
+            <ul>
+              <li>
+                <Link
+                  className={'all' === frameColor ? 'text-bold' : ''}
+                  to={getFilterUrl({ frameColor: 'all' })}
+                >
+                  Any
+                </Link>
+              </li>
+              {frameColors.map((c) => (
+                <li key={c}>
+                  <Link
+                    className={c === frameColor ? 'text-bold' : ''}
+                    to={getFilterUrl({ frameColor: c })}
                   >
                     {c}
                   </Link>
@@ -217,10 +255,12 @@ export default function SearchScreen() {
                     {countProducts === 0 ? 'No' : countProducts} Results
                     {query !== 'all' && ' : ' + query}
                     {category !== 'all' && ' : ' + category}
+                    {frameColor !== 'all' && ' : ' + frameColor}
                     {price !== 'all' && ' : Price ' + price}
                     {rating !== 'all' && ' : Rating ' + rating + ' & up'}
                     {query !== 'all' ||
                     category !== 'all' ||
+                    frameColor !== 'all' ||
                     rating !== 'all' ||
                     price !== 'all' ? (
                       <Button
