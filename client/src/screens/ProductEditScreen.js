@@ -71,9 +71,9 @@ export default function ProductEditScreen() {
   const [lensDiagonal, setLensDiagonal] = useState("");
   const [templeLength, setTempleLength] = useState("");
   const [eyeRatio, setEyeRatio] = useState("");
-  const [earFace, setEarFace] = useState("");
-  const [cheekChin, setCheekChin] = useState("");
-  const [nose, setNose] = useState("");
+  const [earFaceRatio, setEarFaceRatio] = useState("");
+  const [cheekChinRatio, setCheekChinRatio] = useState("");
+  const [noseRatio, setNoseRatio] = useState("");
   const [frameColor, setFrameColor] = useState("");
   const [prescriptionMin, setPrescriptionMin] = useState("");
   const [prescriptionMax, setPrescriptionMax] = useState("");
@@ -100,9 +100,9 @@ export default function ProductEditScreen() {
         setLensDiagonal(data.lensDiagonal);
         setTempleLength(data.templeLength);
         setEyeRatio(data.eyeRatio);
-        setEarFace(data.earFace);
-        setCheekChin(data.cheekChin);
-        setNose(data.nose);
+        setEarFaceRatio(data.earFaceRatio);
+        setCheekChinRatio(data.cheekChinRatio);
+        setNoseRatio(data.noseRatio);
         setFrameColor(data.frameColor);
         setPrescriptionMin(data.prescriptionMin);
         setPrescriptionMax(data.prescriptionMax);
@@ -141,9 +141,9 @@ export default function ProductEditScreen() {
           lensDiagonal,
           templeLength,
           eyeRatio,
-          earFace,
-          cheekChin,
-          nose,
+          earFaceRatio,
+          cheekChinRatio,
+          noseRatio,
           frameColor,
           prescriptionMin,
           prescriptionMax,
@@ -392,27 +392,27 @@ export default function ProductEditScreen() {
               required
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="earFace">
-            <Form.Label>Ear/Face</Form.Label>
+          <Form.Group className="mb-3" controlId="earFaceRatio">
+            <Form.Label>Ear/Face Ratio</Form.Label>
             <Form.Control
-              value={earFace}
-              onChange={(e) => setEarFace(e.target.value)}
+              value={earFaceRatio}
+              onChange={(e) => setEarFaceRatio(e.target.value)}
               required
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="cheekChin">
-            <Form.Label>Cheek/Chin</Form.Label>
+          <Form.Group className="mb-3" controlId="cheekChinRatio">
+            <Form.Label>Cheek/Chin Ratio</Form.Label>
             <Form.Control
-              value={cheekChin}
-              onChange={(e) => setCheekChin(e.target.value)}
+              value={cheekChinRatio}
+              onChange={(e) => setCheekChinRatio(e.target.value)}
               required
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="nose">
-            <Form.Label>Nose W/H</Form.Label>
+          <Form.Group className="mb-3" controlId="noseRatio">
+            <Form.Label>Nose Ratio W/H</Form.Label>
             <Form.Control
-              value={nose}
-              onChange={(e) => setNose(e.target.value)}
+              value={noseRatio}
+              onChange={(e) => setNoseRatio(e.target.value)}
               required
             />
           </Form.Group>

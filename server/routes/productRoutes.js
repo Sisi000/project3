@@ -29,9 +29,9 @@ productRouter.post(
       lensDiagonal: 0,
       templeLength: 0,
       eyeRatio: 0,
-      earFace: 0,
-      cheekChin: 0,
-      nose: 0,
+      earFaceRatio: 0,
+      cheekChinRatio: 0,
+      noseRatio: 0,
       frameColor: "color",
       prescriptionMin: 0,
       prescriptionMax: 0,
@@ -68,9 +68,9 @@ productRouter.put(
       product.lensDiagonal = req.body.lensDiagonal;
       product.templeLength = req.body.templeLength;
       product.eyeRatio = req.body.eyeRatio;
-      product.earFace = req.body.earFace;
-      product.cheekChin = req.body.cheekChin;
-      product.nose = req.body.nose;
+      product.earFaceRatio = req.body.earFaceRatio;
+      product.cheekChinRatio = req.body.cheekChinRatio;
+      product.noseRatio = req.body.noseRatio;
       product.frameColor = req.body.frameColor;
       product.prescriptionMin = req.body.prescriptionMin;
       product.prescriptionMax = req.body.prescriptionMax;
@@ -242,6 +242,14 @@ productRouter.get(
   expressAsyncHandler(async (req, res) => {
     const categories = await Product.find().distinct("category");
     res.send(categories);
+  })
+);
+
+productRouter.get(
+  "/framecolors",
+  expressAsyncHandler(async (req, res) => {
+    const frameColors = await Product.find().distinct("frameColor");
+    res.send(frameColors);
   })
 );
 
