@@ -8,8 +8,8 @@ test("Tests for image submit to Google API", async () => {
 
     let imageFileUpload = fs.readFileSync("./testimages/testimage.jpg"); 
     let facelandmarkResult = await facelandmark(imageFileUpload, dataBaseProducts);
-    
-    console.log(facelandmarkResult)
+
+    console.log("Return for Image: ",facelandmarkResult)
 
     expect(facelandmarkResult).toBeDefined()
     //expect(facelandmarkResult[0][1]).toEqual(dataBaseProducts[3]._id)
@@ -23,7 +23,9 @@ test("Tests for URL submit to Google API", async () => {
     let URL = 
     "https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg?w=1575"; 
     let facelandmarkResultURL = await facelandmarkURL(URL,dataBaseProducts);
-    //console.log(facelandmarkResultURL)
+
+    console.log("Return for URL: ",facelandmarkResultURL)
+
     expect(facelandmarkResultURL).toBeDefined()
 })
 

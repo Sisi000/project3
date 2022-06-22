@@ -47,7 +47,14 @@ router.post("/upload", upload.single("image"), async (req, res, next) => {
       const products = await Product.find();
 
       const resultVision = await facelandmark(buffer, products);
-      res.send(resultVision);
+
+      let results = []
+
+      for(let array of resultVision){
+        results.push(array[1])
+      }
+
+      res.send(results);
     });
   res.status("Successfully uploaded!");
 });
@@ -64,8 +71,14 @@ router.post(
     const products = await Product.find();
 
     const resultVision = await facelandmark(buff, products);
-console.log("resultvision is", resultVision);
-    res.send(resultVision);
+    
+    let results = []
+
+    for(let array of resultVision){
+      results.push(array[1])
+    }
+    
+    res.send(results);
     res.status("Successfully uploaded!");
   }
 );
@@ -77,7 +90,7 @@ router.post("/uploadurl", async (req, res, next) => {
   const products = await Product.find();
 
   const resultVision = await facelandmarkURL(urlBody,products);
-console.log("resultvision is", resultVision);
+  
   res.send(resultVision);
   
 });
