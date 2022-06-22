@@ -39,6 +39,9 @@ import logo from "./assets/logo.png";
 import About from "./components/About/about";
 import Footer from "./components/Footer/footer";
 import UploadS3 from "./components/uploadS3/UploadS3";
+import Uploads from "./components/Uploads";
+import UploadUrl from "./components/uploadUrl/UploadUrl";
+import Webcam from "./components/Webcam/Webcam";
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -181,13 +184,38 @@ function App() {
           <Routes>
            
               <Route path="/product/:slug" element={ <Container className="mt-3"><ProductScreen /></Container>} />
-              <Route path="/upload" element={<Container className="mt-3"><UploadS3 /> </Container>} />
+              <Route path="/upload/*" element={<Container className="mt-3"><Uploads /> </Container>} />
               <Route path="/filter" element={<Container className="mt-3"><FilterUpload /> </Container>} />
               <Route path="/about" element={<Container className="mt-3"><About /></Container>} />
               <Route path="/cart" element={<Container className="mt-3"><CartScreen /></Container>} />
               <Route path="/search" element={<SearchScreen />} />
               <Route path="/signin" element={<SigninScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
+              <Route
+          path="/uploadphoto"
+          // components={UploadS3}
+          element={
+            <Container className="mt-3">
+              <UploadS3 />
+            </Container>
+          }
+        />
+         <Route
+          path="/webcam"
+          element={
+            <Container className="mt-3">
+              <Webcam />
+            </Container>
+          }
+        />
+        <Route
+          path="/uploadurl"
+          element={
+            <Container className="mt-3">
+              <UploadUrl />
+            </Container>
+          }
+        />
               <Route
                 path="/profile"
                 element={<Container className="mt-3">
