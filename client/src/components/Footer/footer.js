@@ -10,27 +10,27 @@ import "./footer.css";
 const Footer = () => {
 
     return (
-        <Navbar id = "footer" collapseOnSelect expand="lg" variant="dark">
+        <Navbar id = "footer" collapseOnSelect expand="lg" variant="light">
             <Container fluid>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="me-auto mx-auto my-2 my-lg-0">
+                    <Nav className="me-auto mx-auto my-2 my-lg-0" style={{ fontSize: "1.5rem" }}>
                         <Nav.Link href="/">Home</Nav.Link>
                         <Nav.Link href="/about">About</Nav.Link>
                         <Nav.Link href="/upload">Upload</Nav.Link>
-                        <Nav.Link eventKey={2} href="#home">
+                        <Nav.Link className='mx-5 mt-1' style={{ fontSize: "1.2rem" }} eventKey={2} href="#home">
                             &copy; eyelovecoding 2022
                         </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
-                <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer">
-                    <FontAwesomeIcon className='px-2 mx-3' icon={faLinkedinIn} size="2x" /></a>
-                <a href="https://www.facebook.com/" target="_blank" rel="noreferrer">
-                    <FontAwesomeIcon className='px-2 mx-3' icon={faFacebookF} size="2x" /></a>
-                <a href="https://www.github.com/" target="_blank" rel="noreferrer">
-                    <FontAwesomeIcon className='px-2 mx-3' icon={faGithub} size="2x" /></a>
-                <a href="https://www.twitter.com/" target="_blank" rel="noreferrer">
-                    <FontAwesomeIcon className='px-2 mx-3' icon={faTwitter} size="2x" /></a>
+                <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer" style={{ color:'#FFDB58' }}>
+                    <FontAwesomeIcon className=' mx-3' icon={faLinkedinIn} size="2x" /></a>
+                <a href="https://www.facebook.com/" target="_blank" rel="noreferrer" style={{ color:'#FFDB58' }}>
+                    <FontAwesomeIcon className=' mx-3' icon={faFacebookF} size="2x" /></a>
+                <a href="https://www.github.com/" target="_blank" rel="noreferrer" style={{ color:'#FFDB58' }}>
+                    <FontAwesomeIcon className=' mx-3' icon={faGithub} size="2x" /></a>
+                <a href="https://www.twitter.com/" target="_blank" rel="noreferrer" style={{ color:'#FFDB58' }}>
+                    <FontAwesomeIcon className=' mx-3' icon={faTwitter} size="2x" /></a>
             </Container>
         </Navbar>
     )
