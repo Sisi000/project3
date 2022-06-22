@@ -23,13 +23,13 @@ const Footer = () => {
                         </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
-                <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer" style={{ color:'#FFDB58' }}>
+                <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer" style={{ color:'#707070' }}>
                     <FontAwesomeIcon className=' mx-3' icon={faLinkedinIn} size="2x" /></a>
-                <a href="https://www.facebook.com/" target="_blank" rel="noreferrer" style={{ color:'#FFDB58' }}>
+                <a href="https://www.facebook.com/" target="_blank" rel="noreferrer" style={{ color:'#707070' }}>
                     <FontAwesomeIcon className=' mx-3' icon={faFacebookF} size="2x" /></a>
-                <a href="https://www.github.com/" target="_blank" rel="noreferrer" style={{ color:'#FFDB58' }}>
+                <a href="https://www.github.com/" target="_blank" rel="noreferrer" style={{ color:'#707070' }}>
                     <FontAwesomeIcon className=' mx-3' icon={faGithub} size="2x" /></a>
-                <a href="https://www.twitter.com/" target="_blank" rel="noreferrer" style={{ color:'#FFDB58' }}>
+                <a href="https://www.twitter.com/" target="_blank" rel="noreferrer" style={{ color:'#707070' }}>
                     <FontAwesomeIcon className=' mx-3' icon={faTwitter} size="2x" /></a>
             </Container>
         </Navbar>
