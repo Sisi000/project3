@@ -261,8 +261,12 @@ productRouter.get("/slug/:slug", async (req, res) => {
     res.status(404).send({ message: "Product Not Found" });
   }
 });
-productRouter.get("/:id", async (req, res) => {
-  const product = await Product.findById(req.params.id);
+
+productRouter.post("/id", async (req, res) => {
+  const idlist = req.body.params;
+  console.log("idlist", idlist);
+
+  const product = await Product.find({ _id: { $in: idlist } });
   if (product) {
     res.send(product);
   } else {
