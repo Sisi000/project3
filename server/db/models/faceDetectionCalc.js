@@ -255,7 +255,7 @@ async function facelandmark(imageFile, dataBaseProducts, n=3) {
 
     //console.log("This is the unordered list: ", rawResults)
     //console.log("This is the ordered list: ",results)
-    return [results]
+    return results
 }
 
 async function facelandmarkURL(url, dataBaseProducts, n=3) {
@@ -293,7 +293,7 @@ async function facelandmarkURL(url, dataBaseProducts, n=3) {
     //console.log("This is the unordered list: ", rawResults)
     //console.log("This is the ordered list: ",results)
     
-    return [results]
+    return results
 }
 
 module.exports = {
