@@ -4,11 +4,28 @@ import "./UploadS3.css";
 import imgphoto from "../../assets/photo.png";
 import UploadUrl from "../uploadUrl/UploadUrl";
 import WebcamCapture from "../Webcam/Webcam";
+import { Container, Row, Col } from "react-bootstrap";
+import Product from "../Product";
+
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "FETCH_REQUEST":
+      return { ...state, loading: true };
+    case "FETCH_SUCCESS":
+      return { ...state, products: action.payload, loading: false };
+    case "FETCH_FAIL":
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
 
 function UploadS3() {
   const [file, setFile] = useState();
   const [images, setImages] = useState([]);
   const [resultData, setResultData] = useState([]);
+  const [products, setProducts] = useState([]);
 
   async function postImage({ image }) {
     const formData = new FormData();
@@ -18,8 +35,8 @@ function UploadS3() {
       headers: { "Content-Type": "multipart/form-data" },
     });
 
-    console.log("Suggested glasses are", result.data[0]);
-    setResultData([result.data, ...resultData]);
+    console.log("Suggested glasses are", result.data);
+    setResultData(result.data);
 
     return result.data;
   }
@@ -37,6 +54,13 @@ function UploadS3() {
     setFile(file);
     setResultData("");
     document.getElementById("suggestedglasses").value = "";
+  };
+
+  const showSuggested = async (event) => {
+    const params = resultData;
+    console.log("resultData is", resultData);
+    const result2 = await axios.post(`/api/products/id`, { params });
+    setProducts(result2.data);
   };
 
   return (
@@ -63,15 +87,37 @@ function UploadS3() {
             </div>
           )}
         </div>
-         <button className="button-4" type="submit">
+        <button className="button-4" type="submit">
           Submit
         </button>
-        <div className="suggested-glasses" id="suggestedglasses">
-          Suggested glasses are<br/> {resultData}
-        </div>
       </form>
       <UploadUrl />
       <WebcamCapture />
+      <Container fluid style={{ padding: "0" }}>
+        <Container className="mt-3">
+          <div>
+            <h1>Suggested glasses</h1>
+            <div className="products">
+              <Row>
+                {products.map((product) => (
+                  <Col key={product._id} sm={6} md={4} lg={3} className="mb-3">
+                    <Product product={product}></Product>
+                  </Col>
+                ))}
+              </Row>
+            </div>
+          </div>
+        </Container>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            showSuggested();
+          }}
+          className="button-5"
+        >
+          Show
+        </button>
+      </Container>
     </div>
   );
 }
