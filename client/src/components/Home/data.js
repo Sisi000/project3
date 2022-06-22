@@ -1,7 +1,7 @@
 export const sliderItems = [
     {
       id: 1,
-      img: "https://www.eyeconic.com/on/demandware.static/-/Sites/default/dw92e6b825/images/eyeconic/plp/eyewear/2022/eyeglasses-womens-eyewear-mobile-spring@2x.jpg",
+      img: "https://assets.lenscrafters.com/extra/image/LensCrafters/projects/202104-restyling/pdp/frameadv_start.png",
       title: "SPRING SALE",
       desc: "DON'T COMPROMISE ON STYLE! GET FLAT 50% OFF FOR NEW ARRIVALS.",
       bg: "f5fafd",
