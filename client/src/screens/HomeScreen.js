@@ -7,6 +7,9 @@ import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import Slider from "../components/Home/Slider"
+import Cards from "../components/Home/Cards"
+import TryOn from '../components/Home/tryOn';
+import { SignalCellularConnectedNoInternet2BarSharp } from '@mui/icons-material';
 // import data from '../data';
 
 const reducer = (state, action) => {
@@ -45,17 +48,23 @@ function HomeScreen() {
   }, []);
   return (
     <>
-      <Container fluid style={{ padding:"0" }}>
+      <Container fluid style={{ padding: "0" }}>
         <div>
           < Slider />
         </div>
-        <Container className="mt-3">
+        <div>
+          <Cards />
+        </div>
+        <div>
+          <TryOn />
+        </div>
+        <Container className="my-5 pt-5">
           <div>
             <Helmet>
               <title>eyelovecoding</title>
             </Helmet>
             <h1>Featured Products</h1>
-            <div className="products">
+            <div className="products my-5 py-2">
               {loading ? (
                 <LoadingBox />
               ) : error ? (

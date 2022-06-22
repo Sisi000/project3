@@ -75,12 +75,14 @@ const Desc = styled.p`
   letter-spacing: 3px;
 `;
 
-const Button = styled.button`
+const Subtitle = styled.h6`
   padding: 10px;
-  font-size: 20px;
-  background-color: transparent;
-  cursor: pointer;
+  font-size: 16px;
+  color: grey;
+  
 `;
+
+
 
 const Slider = () => {
   const [slideIndex, setSlideIndex] = useState(0);
@@ -106,7 +108,7 @@ const Slider = () => {
             <InfoContainer>
               <Title>{item.title}</Title>
               <Desc>{item.desc}</Desc>
-              <Button>SHOW NOW</Button>
+              <Subtitle>*to get details, feel free to call us at your very convenient time</Subtitle>
             </InfoContainer>
           </Slide>
         ))}
