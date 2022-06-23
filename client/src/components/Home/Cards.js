@@ -27,7 +27,7 @@ function Cards() {
                     <Col>
                         <div className="d-flex justify-content-around">
                             <Card className="bg-info text-dark bg-opacity-10" style={{ width: "18rem" }}>
-                                <Card.Img variant="top" class="mx-3 mb-2 mt-4" src={Image1} style={{ width: "17.4rem" }}/>
+                                <Card.Img variant="top" className="mx-3 mb-2 mt-4" src={Image1} style={{ width: "17.4rem" }}/>
                                 <Card.Body className='text-center mb-5'>
                                     <a href="http://localhost:3000/search?category=Round">
                                         <Button type='button' className='shadow-none mt-3 pt-2' variant="warning"><h4>ROUND</h4></Button></a>

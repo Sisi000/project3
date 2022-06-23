@@ -38,7 +38,7 @@ function Product(props) {
           <Card.Title style={{ color:'#686868' }}>{product.name}</Card.Title>
         </Link>
         <Rating rating={product.rating} numReviews={product.numReviews} />
-        <Card.Text><h4>${product.price}</h4></Card.Text>
+        <Card.Text>${product.price}</Card.Text>
         {product.countInStock === 0 ? (
           <Button variant="light" disabled>
             Out of stock
