@@ -1,61 +1,79 @@
-import React, { Component } from "react";
+import { useState } from "react";
 import axios from "axios";
 import "./UploadUrl.css";
+// import imgphoto from "../../assets/photo.png";
+import { Container, Row, Col } from "react-bootstrap";
+import Product from "../Product";
 
-class UploadUrl extends Component {
-  state = {
-    URL: "",
-    // isValid: false
-  };
+function UploadUrl2() {
+  const [file, setFile] = useState("");
+  const [resultData, setResultData] = useState([]);
+  const [products, setProducts] = useState([]);
 
-  // validateWebsiteUrl = websiteUrl => {
-  //   const urlRegEx =
-  //     '[-a-zA-Z0-9@:%_+.~#?&//=]{2,256}(.[a-z]{2,4})?\b(/[-a-zA-Z0-9@:%_+.~#?&//=]*)?';
-  //   return urlRegEx.test(String(websiteUrl).toLowerCase());
-  // };
-
-  changeUrl = (e) => {
+  const changeUrl = (e) => {
     const { value } = e.target;
-    // const isValid = !value
-    // || this.validateWebsiteUrl(value);
-
-    this.setState({
-      URL: value,
-      // isValid
-    });
+    console.log("value is", value);
+    setFile(value);
   };
 
-  submitForm = async (event) => {
+  const submit = async (event) => {
     event.preventDefault();
-    const { URL } = this.state;
-    await axios.post("/uploadurl", { URL }).then((res) => {
-         // window.location = "/retrieve" //This line of code will redirect you once the submission is succeed
-      // alert("Suggested glasses are " + JSON.stringify(res.data.results));
+    const URL  = file;
+    console.log("URL is", URL);
+
+    await axios.post("/uploadurl", { URL } ).then((res) => {
       alert("Suggested glasses are " + res.data);
-      // console.log("Suggested glasses are", res.data.results);
-      this.setState({
-        URL: "",
-      });
+      setResultData(res.data);
+      // return res.data;
     });
   };
 
-  render() {
-    const { URL } = this.state;
-    return (
+  const showSuggested = async () => {
+    const params = resultData;
+    console.log("resultData is", resultData);
+    const result2 = await axios.post(`/api/products/id`, { params });
+    setProducts(result2.data, ...products);
+  };
+
+  return (
+    <div className="containers3">
       <div className="container-url">
         <form className="formsUrl">
           Enter image Url
-          <input type="text" name="URL" value={URL} onChange={this.changeUrl} />
-          {/* {!this.state.isValid && (
-            <div style={{ color: "red" }}>URL is invalid</div>
-          )} */}
-          <button className="button-2" onClick={this.submitForm}>
+          <input type="text" name="URL" value={file} onChange={changeUrl} />
+          <button className="button-2" onClick={submit}>
             Submit
           </button>
-          <img src={URL} alt=""></img>
+          <img className="imagePreview" src={file} alt=""></img>
         </form>
       </div>
-    );
-  }
+      <Container fluid style={{ padding: "0" }}>
+        <Container className="mt-3">
+          <div className="suggestedglasses">
+            <div className="products my-5 py-2">
+              <Row>
+                <h1>Suggested glasses</h1>
+                {products.map((product) => (
+                  <Col key={product._id} sm={6} md={4} lg={3} className="mb-3">
+                    <Product product={product}></Product>
+                  </Col>
+                ))}
+              </Row>
+            </div>
+          </div>
+        </Container>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            showSuggested();
+          }}
+          className="button-5"
+        >
+          Show
+        </button>
+      </Container>
+    </div>
+  );
 }
-export default UploadUrl;
+
+export default UploadUrl2;

@@ -85,7 +85,8 @@ router.post(
 
 // upload Url to vision
 router.post("/uploadurl", async (req, res, next) => {
-  const urlBody = req.body.URL;
+  const urlBody = req.body.URL
+  console.log("urlBody is", urlBody);
   
   const products = await Product.find();
 
