@@ -1,8 +1,9 @@
-.containersUrl {
+.container-url {
   /* text-align: center; */
   display: flex;
   align-items: center;
   flex-direction: column;
+  /* justify-content: center; */
   /* margin-top: 20px; */
 
 }
@@ -23,9 +24,9 @@
 .formsUrl {
   display: flex;
   flex-direction: column;
-  max-width: 400px;
+  /* max-width: 400px;
+  /* margin-left: -70px; */ 
   margin-top: 60px;
-  margin-left: -70px;
 
 }
 
@@ -41,13 +42,13 @@
   border-radius: 4px;
   box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0,
     rgba(255, 255, 255, 0.25) 0 1px 0 inset;
-  width: 80px;
+  max-width: 80px;
   height: 30px;
   margin-top: 20px;
   margin-bottom: 20px;
 }
 
-.button-4:hover {
+.button-2:hover {
   background-color: #c3c3c4;
   text-decoration: none;
   transition-duration: 0.1s;

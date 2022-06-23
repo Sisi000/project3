@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
+import "./Webcam.css";
 import Product from "../Product";
 
 const WebcamComponent = () => <Webcam />;
@@ -50,6 +51,7 @@ function WebcamCapture() {
 
   return (
     <div className="webcam-container">
+      <div className="container-uploads">
       <form className="forms3" onSubmit={submit}>
         <div className="webcam-img">
           {file === "" ? (
@@ -92,7 +94,8 @@ function WebcamCapture() {
         <button className="button-4" type="submit">
           Submit
         </button>
-        
+        </form>
+        </div>
   <Container fluid style={{ padding: "0" }}>
         <Container className="mt-3">
           <div>
@@ -118,7 +121,8 @@ function WebcamCapture() {
           Show
         </button>
       </Container>
-      </form>
+    
+    
     </div>
   );
 }

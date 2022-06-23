@@ -42,15 +42,15 @@ class UploadUrl extends Component {
   render() {
     const { URL } = this.state;
     return (
-      <div className="containerUrl">
+      <div className="container-url">
         <form className="formsUrl">
-          or enter image Url
+          Enter image Url
           <input type="text" name="URL" value={URL} onChange={this.changeUrl} />
           {/* {!this.state.isValid && (
             <div style={{ color: "red" }}>URL is invalid</div>
           )} */}
           <button className="button-2" onClick={this.submitForm}>
-            SubmitUrl
+            Submit
           </button>
           <img src={URL} alt=""></img>
         </form>

@@ -7,7 +7,6 @@ import Product from "../Product";
 
 function UploadS3() {
   const [file, setFile] = useState();
-  const [images, setImages] = useState([]);
   const [resultData, setResultData] = useState([]);
   const [products, setProducts] = useState([]);
 
@@ -28,7 +27,6 @@ function UploadS3() {
   const submit = async (event) => {
     event.preventDefault();
     const result = await postImage({ image: file });
-    setImages([result.image, ...images]);
     setFile(null);
     document.getElementById("selectedimage").value = "";
   };
@@ -37,7 +35,7 @@ function UploadS3() {
     const file = event.target.files[0];
     setFile(file);
     setResultData("");
-    // document.getElementById("suggestedglasses").value = "";
+    //  document.getElementById("suggestedglasses").value = "";
   };
 
   const showSuggested = async () => {
@@ -82,7 +80,7 @@ function UploadS3() {
           <div className="suggestedglasses">
             <div className="products my-5 py-2">
               <Row>
-                <h1>Suggested glasses</h1>
+              <h1>Suggested glasses</h1>
                 {products.map((product) => (
                   <Col key={product._id} sm={6} md={4} lg={3} className="mb-3">
                     <Product product={product}></Product>
