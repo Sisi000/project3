@@ -97,7 +97,7 @@ function App() {
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
                 <SearchBox />
-                <Nav className="me-auto mx-auto my-2 my-lg-0" style={{ fontSize: "1.5rem" }}>
+                <Nav className="me-auto mx-auto my-2 my-lg-0" style={{ fontSize: "1.2rem" }}>
                   <Nav.Link  href="/">Home</Nav.Link>
                   <Nav.Link href="/about">About</Nav.Link>
                   <Nav.Link href="/upload">Upload</Nav.Link>
