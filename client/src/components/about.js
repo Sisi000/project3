@@ -38,7 +38,7 @@ function About() {
           <Col>
             <div className="d-flex justify-content-around">
               <Card style={{ width: "18rem" }}>
-                <Card.Img variant="top" class="rounded-circle" src={Images} />
+                <Card.Img variant="top" className="rounded-circle" src={Images} />
                 <Card.Body className='text-center'>
                   <Card.Title className='bold'>Adrian Chin</Card.Title>
                   <Card.Text>Full-stack web developer
@@ -52,7 +52,7 @@ function About() {
           <Col>
             <div className="d-flex justify-content-around">
               <Card style={{ width: "18rem" }}>
-                <Card.Img variant="top" class="rounded-circle" src={Image1} />
+                <Card.Img variant="top" className="rounded-circle" src={Image1} />
                 <Card.Body className='text-center'>
                   <Card.Title className='bold'>Sanja Ivansic</Card.Title>
                   <Card.Text>
@@ -67,7 +67,7 @@ function About() {
           <Col>
             <div className="d-flex justify-content-around">
               <Card style={{ width: "18rem" }}>
-                <Card.Img variant="top" class="rounded-circle" src={Image2} />
+                <Card.Img variant="top" className="rounded-circle" src={Image2} />
                 <Card.Body className='text-center'>
                   <Card.Title className='bold'>Abdul Mustafayev</Card.Title>
                   <Card.Text>
@@ -82,7 +82,7 @@ function About() {
           <Col>
             <div className="d-flex justify-content-around">
               <Card style={{ width: "18rem" }}>
-                <Card.Img variant="top" class="rounded-circle" src={Image3} />
+                <Card.Img variant="top" className="rounded-circle" src={Image3} />
                 <Card.Body className='text-center'>
                   <Card.Title className='bold'>Yulia Sinko</Card.Title>
                   <Card.Text>
