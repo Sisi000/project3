@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import axios from 'axios';
 import logger from 'use-reducer-logger';
 import { Container, Row, Col } from "react-bootstrap";
@@ -10,7 +10,7 @@ import Slider from "../components/Home/Slider"
 import Cards from "../components/Home/Cards"
 import TryOn from '../components/Home/tryOn';
 import { SignalCellularConnectedNoInternet2BarSharp } from '@mui/icons-material';
-// import data from '../data';
+
 
 const reducer = (state, action) => {
   switch (action.type) {

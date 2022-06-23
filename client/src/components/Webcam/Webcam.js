@@ -5,7 +5,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import "./Webcam.css";
 import Product from "../Product";
 
-const WebcamComponent = () => <Webcam />;
+// const WebcamComponent = () => <Webcam />;
 
 const videoConstraints = {
   width: 400,

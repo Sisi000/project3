@@ -27,6 +27,7 @@ function UploadS3() {
   const submit = async (event) => {
     event.preventDefault();
     const result = await postImage({ image: file });
+    console.log("Suggested glasses are", result);
     setFile(null);
     document.getElementById("selectedimage").value = "";
   };
