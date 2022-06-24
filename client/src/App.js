@@ -19,7 +19,7 @@ import PaymentMethodScreen from "./screens/PaymentMethodScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
 import OrderHistoryScreen from "./screens/OrderHistoryScreen";
-import ProfileScreen from "./screens/ProfileScreen";
+import PrescriptionScreen from "./screens/PrescriptionScreen";
 import Button from "react-bootstrap/Button";
 import { getError } from "./utils";
 import axios from "axios";
@@ -111,8 +111,8 @@ function App() {
                   </Link>
                   {userInfo ? (
                     <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
-                      <LinkContainer to="/profile">
-                        <NavDropdown.Item>User Profile</NavDropdown.Item>
+                      <LinkContainer to="/prescription">
+                        <NavDropdown.Item>Prescription</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/orderhistory">
                         <NavDropdown.Item>Order History</NavDropdown.Item>
@@ -187,10 +187,10 @@ function App() {
               <Route path="/signin" element={<SigninScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
                            <Route
-                path="/profile"
+                path="/prescription"
                 element={<Container className="mt-3">
                   <ProtectedRoute>
-                    <ProfileScreen />
+                    <PrescriptionScreen />
                   </ProtectedRoute></Container>
                 }
               />
