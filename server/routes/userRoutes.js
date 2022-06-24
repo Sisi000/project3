@@ -106,7 +106,7 @@ userRouter.post(
 );
 
 userRouter.put(
-  '/profile',
+  '/prescription',
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
