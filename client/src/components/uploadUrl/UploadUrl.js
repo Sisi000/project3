@@ -47,6 +47,7 @@ function UploadUrl2() {
           <img className="imagePreview" src={file} alt=""></img>
         </form>
       </div>
+      <div className="container-suggestion">
       <Container fluid style={{ padding: "0" }}>
         <Container className="mt-3">
           <div className="suggestedglasses">
@@ -72,6 +73,7 @@ function UploadUrl2() {
           Show
         </button>
       </Container>
+    </div>
     </div>
   );
 }
