@@ -218,6 +218,37 @@ function calculateUserData(imageInformation){
     
     return userData=[eyeRatioHorrizvsVertRatio,earsToFaceHorrizvsVertRatio,cheekVsChinHorizRatio,noseWidthvsHeightRatio]
 }
+async function uploadImageTest(imageFile){//Used for generating user data with test
+
+    async function setEndpoint(request) {
+        try{
+            const result = await client.faceDetection(request);
+
+            return result
+        } catch(error) {
+            console.log(error);
+            return res.status(500).json(`problem with the Google API`);
+        }
+    }
+
+    //specifications for image upload to google vision
+    const client = new vision.ImageAnnotatorClient(config);
+    //test for upload - needed for encode
+    var imageFileUpload = imageFile 
+    //defines internal file 
+    var imageB64Upload = Buffer.from(imageFileUpload).toString('base64');
+
+    const request = {
+        image: {
+            content: Buffer.from(imageB64Upload, 'base64')
+        }  
+    };
+
+    let imageInformation = await setEndpoint(request);
+
+    return imageInformation
+}
+
 
 async function facelandmark(imageFile, dataBaseProducts, n=3) {
     //Api function initialized for google vision
@@ -304,5 +335,7 @@ module.exports = {
     mergesort,
     euclideandistance,
     glassesToUserDataCalc,
-    glassesDataReturn
+    glassesDataReturn,
+    uploadImageTest,
+    calculateUserData
 }

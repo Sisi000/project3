@@ -34,11 +34,14 @@ const uploadProduct = multer({ dest: "uploads/" });
 
 
 // upload image to vision, S3 and MongoDB
-router.post("/upload", upload.single("image"), async (req, res, next) => {
-  const file = req.file;
+router.post("/upload", upload.array("UserData",2), async (req, res, next) => {
+  const image = req.files[0];
+  const userFilterData = JSON.parse(req.files[1].buffer)
+  console.log("userFilterData :",userFilterData)
+  console.log("Image" ,image)
  
   // resize and send to google vision
-  await sharp(file.buffer)
+  await sharp(image.buffer)
     .resize(900, 900, { withoutEnlargement: true })
     .toBuffer()
     .then(async (resized) => {
@@ -57,6 +60,7 @@ router.post("/upload", upload.single("image"), async (req, res, next) => {
       res.send(results);
     });
   res.status("Successfully uploaded!");
+  
 });
 
 // upload image from webcam to vision
