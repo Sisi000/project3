@@ -7,27 +7,25 @@ import UploadUrl from './uploadUrl/UploadUrl';
 import "./Uploads.css"
 
 
-
-
 export default function Uploads() {
   const [isShown1, setIsShown1] = useState(false);
   const [isShown2, setIsShown2] = useState(false);
   const [isShown3, setIsShown3] = useState(false);
 
-  const handleClick1 = event => {
+  const handleClick1 = (event) => {
     // 👇️ toggle shown state
     setIsShown1(current => !current);
     setIsShown2(false);
     setIsShown3(false);
   }
-    const handleClick2 = event => {
+    const handleClick2 = (event) => {
       // 👇️ toggle shown state
       setIsShown2(current => !current);
       setIsShown1(false);
       setIsShown3(false);
     }
 
-      const handleClick3 = event => {
+      const handleClick3 = (event) => {
         // 👇️ toggle shown state
         setIsShown3(current => !current);
         setIsShown1(false);
@@ -50,7 +48,7 @@ export default function Uploads() {
     </div>
     <div>
       <button className="btn-uploads3" onClick={handleClick3}>Upload Url</button>
-         {isShown3 && <UploadUrl />}
+         {isShown3 && <UploadUrl/>}
     </div>
     </div>
   );
