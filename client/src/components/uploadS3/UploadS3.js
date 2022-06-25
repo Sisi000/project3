@@ -10,6 +10,7 @@ function UploadS3() {
   const [resultData, setResultData] = useState([]);
   const [products, setProducts] = useState([]);
 
+/* Old code for single file upload, going with multi file upload - Delete
   async function postImage({ image }) {
     const formData = new FormData();
     formData.append("image", image);
@@ -23,15 +24,57 @@ function UploadS3() {
 
     return result.data;
   }
+*/
+
+  async function postImage(filesForUpload, blob) {
+    const formData = new FormData();
+    formData.append("UserData", filesForUpload)//image
+    formData.append("UserData", blob)//filters in Blob format
+    const result = await axios({
+      method: "POST",
+      url: "/upload",
+      data: formData,
+      headers: { 
+        "Content-Type": "multipart/form-data" 
+      },
+    });
+    console.log("Suggested glasses are", result.data);
+    setResultData(result.data);
+
+    return result.data;
+  }
+  
+  const fileUserInput = {//dummy filter dataset
+    filters: {
+      color: null,
+      price: null,
+      size: null,
+      shape: "Square"
+    }
+  }
 
   const submit = async (event) => {
     event.preventDefault();
-    const result = await postImage({ image: file });
+    
+    const fileUserInputJSON = JSON.stringify(fileUserInput);//turn filter set to JSON
+    const blob = new Blob([fileUserInputJSON], {//turn filter (JSON) to blob for multipart form submittal
+      type: 'application/json'
+    });
+
+    const result = await postImage(file,blob);
     console.log("Suggested glasses are", result);
     setFile(null);
     document.getElementById("selectedimage").value = "";
   };
-
+  /* Old code for single file upload, going with multi file upload - Delete
+  const submit = async (event) => {
+    event.preventDefault();
+    const result = await postImageTest({ image: file });
+    console.log("Suggested glasses are", result);
+    setFile(null);
+    document.getElementById("selectedimage").value = "";
+  };
+  */
   const fileSelected = (event) => {
     const file = event.target.files[0];
     setFile(file);

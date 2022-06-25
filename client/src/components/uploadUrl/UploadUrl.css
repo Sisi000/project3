@@ -1,20 +1,17 @@
 .container-url {
-  /* text-align: center; */
   display: flex;
   align-items: center;
   flex-direction: column;
-  /* justify-content: center; */
-  /* margin-top: 20px; */
-
+  width: 100%;
 }
-/* 
-.containerphoto {
+
+.container-suggestion {
   display: flex;
   align-items: center;
-  flex-direction: row;
-  margin-left: -70px;
-  margin-bottom: 30px;
-} */
+  flex-direction: column;
+  width: 100%;
+  justify-content:center;
+}
 
 .imagePreview {
   max-width: 100%;
@@ -24,10 +21,8 @@
 .formsUrl {
   display: flex;
   flex-direction: column;
-  /* max-width: 400px;
-  /* margin-left: -70px; */ 
   margin-top: 60px;
-
+  width: 100%;
 }
 
 .buttonupload {
