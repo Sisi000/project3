@@ -16,6 +16,115 @@ userRouter.get(
   })
 );
 
+userRouter.put(
+  '/prescription',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+    if (user) {
+
+      user.SphereR=req.body.SphereR || user.SphereR;
+      user.CylinderR=req.body.CylinderR || user.CylinderR;
+      user.AxisR=req.body.AxisR || user.AxisR;
+      user.ADDR=req.body.ADDR || user.ADDR;
+      user.SphereL=req.body.SphereL || user.SphereL;
+      user.CylinderL=req.body.CylinderL || user.CylinderL;
+      user.AxisL=req.body.AxisL || user.AxisL;
+      user.ADDL=req.body.ADDL || user.ADDL;
+      user.RPD=req.body.RPD || user.RPD;
+      user.LPD=req.body.LPD || user.LPD;
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+    
+
+      const updatedUser = await user.save();
+      res.send({
+        SphereR: updatedUser.SphereR,
+        CylinderR: updatedUser.CylinderR,
+        AxisR: updatedUser.AxisR,
+        ADDR: updatedUser.ADDR,
+        SphereL: updatedUser.SphereL,
+        CylinderL: updatedUser.CylinderL,
+        AxisL: updatedUser.AxisL,
+        ADDL: updatedUser.AxisL,
+        RPD: updatedUser.RPD,
+        LPD: updatedUser.LPD,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+        token: generateToken(updatedUser),
+      });
+    } else {
+      res.status(404).send({ message: 'User not found' });
+    }
+  })
+);
+
+userRouter.post(
+  '/signin',
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findOne({ email: req.body.email });
+    if (user) {
+      if (bcrypt.compareSync(req.body.password, user.password)) {
+        res.send({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          isAdmin: user.isAdmin,
+          token: generateToken(user),
+        });
+        return;
+      }
+    }
+    res.status(401).send({ message: 'Invalid email or password' });
+  })
+);
+
+userRouter.post(
+  '/signup',
+  expressAsyncHandler(async (req, res) => {
+    const newUser = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: bcrypt.hashSync(req.body.password),
+    });
+    const user = await newUser.save();
+    res.send({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      token: generateToken(user),
+    });
+  })
+);
+
+userRouter.put(
+  '/profile',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+    if (user) {
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      if (req.body.password) {
+        user.password = bcrypt.hashSync(req.body.password, 8);
+      }
+
+      const updatedUser = await user.save();
+      res.send({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+        token: generateToken(updatedUser),
+      });
+    } else {
+      res.status(404).send({ message: 'User not found' });
+    }
+  })
+);
+
 userRouter.get(
   '/:id',
   isAuth,
@@ -66,69 +175,6 @@ userRouter.delete(
     }
   })
 );
-userRouter.post(
-  '/signin',
-  expressAsyncHandler(async (req, res) => {
-    const user = await User.findOne({ email: req.body.email });
-    if (user) {
-      if (bcrypt.compareSync(req.body.password, user.password)) {
-        res.send({
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          isAdmin: user.isAdmin,
-          token: generateToken(user),
-        });
-        return;
-      }
-    }
-    res.status(401).send({ message: 'Invalid email or password' });
-  })
-);
 
-userRouter.post(
-  '/signup',
-  expressAsyncHandler(async (req, res) => {
-    const newUser = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: bcrypt.hashSync(req.body.password),
-    });
-    const user = await newUser.save();
-    res.send({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      token: generateToken(user),
-    });
-  })
-);
-
-userRouter.put(
-  '/prescription',
-  isAuth,
-  expressAsyncHandler(async (req, res) => {
-    const user = await User.findById(req.user._id);
-    if (user) {
-      user.name = req.body.name || user.name;
-      user.email = req.body.email || user.email;
-      if (req.body.password) {
-        user.password = bcrypt.hashSync(req.body.password, 8);
-      }
-
-      const updatedUser = await user.save();
-      res.send({
-        _id: updatedUser._id,
-        name: updatedUser.name,
-        email: updatedUser.email,
-        isAdmin: updatedUser.isAdmin,
-        token: generateToken(updatedUser),
-      });
-    } else {
-      res.status(404).send({ message: 'User not found' });
-    }
-  })
-);
 
 module.exports = userRouter;

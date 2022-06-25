@@ -1,4 +1,5 @@
-import React, { useContext, useReducer, useState } from 'react';
+import React, { useContext, useReducer, useEffect, useState } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
 import { Helmet } from 'react-helmet-async';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -11,12 +12,28 @@ import { Row, Col } from "react-bootstrap";
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'UPDATE_REQUEST':
+    case "FETCH_REQUEST":
+      return { ...state, loading: true };
+    case "FETCH_SUCCESS":
+      return { ...state, loading: false };
+    case "FETCH_FAIL":
+      return { ...state, loading: false, error: action.payload };
+    case "UPDATE_REQUEST":
       return { ...state, loadingUpdate: true };
-    case 'UPDATE_SUCCESS':
+    case "UPDATE_SUCCESS":
       return { ...state, loadingUpdate: false };
-    case 'UPDATE_FAIL':
+    case "UPDATE_FAIL":
       return { ...state, loadingUpdate: false };
+    case "UPLOAD_REQUEST":
+      return { ...state, loadingUpload: true, errorUpload: "" };
+    case "UPLOAD_SUCCESS":
+      return {
+        ...state,
+        loadingUpload: false,
+        errorUpload: "",
+      };
+    case "UPLOAD_FAIL":
+      return { ...state, loadingUpload: false, errorUpload: action.payload };
 
     default:
       return state;
@@ -24,26 +41,78 @@ const reducer = (state, action) => {
 };
 
 export default function PrescriptionScreen() {
-  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const navigate = useNavigate();
+  const params = useParams(); // /prescription/:id
+  const { id: prescriptionId } = params;
+
+  const { state, dispatch: ctxDispatch  } = useContext(Store);
   const { userInfo } = state;
+  const [{ loading, error, loadingUpdate, loadingUpload }, dispatch] =
+  useReducer(reducer, {
+    loading: true,
+    error: "",
+  });
+  const [SphereR, setSphereR] = useState("");
+  const [CylinderR, setCylinderR] = useState("");
+  const [AxisR, setAxisR] = useState("");
+  const [ADDR, setADDR] =useState("");
+  const [SphereL, setSphereL] = useState("");
+  const [CylinderL, setCylinderL] = useState("");
+  const [AxisL, setAxisL] = useState("");
+  const [ADDL, setADDL] = useState("");
+  const [RPD, setRPD] = useState("");
+  const [LPD, setLPD] = useState("");
   const [name, setName] = useState(userInfo.name);
   const [email, setEmail] = useState(userInfo.email);
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+ 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        dispatch({ type: "FETCH_REQUEST" });
+        const { data } = await axios.get(`/api/users/prescription/`);
+        setSphereR(data.SphereR);
+        setCylinderR(data.CylinderR);
+        setAxisR(data.AxisR);
+        setADDR(data.ADDR);
+        setSphereL(data.SphereL);
+        setCylinderL(data.CylinderL);
+        setAxisL(data.AxisL);
+        setADDL(data.ADDL);
+        setRPD(data.RPD);
+        setLPD(data.LPD);
+        setName(data.name);
+        setEmail(data.email);
 
-  const [{ loadingUpdate }, dispatch] = useReducer(reducer, {
-    loadingUpdate: false,
-  });
+        dispatch({ type: "FETCH_SUCCESS" });
+      } catch (err) {
+        dispatch({
+          type: "FETCH_FAIL",
+          payload: getError(err),
+        });
+      }
+    };
+    fetchData();
+  }, [prescriptionId]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
+      dispatch({ type: "UPDATE_REQUEST" });
       const { data } = await axios.put(
-        '/api/users/prescription',
+        `/api/users/prescription`,
         {
+          SphereR,
+          CylinderR,
+          AxisR,
+          ADDR,
+          SphereL,
+          CylinderL,
+          AxisL,
+          ADDL,
+          RPD,
+          LPD,
           name,
-          email,
-          password,
+          email       
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -54,7 +123,8 @@ export default function PrescriptionScreen() {
       });
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
-      toast.success('User updated successfully');
+      toast.success('Prescription updated successfully');
+      navigate("/users/prescription");
     } catch (err) {
       dispatch({
         type: 'FETCH_FAIL',
@@ -72,10 +142,10 @@ export default function PrescriptionScreen() {
       <h1 className="my-5 pt-5 pb-5">What is your prescription?</h1>
       <form onSubmit={submitHandler} >
         <Row className="mb-3 pb-3 pt-4 text-muted bg-info text-dark bg-opacity-10">
-          <Form.Group as={Col} className="mb-3" controlId="OD-R">
+          <Form.Group as={Col} className="mb-3" controlId="ODR">
             <Form.Label className="mt-3 pt-3 fs-5">OD (Right eye)</Form.Label>
           </Form.Group>
-          <Form.Group as={Col} controlId="Sphere">
+          <Form.Group as={Col} controlId="SphereR">
             <Form.Label>Sphere(SPH)</Form.Label>
             <Form.Select defaultValue="0.00">
               <option>0.00</option>
@@ -193,7 +263,7 @@ export default function PrescriptionScreen() {
               <option>+12.00</option>
             </Form.Select>
           </Form.Group>
-          <Form.Group as={Col} controlId="Cylinder-R">
+          <Form.Group as={Col} controlId="CylinderR">
             <Form.Label>Cylinder(CYL)</Form.Label>
             <Form.Select defaultValue="0.00">
               <option>0.00</option>
@@ -248,11 +318,11 @@ export default function PrescriptionScreen() {
               <option>+6.00</option>
             </Form.Select>
           </Form.Group>
-          <Form.Group as={Col} controlId="Axis-R">
+          <Form.Group as={Col} controlId="AxisR">
             <Form.Label>Axis</Form.Label>
             <Form.Control />
           </Form.Group>
-          <Form.Group as={Col} controlId="ADD-R">
+          <Form.Group as={Col} controlId="ADDR">
             <Form.Label>ADD</Form.Label>
             <Form.Select defaultValue="n/a">
               <option>n/a</option>
@@ -295,7 +365,7 @@ export default function PrescriptionScreen() {
           <Form.Group as={Col} className="mb-3" controlId="OS">
             <Form.Label className="mt-3 pt-3 fs-5">OS (Left eye)</Form.Label>
           </Form.Group>
-          <Form.Group as={Col} controlId="Sphere-L">
+          <Form.Group as={Col} controlId="SphereL">
             <Form.Label>Sphere(SPH)</Form.Label>
             <Form.Select defaultValue="0.00">
               <option>0.00</option>
@@ -413,7 +483,7 @@ export default function PrescriptionScreen() {
               <option>+12.00</option>
             </Form.Select>
           </Form.Group>
-          <Form.Group as={Col} controlId="Cylinder-L">
+          <Form.Group as={Col} controlId="CylinderL">
             <Form.Label>Cylinder(CYL)</Form.Label>
             <Form.Select defaultValue="0.00">
               <option>0.00</option>
@@ -468,11 +538,11 @@ export default function PrescriptionScreen() {
               <option>+6.00</option>
             </Form.Select>
           </Form.Group>
-          <Form.Group as={Col} controlId="Axis-L">
+          <Form.Group as={Col} controlId="AxisL">
             <Form.Label>Axis</Form.Label>
             <Form.Control />
           </Form.Group>
-          <Form.Group as={Col} controlId="ADD-L">
+          <Form.Group as={Col} controlId="ADDL">
             <Form.Label>ADD</Form.Label>
             <Form.Select defaultValue="n/a">
               <option>n/a</option>
@@ -512,7 +582,7 @@ export default function PrescriptionScreen() {
           </Form.Group>
         </Row>
         <Row className="mb-3 pb-4 pt-3 text-muted bg-info text-dark bg-opacity-10">
-          <Form.Group as={Col} className="mb-3" controlId="PD-R">
+          <Form.Group as={Col} className="mb-3" controlId="PDR">
             <Form.Label className="mt-3 pt-2 fs-5">PD (Pupillary Distance)</Form.Label>
           </Form.Group>
           <Form.Group as={Col} controlId="RPD">
@@ -613,7 +683,7 @@ export default function PrescriptionScreen() {
             required
           />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="password">
+        {/* <Form.Group className="mb-3" controlId="password">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -626,7 +696,7 @@ export default function PrescriptionScreen() {
             type="password"
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-        </Form.Group>
+        </Form.Group> */}
         <div className="mb-3">
           <Button type="submit">Update</Button>
         </div>
