@@ -69,6 +69,11 @@ router.post(
   upload.single("image"),
   async (req, res, next) => {
     const file = req.body.image;
+    console.log(req.body.image)
+    const userfilters = JSON.parse(req.body.userfilters);
+    console.log(userfilters)
+
+    
     const matches = file.replace(/^data:image\/(png);base64,/, "");
     const buff = Buffer.from(matches, "base64");
 

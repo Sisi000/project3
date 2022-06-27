@@ -19,6 +19,36 @@ function WebcamCapture() {
   const [products, setProducts] = useState([]);
   const webcamRef = React.useRef(null);
 
+
+  const fileUserInput = {//dummy filter dataset
+    filters: {
+      color: null,
+      price: null,
+      size: null,
+      shape: "Square"
+    }
+  }
+  const fileUserInputJSON = JSON.stringify(fileUserInput)
+
+  async function postImage(filesForUpload) {
+    const formData = new FormData();
+    formData.append("image", filesForUpload)//image
+    formData.append("userfilters", fileUserInputJSON)//image
+    const result = await axios({
+      method: "POST",
+      url: "/uploadwebcam",
+      data: formData,
+      headers: { 
+        "Content-Type": "multipart/form-data" 
+      },
+    });
+    console.log("Suggested glasses are", result.data);
+    setResultData(result.data);
+
+    return result.data;
+  }
+
+  /* Remove - see above
   async function postImage({ image }) {
     const formData = new FormData();
     formData.append("image", image);
@@ -30,6 +60,7 @@ function WebcamCapture() {
     setResultData(result.data);
     return result.data;
   }
+*/
 
   const capture = React.useCallback(() => {
     const file = webcamRef.current.getScreenshot();
@@ -38,7 +69,7 @@ function WebcamCapture() {
 
   const submit = async (event) => {
     event.preventDefault();
-    const result = await postImage({ image: file });
+    const result = await postImage(file);
     setFile(result.image);
   };
 
