@@ -3,12 +3,16 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+require('dotenv').config();
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
 
 const indexRouter = require('./routes/index');
 const s3Router = require('./routes/s3');
 const productRouter = require ('./routes/productRoutes.js');
 const userRouter = require ('./routes/userRoutes.js');
 const orderRouter = require ('./routes/orderRoutes.js');
+
 
 const app = express();
 
@@ -21,6 +25,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/api/keys/paypal', (req, res) => {
+  res.send(process.env.PAYPAL_CLIENT_ID || 'sb');
+});
 
 app.use('/', indexRouter);
 app.use('/', s3Router);

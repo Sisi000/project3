@@ -35,7 +35,7 @@ function Product(props) {
       </Link>
       <Card.Body>
         <Link  style={{textDecoration: 'none'}} to={`/product/${product.slug}`}>
-          <Card.Title style={{ color:'#686868' }}>{product.name}</Card.Title>
+          <Card.Title style={{ color:'#000000', fontWeight: 'bold' }}>{product.name}</Card.Title>
           <Card.Title style={{ color:'#686868' }}>{product.slug}</Card.Title>
         </Link>
         <Rating rating={product.rating} numReviews={product.numReviews} />

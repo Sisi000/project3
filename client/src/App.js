@@ -38,6 +38,14 @@ import logo from "./assets/logo.png";
 import About from "./components/About/about";
 import Footer from "./components/Footer/footer";
 import Uploads from "./components/Uploads";
+// import Stripe from "./components/Stripe";
+import {Elements} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
+
+
+const stripePromise = loadStripe('pk_test_51LDrWRGEtGXARRSUlkMOMioz5t97vJD6RTVne14VJPjFecwdteJAUDaZmuKrvrZLU0NCCS0zSA2c989vttixIqN500eG5HbNgU'
+  );
+
 
 
 function App() {
@@ -207,7 +215,9 @@ function App() {
                 path="/order/:id"
                 element={<Container className="mt-3">
                   <ProtectedRoute>
+                  
                     <OrderScreen />
+                  
                   </ProtectedRoute></Container>
                 }
               ></Route>
@@ -223,7 +233,7 @@ function App() {
                 path="/shipping"
                 element={<Container className="mt-3"><ShippingAddressScreen /></Container>}
               ></Route>
-              <Route path="/payment" element={<Container className="mt-3"><PaymentMethodScreen /></Container>}></Route>
+              <Route path="/payment" element={<Container className="mt-3"><Elements stripe={stripePromise}><PaymentMethodScreen/></Elements></Container>}></Route>
               {/* Admin Routes */}
               <Route
                 path="/admin/dashboard"
@@ -278,6 +288,7 @@ function App() {
           </Routes>
 
         </main>
+        {/* <Stripe /> */}
         <Footer />
       </div>
     </BrowserRouter>

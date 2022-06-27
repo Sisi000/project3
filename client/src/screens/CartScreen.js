@@ -118,6 +118,7 @@ export default function CartScreen() {
                     >
                       Proceed to Checkout
                     </Button>
+                    
                   </div>
                 </ListGroup.Item>
               </ListGroup>
