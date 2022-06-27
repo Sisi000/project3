@@ -49,7 +49,7 @@ router.post("/upload", upload.array("UserData",2), async (req, res, next) => {
 
       const products = await Product.find();
 
-      const resultVision = await facelandmark(buffer, products);
+      const resultVision = await facelandmark(buffer, products, userFilterData);
 
       let results = []
 
@@ -69,17 +69,15 @@ router.post(
   upload.single("image"),
   async (req, res, next) => {
     const file = req.body.image;
-    console.log(req.body.image)
-    const userfilters = JSON.parse(req.body.userfilters);
-    console.log(userfilters)
 
+    const userFilterData = JSON.parse(req.body.userfilters);
     
     const matches = file.replace(/^data:image\/(png);base64,/, "");
     const buff = Buffer.from(matches, "base64");
 
     const products = await Product.find();
 
-    const resultVision = await facelandmark(buff, products);
+    const resultVision = await facelandmark(buff, products, userFilterData);
     
     let results = []
 
@@ -95,11 +93,14 @@ router.post(
 // upload Url to vision
 router.post("/uploadurl", async (req, res, next) => {
   const urlBody = req.body.URL
+  const userFilterData = req.body.userfilters
+
   console.log("urlBody is", urlBody);
-  
+  console.log("filters are ", userFilterData);
+
   const products = await Product.find();
 
-  const resultVision = await facelandmarkURL(urlBody,products);
+  const resultVision = await facelandmarkURL(urlBody,products, userFilterData);
 
   let results = []
 

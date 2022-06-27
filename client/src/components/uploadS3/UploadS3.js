@@ -49,7 +49,8 @@ function UploadS3() {
       color: null,
       price: null,
       size: null,
-      shape: "Square"
+      shape: "Square",
+      n: 5,
     }
   }
 

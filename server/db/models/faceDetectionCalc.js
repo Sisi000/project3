@@ -250,7 +250,7 @@ async function uploadImageTest(imageFile){//Used for generating user data with t
 }
 
 
-async function facelandmark(imageFile, dataBaseProducts, n=3) {
+async function facelandmark(imageFile, dataBaseProducts, userFilterData) {
     //Api function initialized for google vision
     async function setEndpoint(request) {
         try{
@@ -289,7 +289,7 @@ async function facelandmark(imageFile, dataBaseProducts, n=3) {
     return results
 }
 
-async function facelandmarkURL(url, dataBaseProducts, n=3) {
+async function facelandmarkURL(url, dataBaseProducts, userFilterData) {
     //Image URL for google - Requires body to have a key value pair URL:<URL>
     let imageURL = url
 

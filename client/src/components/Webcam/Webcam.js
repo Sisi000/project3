@@ -25,7 +25,8 @@ function WebcamCapture() {
       color: null,
       price: null,
       size: null,
-      shape: "Square"
+      shape: "Square",
+      n: 5,
     }
   }
   const fileUserInputJSON = JSON.stringify(fileUserInput)
