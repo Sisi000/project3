@@ -3,18 +3,43 @@ import React, { useState } from "react";
 function UploadFilters() {
 
     const [colorFilter, setColorFilter] = useState(null)
+
     const [priceMin, setPriceMin] = useState(0)
     const [priceMax, setPriceMax] = useState(500)
+
     const [colorBlack, setColorBlack] = useState(true)
     const [colorWhite, setColorWhite] = useState(true)
     const [colorBlue, setColorBlue] = useState(true)
     const [colorRed, setColorRed] = useState(true)
     const [colorBrown, setColorBrown] = useState(true)
     const [colorGreen, setColorGreen] = useState(true)
+
+    const [prescription, setPrescription] = useState(0)
+
+    const [shapeAvaitor, setShapeAvaitor] = useState(true)
+    const [shapeSquare, setShapeSquare] = useState(true)
+    const [shapeRectangle, setShapeRectangle] = useState(true)
+    const [shapeOval, setShapeOval] = useState(true)
+    const [shapeRound, setShapeRound] = useState(true)
     
 
   return (
     <div>
+        <div>
+        <input
+          type="number"
+          min={0}
+          max={10}
+          id="prescription"
+          name="prescription"
+          value={prescription}
+          onChange={(event) => setPrescription(event.target.value)}
+        />
+        <label for="MinPrice"> Prescription </label>
+        </div>
+
+        <br />
+
       <div>
         <input
           type="range"
@@ -26,7 +51,7 @@ function UploadFilters() {
           value={priceMin}
           onChange={(event) => setPriceMin(event.target.value)}
         />
-        <label for="MinPrice"> {priceMin} </label>
+        <label for="MinPrice"> Minimum Price: {priceMin} </label>
       </div>
       <div>
         <input
@@ -39,8 +64,9 @@ function UploadFilters() {
           value={priceMax}
           onChange={(event) => setPriceMax(event.target.value)}
         />
-        <label for="MaxPrice"> {priceMax} </label>
+        <label for="MaxPrice"> Maximum Price: {priceMax} </label>
       </div>
+      <br />
       <div>
         <input
           type="checkbox"
@@ -58,7 +84,7 @@ function UploadFilters() {
           checked
           onChange={() => setColorWhite(!colorWhite)}
         />
-        <label for="White"> White</label>
+        <label for="white"> White</label>
         <br />
         <input
           type="checkbox"
@@ -76,7 +102,7 @@ function UploadFilters() {
           checked
           onChange={() => setColorRed(!colorRed)}
         />
-        <label for="black"> Red</label>
+        <label for="red"> Red</label>
         <br />
         <input
           type="checkbox"
@@ -85,7 +111,7 @@ function UploadFilters() {
           checked
           onChange={() => setColorBrown(!colorBrown)}
         />
-        <label for="White"> Brown</label>
+        <label for="brown"> Brown</label>
         <br />
         <input
           type="checkbox"
@@ -94,9 +120,60 @@ function UploadFilters() {
           checked
           onChange={() => setColorGreen(!colorGreen)}
         />
-        <label for="blue"> Green</label>
+        <label for="green"> Green</label>
         <br />
       </div>
+      <br />
+      <div>
+        <input
+          type="checkbox"
+          id="square"
+          name="square"
+          checked
+          onChange={() => setShapeSquare(!shapeSquare)}
+        />
+        <label for="square"> Square</label>
+        <br />
+        <input
+          type="checkbox"
+          id="round"
+          name="round"
+          checked
+          onChange={() => setShapeRound(!shapeRound)}
+        />
+        <label for="round"> Round</label>
+        <br />
+        <input
+          type="checkbox"
+          id="oval"
+          name="oval"
+          checked
+          onChange={() => setShapeOval(!shapeOval)}
+        />
+        <label for="oval"> Oval</label>
+        <br />
+        <input
+          type="checkbox"
+          id="rectangle"
+          name="rectangle"
+          checked
+          onChange={() => setShapeRectangle(!shapeRectangle)}
+        />
+        <label for="rectangle"> Rectangle</label>
+        <br />
+        <input
+          type="checkbox"
+          id="aviator"
+          name="aviator"
+          checked
+          onChange={() => setShapeAvaitor(!shapeAvaitor)}
+        />
+        <label for="aviator"> Avaitor</label>
+        <br />
+      </div>
+
+      <br />
+
       <div>
         <select
           value={colorFilter}
