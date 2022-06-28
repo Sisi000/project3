@@ -4,12 +4,14 @@ import { useState } from "react";
 import UploadS3 from "./uploadS3/UploadS3";
 import Webcam from "./Webcam/Webcam";
 import UploadUrl from "./uploadUrl/UploadUrl";
+import UploadFilters from "./UploadFilters/UploadFilters";
 import "./Uploads.css";
 
 export default function Uploads() {
   const [isShown1, setIsShown1] = useState(false);
   const [isShown2, setIsShown2] = useState(false);
   const [isShown3, setIsShown3] = useState(false);
+
 
   const handleClick1 = () => {
     setIsShown1((current) => !current);
@@ -29,6 +31,8 @@ export default function Uploads() {
   };
 
   return (
+    <div>
+      <UploadFilters/>
     <div className="uploads-container">
       <div className="uploads-btns-container">
         <button className="btn-uploads1" onClick={handleClick1}>
@@ -46,6 +50,7 @@ export default function Uploads() {
         {isShown2 && <Webcam />}
         {isShown3 && <UploadUrl />}
       </div>
+    </div>
     </div>
   );
 }
