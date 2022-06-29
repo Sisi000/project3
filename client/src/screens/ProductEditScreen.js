@@ -268,7 +268,7 @@ export default function ProductEditScreen() {
               required
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="name">
+          <Form.Group className="mb-3" controlId="price">
             <Form.Label>Price</Form.Label>
             <Form.Control
               value={price}
@@ -285,14 +285,14 @@ export default function ProductEditScreen() {
               required
             />
           </Form.Group>
-          <div controlId="imageS3Key">
-            <div
+          <Form.Group controlId="imageS3Key">
+            <Form.Control
               value={imageS3Key}
               disabled={true}
               onChange={(e) => setImageS3Key(e.target.value)}
               required
             />
-          </div>
+          </Form.Group>
           <Form.Group className="mb-3" controlId="imageFile">
             <Form.Label>Upload Image</Form.Label>
             <Form.Control type="file" onChange={uploadFileHandler} />
@@ -313,12 +313,12 @@ export default function ProductEditScreen() {
               ))}
             </ListGroup>
           </Form.Group>
-          <div className="mb-3" controlId="additionalS3">
-            <div
+          <Form.Group className="mb-3" controlId="additionalS3">
+            <Form.Control
               value={additionalS3}
               onChange={(e) => setAdditionalS3(e.target.value)}
             />
-          </div>
+          </Form.Group>
           <Form.Group className="mb-3" controlId="additionalImageFile">
             <Form.Label>Upload Additional Image</Form.Label>
             <Form.Control
