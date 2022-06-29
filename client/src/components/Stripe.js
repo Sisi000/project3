@@ -1,6 +1,5 @@
 import React from "react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { faStripeS } from "@fortawesome/free-brands-svg-icons";
 
 
 const Stripe = () => {
