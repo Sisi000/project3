@@ -38,15 +38,6 @@ import logo from "./assets/logo.png";
 import About from "./components/About/about";
 import Footer from "./components/Footer/footer";
 import Uploads from "./components/Uploads";
-// import Stripe from "./components/Stripe";
-import {Elements} from '@stripe/react-stripe-js';
-import {loadStripe} from '@stripe/stripe-js';
-
-
-const stripePromise = loadStripe('pk_test_51LDrWRGEtGXARRSUlkMOMioz5t97vJD6RTVne14VJPjFecwdteJAUDaZmuKrvrZLU0NCCS0zSA2c989vttixIqN500eG5HbNgU'
-  );
-
-
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -82,8 +73,8 @@ function App() {
               ? "site-container active-cont d-flex flex-column full-box"
               : "site-container active-cont d-flex flex-column"
             : fullBox
-              ? "site-container d-flex flex-column full-box"
-              : "site-container d-flex flex-column"
+            ? "site-container d-flex flex-column full-box"
+            : "site-container d-flex flex-column"
         }
       >
         <ToastContainer position="bottom-center" limit={1} />
@@ -105,11 +96,14 @@ function App() {
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
                 <SearchBox />
-                <Nav className="me-auto mx-auto my-2 my-lg-0" style={{ fontSize: "1.2rem" }}>
-                  <Nav.Link  href="/">Home</Nav.Link>
+                <Nav
+                  className="me-auto mx-auto my-2 my-lg-0"
+                  style={{ fontSize: "1.2rem" }}
+                >
+                  <Nav.Link href="/">Home</Nav.Link>
                   <Nav.Link href="/about">About</Nav.Link>
                   <Nav.Link href="/upload">Upload</Nav.Link>
-                       <Link to="/cart" className="nav-link">
+                  <Link to="/cart" className="nav-link">
                     Cart
                     {cart.cartItems.length > 0 && (
                       <Badge pill bg="danger">
@@ -184,109 +178,168 @@ function App() {
           </Nav>
         </div>
         <main>
-
           <Routes>
-           
-              <Route path="/product/:slug" element={ <Container className="mt-3"><ProductScreen /></Container>} />
-              <Route path="/upload/*" element={<Container className="mt-3"><Uploads /> </Container>} />
-                       <Route path="/about" element={<Container className="mt-3"><About /></Container>} />
-              <Route path="/cart" element={<Container className="mt-3"><CartScreen /></Container>} />
-              <Route path="/search" element={<SearchScreen />} />
-              <Route path="/signin" element={<SigninScreen />} />
-              <Route path="/signup" element={<SignupScreen />} />
-                           <Route
-                path="/prescription"
-                element={<Container className="mt-3">
+            <Route
+              path="/product/:slug"
+              element={
+                <Container className="mt-3">
+                  <ProductScreen />
+                </Container>
+              }
+            />
+            <Route
+              path="/upload/*"
+              element={
+                <Container className="mt-3">
+                  <Uploads />{" "}
+                </Container>
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <Container className="mt-3">
+                  <About />
+                </Container>
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <Container className="mt-3">
+                  <CartScreen />
+                </Container>
+              }
+            />
+            <Route path="/search" element={<SearchScreen />} />
+            <Route path="/signin" element={<SigninScreen />} />
+            <Route path="/signup" element={<SignupScreen />} />
+            <Route
+              path="/prescription"
+              element={
+                <Container className="mt-3">
                   <ProtectedRoute>
                     <PrescriptionScreen />
-                  </ProtectedRoute></Container>
-                }
-              />
-              <Route
-                path="/map"
-                element={
-                  <ProtectedRoute>
-                    <MapScreen />
                   </ProtectedRoute>
-                }
-              />
-              <Route path="/placeorder" element={<Container className="mt-3"><PlaceOrderScreen /></Container>} />
-              <Route
-                path="/order/:id"
-                element={<Container className="mt-3">
+                </Container>
+              }
+            />
+            <Route
+              path="/map"
+              element={
+                <ProtectedRoute>
+                  <MapScreen />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/placeorder"
+              element={
+                <Container className="mt-3">
+                  <PlaceOrderScreen />
+                </Container>
+              }
+            />
+            <Route
+              path="/order/:id"
+              element={
+                <Container className="mt-3">
                   <ProtectedRoute>
-                  
                     <OrderScreen />
-                  
-                  </ProtectedRoute></Container>
-                }
-              ></Route>
-              <Route
-                path="/orderhistory"
-                element={<Container className="mt-3">
+                  </ProtectedRoute>
+                </Container>
+              }
+            ></Route>
+            <Route
+              path="/orderhistory"
+              element={
+                <Container className="mt-3">
                   <ProtectedRoute>
                     <OrderHistoryScreen />
-                  </ProtectedRoute></Container>
-                }
-              ></Route>
-              <Route
-                path="/shipping"
-                element={<Container className="mt-3"><ShippingAddressScreen /></Container>}
-              ></Route>
-              <Route path="/payment" element={<Container className="mt-3"><Elements stripe={stripePromise}><PaymentMethodScreen/></Elements></Container>}></Route>
-              {/* Admin Routes */}
-              <Route
-                path="/admin/dashboard"
-                element={<Container className="mt-3">
+                  </ProtectedRoute>
+                </Container>
+              }
+            ></Route>
+            <Route
+              path="/shipping"
+              element={
+                <Container className="mt-3">
+                  <ShippingAddressScreen />
+                </Container>
+              }
+            ></Route>
+            <Route
+              path="/payment"
+              element={
+                <Container className="mt-3">
+                  <PaymentMethodScreen />
+                </Container>
+              }
+            ></Route>
+            {/* Admin Routes */}
+            <Route
+              path="/admin/dashboard"
+              element={
+                <Container className="mt-3">
                   <AdminRoute>
                     <DashboardScreen />
-                  </AdminRoute></Container>
-                }
-              ></Route>
-              <Route
-                path="/admin/orders"
-                element={<Container className="mt-3">
+                  </AdminRoute>
+                </Container>
+              }
+            ></Route>
+            <Route
+              path="/admin/orders"
+              element={
+                <Container className="mt-3">
                   <AdminRoute>
                     <OrderListScreen />
-                  </AdminRoute></Container>
-                }
-              ></Route>
-              <Route
-                path="/admin/users"
-                element={<Container className="mt-3">
+                  </AdminRoute>
+                </Container>
+              }
+            ></Route>
+            <Route
+              path="/admin/users"
+              element={
+                <Container className="mt-3">
                   <AdminRoute>
                     <UserListScreen />
-                  </AdminRoute></Container>
-                }
-              ></Route>
-              <Route
-                path="/admin/products"
-                element={<Container className="mt-3">
+                  </AdminRoute>
+                </Container>
+              }
+            ></Route>
+            <Route
+              path="/admin/products"
+              element={
+                <Container className="mt-3">
                   <AdminRoute>
                     <ProductListScreen />
-                  </AdminRoute></Container>
-                }
-              ></Route>
-              <Route
-                path="/admin/product/:id"
-                element={<Container className="mt-3">
+                  </AdminRoute>
+                </Container>
+              }
+            ></Route>
+            <Route
+              path="/admin/product/:id"
+              element={
+                <Container className="mt-3">
                   <AdminRoute>
                     <ProductEditScreen />
-                  </AdminRoute></Container>
-                }
-              ></Route>
-              <Route
-                path="/admin/user/:id"
-                element={<Container className="mt-3">
+                  </AdminRoute>
+                </Container>
+              }
+            ></Route>
+            <Route
+              path="/admin/user/:id"
+              element={
+                <Container className="mt-3">
                   <AdminRoute>
                     <UserEditScreen />
-                  </AdminRoute></Container>
-                }
-              ></Route>
-         
+                  </AdminRoute>
+                </Container>
+              }
+            ></Route>
+
             <Route path="/" element={<HomeScreen />} />
           </Routes>
-
         </main>
         {/* <Stripe /> */}
         <Footer />

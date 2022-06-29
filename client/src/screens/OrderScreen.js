@@ -14,6 +14,7 @@ import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import { getError } from '../utils';
 import { toast } from 'react-toastify';
+import Stripe from "../components/Stripe";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -152,7 +153,7 @@ export default function OrderScreen() {
           type: 'resetOptions',
           value: {
             'client-id': clientId,
-            currency: 'USD',
+            currency: 'CAD',
           },
         });
         paypalDispatch({ type: 'setLoadingStatus', value: 'pending' });
@@ -313,7 +314,9 @@ export default function OrderScreen() {
                           onApprove={onApprove}
                           onError={onError}
                         ></PayPalButtons>
+                        <Stripe />
                       </div>
+                     
                     )}
                     {loadingPay && <LoadingBox></LoadingBox>}
                   </ListGroup.Item>
