@@ -5,6 +5,7 @@ function Perscription(props) {
     const prescription = props.prescription
   return (
     <div>
+        <p>Prescription (Dioptre)</p>
         <input
           type="number"
           min={0}
@@ -14,7 +15,7 @@ function Perscription(props) {
           value={prescription}
           onChange={(event) => setPrescription(event.target.value)}
         />
-        <label for="MinPrice"> Prescription </label>
+        <label for="MinPrice"> - dpt </label>
     </div>
   )
 }
