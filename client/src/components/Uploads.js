@@ -170,8 +170,10 @@ export default function Uploads() {
     maximum: (maximumList.price) ? maximumList : null,
   }
 
-  console.log(filters)
-
+  /*
+  Filters done
+  */
+ 
   const handleClick1 = () => {
     setIsShown1((current) => !current);
     setIsShown2(false);
