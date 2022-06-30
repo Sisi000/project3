@@ -7,6 +7,10 @@ const { isAuth, isAdmin, mailgun, payOrderEmailTemplate } = require('../utils.js
 
 const orderRouter = express.Router();
 
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const cors = require("cors")
+
+
 orderRouter.get(
   '/',
   isAuth,
@@ -177,5 +181,31 @@ orderRouter.delete(
     }
   })
 );
+
+orderRouter.post("/payment", cors(), async (req, res) => {
+	let { amount, id } = req.body
+  console.log(req.body)
+	try {
+		const payment = await stripe.paymentIntents.create({
+			amount,
+			currency: "USD",
+			description: "Spatula company",
+			payment_method: id,
+			confirm: true
+		})
+		console.log("Payment", payment)
+		res.json({
+			message: "Payment successful",
+			success: true
+		})
+	} catch (error) {
+		console.log("Error", error)
+		res.json({
+			message: "Payment failed",
+			success: false
+		})
+	}
+})
+
 
 module.exports = orderRouter;

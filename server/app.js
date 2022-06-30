@@ -4,8 +4,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 require('dotenv').config();
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
+const bodyParser = require("body-parser")
 
 const indexRouter = require('./routes/index');
 const s3Router = require('./routes/s3');
@@ -15,6 +15,9 @@ const orderRouter = require ('./routes/orderRoutes.js');
 
 
 const app = express();
+
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

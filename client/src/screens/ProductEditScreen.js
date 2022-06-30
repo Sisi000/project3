@@ -237,6 +237,19 @@ export default function ProductEditScreen() {
     console.log(additionalS3.filter((x) => x !== fileName));
     setImages(images.filter((x) => x !== fileName));
     setAdditionalS3(additionalS3.filter((x) => x !== fileName));
+
+    const { data } = await axios.post(
+      "/deleteadditionals3",
+      fileName,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+    );
+    console.log("result is", data);
+
     toast.success("Image removed successfully. click Update to apply it");
   };
   return (

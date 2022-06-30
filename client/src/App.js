@@ -38,6 +38,7 @@ import logo from "./assets/logo.png";
 import About from "./components/About/about";
 import Footer from "./components/Footer/footer";
 import Uploads from "./components/Uploads";
+import Stripe from "./components/Stripe";
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -103,6 +104,7 @@ function App() {
                   <Nav.Link href="/">Home</Nav.Link>
                   <Nav.Link href="/about">About</Nav.Link>
                   <Nav.Link href="/upload">Upload</Nav.Link>
+                  <Nav.Link href="/stripe">Stripe</Nav.Link>
                   <Link to="/cart" className="nav-link">
                     Cart
                     {cart.cartItems.length > 0 && (
@@ -202,6 +204,14 @@ function App() {
                   <About />
                 </Container>
               }
+            />
+            <Route
+            path="/stripe"
+            element={
+                <Container className="mt-3">
+                    <Stripe />
+                </Container>
+            }
             />
             <Route
               path="/cart"
@@ -341,8 +351,7 @@ function App() {
             <Route path="/" element={<HomeScreen />} />
           </Routes>
         </main>
-        {/* <Stripe /> */}
-        <Footer />
+         <Footer />
       </div>
     </BrowserRouter>
   );
