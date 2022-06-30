@@ -9,7 +9,6 @@ import MessageBox from '../components/MessageBox';
 import Slider from "../components/Home/Slider"
 import Cards from "../components/Home/Cards"
 import TryOn from '../components/Home/tryOn';
-import { SignalCellularConnectedNoInternet2BarSharp } from '@mui/icons-material';
 
 
 const reducer = (state, action) => {
@@ -31,7 +30,7 @@ function HomeScreen() {
     loading: true,
     error: '',
   });
-  // const [products, setProducts] = useState([]);
+ 
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });

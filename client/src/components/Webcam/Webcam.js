@@ -5,7 +5,6 @@ import { Container, Row, Col } from "react-bootstrap";
 import "./Webcam.css";
 import Product from "../Product";
 
-// const WebcamComponent = () => <Webcam />;
 
 const videoConstraints = {
   width: 400,
@@ -66,7 +65,9 @@ function WebcamCapture() {
   const capture = React.useCallback(() => {
     const file = webcamRef.current.getScreenshot();
     setFile(file);
-  });
+  },
+  [webcamRef]
+  );
 
   const submit = async (event) => {
     event.preventDefault();
