@@ -16,7 +16,6 @@ function filter (glasssesData, remove=null, required=null, minimum=null, maximum
         for(let key in remove){//remove from que
             if(remove[key]){
                 for(let item of remove[key]){
-                    console.log(glasssesData[key])
                     if(glasssesData[key] === item){
                         return false
                     }
