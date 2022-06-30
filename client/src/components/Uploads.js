@@ -27,6 +27,8 @@ export default function Uploads() {
   const [colorRed, setColorRed] = useState(false)
   const [colorBrown, setColorBrown] = useState(false)
   const [colorGreen, setColorGreen] = useState(false)
+  const [colorGold, setColorGold] = useState(false)
+  const [colorGrey, setColorGrey] = useState(false)
 
   const [prescription, setPrescription] = useState(0)
 
@@ -45,7 +47,9 @@ export default function Uploads() {
   [colorBlue,"Blue"], 
   [colorRed,"Red"], 
   [colorBrown,"Brown"], 
-  [colorGreen,"Green"]]
+  [colorGreen,"Green"],
+  [colorGold,"Gold"],
+  [colorGrey,"Grey"]]
 
   let frameFilter = 
   [[shapeAvaitor,"Avaitor"], 
@@ -216,6 +220,10 @@ export default function Uploads() {
       setShapeOval = {setShapeOval}
       shapeRound = {shapeRound}
       setShapeRound = {setShapeRound}
+      colorGold={colorGold}
+      setColorGold={setColorGold}
+      colorGrey={colorGrey}
+      setColorGrey={setColorGrey}
       />
     <div className="uploads-container">
       <div className="uploads-btns-container">

@@ -14,11 +14,14 @@ filter is a function to filter results
 function filter (glasssesData, remove=null, required=null, minimum=null, maximum=null){ //default is null = no filters
     if(remove){
         for(let key in remove){//remove from que
-            for(let item of remove[key]){
-                if(glasssesData[key] === item){
-                    return false
-                }
-            }           
+            if(remove[key]){
+                for(let item of remove[key]){
+                    console.log(glasssesData[key])
+                    if(glasssesData[key] === item){
+                        return false
+                    }
+                }           
+            }
         }
     }
     if(required){
@@ -121,8 +124,7 @@ function glassesDataReturn(glassesData, userData, dataRemove = null, dataRequire
     let results = [];
     for(let i=0; i<glassesData.length; i++){
         let dataArray=[glassesData[i].eyeRatio, glassesData[i].earFaceRatio, glassesData[i].cheekChinRatio, glassesData[i].noseRatio] //fitting user data to [a,b,c,d] format
-
-        if(filter(dataArray, dataRemove , dataRequired, dataMinimum, dataMaximum)){//filters inserted here, default is null. May need to destructure better
+        if(filter(glassesData[i], dataRemove , dataRequired, dataMinimum, dataMaximum)){//filters inserted here, default is null. May need to destructure better
             let result = glassesToUserDataCalc(dataArray, userData)
             if(results.length<n){//if array is less than return requirements, push in
                 results.push([result,glassesData[i]._id]);
@@ -250,7 +252,7 @@ async function uploadImageTest(imageFile){//Used for generating user data with t
 }
 
 
-async function facelandmark(imageFile, dataBaseProducts, userFilterData) {
+async function facelandmark(imageFile, dataBaseProducts, filters) {
     //Api function initialized for google vision
     async function setEndpoint(request) {
         try{
@@ -273,6 +275,9 @@ async function facelandmark(imageFile, dataBaseProducts, userFilterData) {
             content: Buffer.from(imageB64Upload, 'base64')
         }
     };  
+
+    console.log(filters)
+
     //To detemine the image size in case we want to show nodes
     let originalImageSize = sizeOf(imageFile);
     //API call being made
@@ -280,7 +285,7 @@ async function facelandmark(imageFile, dataBaseProducts, userFilterData) {
     //Function to calculate unique user information
     let userData = calculateUserData(imageInformation)
     //Unranked glasses for merge (with top n picks, UNORDERED)
-    let rawResults = glassesDataReturn(dataBaseProducts,userData)//No filters right now, add later
+    let rawResults = glassesDataReturn(dataBaseProducts,userData, filters.remove, filters.required, filters.minimum, filters.maximum)//No filters right now, add later
     //Mergesort being called (with top n picks, ORDERED)
     let results = mergesort(rawResults)
 

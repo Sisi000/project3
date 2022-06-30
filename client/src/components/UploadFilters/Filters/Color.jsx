@@ -14,6 +14,11 @@ function Color(props) {
     const setColorBrown=props.setColorBrown
     const colorGreen=props.colorGreen
     const setColorGreen=props.setColorGreen
+    const colorGold=props.colorGold
+    const setColorGold=props.setColorGold
+    const colorGrey=props.colorGrey
+    const setColorGrey=props.setColorGrey
+
 
   return (
     <div>
@@ -65,6 +70,22 @@ function Color(props) {
           onChange={() => setColorGreen(!colorGreen)}
         />
         <label for="green"> Green</label>
+        <br />
+        <input
+          type="checkbox"
+          id="gold"
+          name="gold"
+          onChange={() => setColorGold(!colorGold)}
+        />
+        <label for="gold"> Gold</label>
+        <br />
+        <input
+          type="checkbox"
+          id="grey"
+          name="grey"
+          onChange={() => setColorGrey(!colorGrey)}
+        />
+        <label for="grey"> Grey</label>
     </div>
   )
 }
