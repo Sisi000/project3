@@ -93,7 +93,13 @@ export default function Uploads() {
   For Minimum filter
   */
   let minPriceFilter = 
-  [priceMin]
+  [
+    priceMin,
+  ]
+  let PerscriptionFilter =
+  [ 
+    prescription,
+  ]
 
   function ifMinimum(filterList){
     let counter = 0
@@ -106,6 +112,7 @@ export default function Uploads() {
 
   let minimumList={
     price:null,
+    prescription:null,
   }
 
   function buildMinimumList(filterList){
@@ -123,13 +130,16 @@ export default function Uploads() {
   }
 
   minimumList.price = buildMinimumList(minPriceFilter)
+  minimumList.prescription = buildMinimumList(PerscriptionFilter)
 
   /*
   For Maximum filter
   */
 
   let maxPriceFilter = 
-  [priceMax]
+  [
+    priceMax,
+  ]
 
   function ifMaximum(filterList){
     let counter = 0
@@ -166,14 +176,16 @@ export default function Uploads() {
   const filters = {
     remove: (excludeList.frameColor || excludeList.category) ? excludeList : null,
     required: null,
-    minimum: (minimumList.price) ? minimumList : null,
+    minimum: (minimumList.price || minimumList.prescription) ? minimumList : null,
     maximum: (maximumList.price) ? maximumList : null,
   }
+
+  console.log("filters are : ",filters)
 
   /*
   Filters done
   */
- 
+
   const handleClick1 = () => {
     setIsShown1((current) => !current);
     setIsShown2(false);

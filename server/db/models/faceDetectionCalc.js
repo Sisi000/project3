@@ -26,9 +26,11 @@ function filter (glasssesData, remove=null, required=null, minimum=null, maximum
     if(required){
         let pass = false
         for(let key in required){//required in que
-            for(let item of required[key]){
-                if(glasssesData[key] === item){
-                    pass = true
+            if(required[key]){
+                for(let item of required[key]){
+                    if(glasssesData[key] === item){
+                        pass = true
+                    }
                 }
             }
         }
@@ -38,21 +40,25 @@ function filter (glasssesData, remove=null, required=null, minimum=null, maximum
     }
     if(minimum){
         for(let key in minimum){//minimum value for que
-            for(let item of minimum[key]){
-                //console.log(glasssesData[key])
-                if(glasssesData[key] < item){
-                    return false
-                }
-            }         
+            if(minimum[key]){
+                for(let item of minimum[key]){
+                    //console.log(glasssesData[key])
+                    if(glasssesData[key] < item){
+                        return false
+                    }
+                }         
+            }
         }
     }
     if(maximum){
         for(let key in maximum){//max value for que
-            for(let item of maximum[key]){
-                if(glasssesData[key] > item){
-                    return false
-                }
-            }         
+            if(maximum[key]){
+                for(let item of maximum[key]){
+                    if(glasssesData[key] > item){
+                        return false
+                    }
+                }    
+            }     
         }
     }
     return true
