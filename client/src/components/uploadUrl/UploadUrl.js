@@ -5,7 +5,9 @@ import "./UploadUrl.css";
 import { Container, Row, Col } from "react-bootstrap";
 import Product from "../Product";
 
-function UploadUrl2() {
+function UploadUrl2(props) {
+  const filters = props.filters
+
   const [file, setFile] = useState("");
   const [resultData, setResultData] = useState([]);
   const [products, setProducts] = useState([]);
@@ -21,17 +23,8 @@ function UploadUrl2() {
     const URL  = file;
     console.log("URL is", URL);
 
-    const userfilters = {//dummy filter dataset
-      filters: {
-        color: null,
-        price: null,
-        size: null,
-        shape: "Square",
-        n: 5,
-      }
-    }
 
-    await axios.post("/uploadurl", { URL,userfilters } ).then((res) => {
+    await axios.post("/uploadurl", { URL,filters } ).then((res) => {
       alert("Suggested glasses are " + res.data);
       setResultData(res.data);
       // return res.data;

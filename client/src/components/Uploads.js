@@ -12,6 +12,161 @@ export default function Uploads() {
   const [isShown2, setIsShown2] = useState(false);
   const [isShown3, setIsShown3] = useState(false);
 
+  /*
+  For filters
+  */
+
+  let priceCap = 500
+
+  const [priceMin, setPriceMin] = useState(0)
+  const [priceMax, setPriceMax] = useState(priceCap)
+
+  const [colorBlack, setColorBlack] = useState(false)
+  const [colorWhite, setColorWhite] = useState(false)
+  const [colorBlue, setColorBlue] = useState(false)
+  const [colorRed, setColorRed] = useState(false)
+  const [colorBrown, setColorBrown] = useState(false)
+  const [colorGreen, setColorGreen] = useState(false)
+
+  const [prescription, setPrescription] = useState(0)
+
+  const [shapeAvaitor, setShapeAvaitor] = useState(false)
+  const [shapeSquare, setShapeSquare] = useState(false)
+  const [shapeRectangle, setShapeRectangle] = useState(false)
+  const [shapeOval, setShapeOval] = useState(false)
+  const [shapeRound, setShapeRound] = useState(false)
+
+  /*
+  For exclude filters
+  */
+  let colorFilter = 
+  [[colorBlack,"Black"], 
+  [colorWhite,"White"], 
+  [colorBlue,"Blue"], 
+  [colorRed,"Red"], 
+  [colorBrown,"Brown"], 
+  [colorGreen,"Green"]]
+
+  let frameFilter = 
+  [[shapeAvaitor,"Avaitor"], 
+  [shapeSquare,"Square"], 
+  [shapeRectangle,"Rectangle"], 
+  [shapeOval,"Oval"], 
+  [shapeRound,"Round"]]
+
+  function ifExclude(filterList){
+    let counter = 0
+    for(let filter of filterList){
+      if(filter[0]) counter++
+    }
+    if(counter) return true
+    else return false
+  }
+
+  let excludeList={
+    frameColor:null,
+    category:null
+  }
+
+  function buildExcludeList(filterList){
+    let excludedItem=null
+    if(ifExclude(filterList)){
+      for(let filter of filterList){
+        if(filter[0]){
+          if(excludedItem){
+            excludedItem.push(filter[1])
+          }else excludedItem = [filter[1]]
+        }
+      }
+    }
+    return excludedItem
+  }
+
+  excludeList.frameColor = buildExcludeList(colorFilter)
+  excludeList.category = buildExcludeList(frameFilter)
+
+  /*
+  For Minimum filter
+  */
+  let minPriceFilter = 
+  [priceMin]
+
+  function ifMinimum(filterList){
+    let counter = 0
+    for(let filter of filterList){
+      if(filter) counter++
+    }
+    if(counter) return true
+    else return false
+  }
+
+  let minimumList={
+    price:null,
+  }
+
+  function buildMinimumList(filterList){
+    let minimum=null
+    if(ifMinimum(filterList)){
+      for(let filter of filterList){
+        if(filter){
+          if(minimum){
+            minimum.push(filter)
+          }else minimum = [filter]
+        }
+      }
+    }
+    return minimum
+  }
+
+  minimumList.price = buildMinimumList(minPriceFilter)
+
+  /*
+  For Maximum filter
+  */
+
+  let maxPriceFilter = 
+  [priceMax]
+
+  function ifMaximum(filterList){
+    let counter = 0
+    for(let filter of filterList){
+      if(filter < priceCap) counter++
+    }
+    if(counter) return true
+    else return false
+  }
+
+  let maximumList={
+    price:null,
+  }
+
+  function buildMaximumList(filterList){
+    let maximum=null
+    if(ifMaximum(filterList)){
+      for(let filter of filterList){
+        if(filter){
+          if(maximum){
+            maximum.push(filter)
+          }else maximum = [filter]
+        }
+      }
+    }
+    return maximum
+  }
+
+  maximumList.price = buildMaximumList(maxPriceFilter)
+
+  /*
+  Create filter variable 
+  */
+  const filters = {
+    remove: (excludeList.frameColor || excludeList.category) ? excludeList : null,
+    required: null,
+    minimum: (minimumList.price) ? minimumList : null,
+    maximum: (maximumList.price) ? maximumList : null,
+  }
+
+  console.log(filters)
 
   const handleClick1 = () => {
     setIsShown1((current) => !current);
@@ -32,7 +187,36 @@ export default function Uploads() {
 
   return (
     <div>
-      <UploadFilters/>
+      <UploadFilters
+      prescription={prescription}
+      setPrescription={setPrescription}
+      priceMin={priceMin}
+      setPriceMin={setPriceMin}
+      priceMax={priceMax}
+      setPriceMax={setPriceMax}
+      colorBlack={colorBlack} 
+      setColorBlack={setColorBlack}
+      colorWhite= {colorWhite}
+      setColorWhite={setColorWhite}
+      colorBlue={colorBlue}
+      setColorBlue={setColorBlue}
+      colorRed={colorRed}
+      setColorRed={setColorRed}
+      colorBrown={colorBrown}
+      setColorBrown={setColorBrown}
+      colorGreen={colorGreen}
+      setColorGreen={setColorGreen}
+      shapeAvaitor = {shapeAvaitor}
+      setShapeAvaitor = {setShapeAvaitor}
+      shapeSquare = {shapeSquare}
+      setShapeSquare = {setShapeSquare}
+      shapeRectangle = {shapeRectangle}
+      setShapeRectangle = {setShapeRectangle}
+      shapeOval = {shapeOval} 
+      setShapeOval = {setShapeOval}
+      shapeRound = {shapeRound}
+      setShapeRound = {setShapeRound}
+      />
     <div className="uploads-container">
       <div className="uploads-btns-container">
         <button className="btn-uploads1" onClick={handleClick1}>
@@ -46,9 +230,9 @@ export default function Uploads() {
         </button>
         </div>
         <div className="upload-content">
-        {isShown1 && <UploadS3 />}
-        {isShown2 && <Webcam />}
-        {isShown3 && <UploadUrl />}
+        {isShown1 && <UploadS3 filters = {filters}/>}
+        {isShown2 && <Webcam filters = {filters}/>}
+        {isShown3 && <UploadUrl filters = {filters}/>}
       </div>
     </div>
     </div>

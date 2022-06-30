@@ -12,28 +12,20 @@ const videoConstraints = {
   facingMode: "user",
 };
 
-function WebcamCapture() {
+function WebcamCapture(props) {
+  const filters = props.filters
+
   const [file, setFile] = useState("");
   const [resultData, setResultData] = useState([]);
   const [products, setProducts] = useState([]);
   const webcamRef = React.useRef(null);
 
-
-  const fileUserInput = {//dummy filter dataset
-    filters: {
-      color: null,
-      price: null,
-      size: null,
-      shape: "Square",
-      n: 5,
-    }
-  }
-  const fileUserInputJSON = JSON.stringify(fileUserInput)
+  const filterJSON = JSON.stringify(filters)
 
   async function postImage(filesForUpload) {
     const formData = new FormData();
     formData.append("image", filesForUpload)//image
-    formData.append("userfilters", fileUserInputJSON)//image
+    formData.append("filters", filterJSON)//image
     const result = await axios({
       method: "POST",
       url: "/uploadwebcam",

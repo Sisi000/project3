@@ -5,7 +5,9 @@ import imgphoto from "../../assets/photo.png";
 import { Container, Row, Col } from "react-bootstrap";
 import Product from "../Product";
 
-function UploadS3() {
+function UploadS3(props) {
+  const filters = props.filters
+
   const [file, setFile] = useState();
   const [resultData, setResultData] = useState([]);
   const [products, setProducts] = useState([]);
@@ -43,22 +45,12 @@ function UploadS3() {
 
     return result.data;
   }
-  
-  const fileUserInput = {//dummy filter dataset
-    filters: {
-      color: null,
-      price: null,
-      size: null,
-      shape: "Square",
-      n: 5,
-    }
-  }
 
   const submit = async (event) => {
     event.preventDefault();
     
-    const fileUserInputJSON = JSON.stringify(fileUserInput);//turn filter set to JSON
-    const blob = new Blob([fileUserInputJSON], {//turn filter (JSON) to blob for multipart form submittal
+    const filtersJSON = JSON.stringify(filters);//turn filter set to JSON
+    const blob = new Blob([filtersJSON], {//turn filter (JSON) to blob for multipart form submittal
       type: 'application/json'
     });
 

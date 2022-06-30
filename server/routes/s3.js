@@ -34,8 +34,8 @@ const uploadProduct = multer({ dest: "uploads/" });
 // upload image to vision, S3 and MongoDB
 router.post("/upload", upload.array("UserData", 2), async (req, res, next) => {
   const image = req.files[0];
-  const userFilterData = JSON.parse(req.files[1].buffer);
-  console.log("userFilterData :", userFilterData);
+  const filters = JSON.parse(req.files[1].buffer);
+  console.log("filters :", filters);
   console.log("Image", image);
 
   // resize and send to google vision
@@ -47,7 +47,7 @@ router.post("/upload", upload.array("UserData", 2), async (req, res, next) => {
 
       const products = await Product.find();
 
-      const resultVision = await facelandmark(buffer, products, userFilterData);
+      const resultVision = await facelandmark(buffer, products, filters);
 
       let results = [];
 
@@ -64,14 +64,16 @@ router.post("/upload", upload.array("UserData", 2), async (req, res, next) => {
 router.post("/uploadwebcam", upload.single("image"), async (req, res, next) => {
   const file = req.body.image;
 
-  const userFilterData = JSON.parse(req.body.userfilters);
+  const filters = JSON.parse(req.body.filters);
+
+  console.log(filters)
 
   const matches = file.replace(/^data:image\/(png);base64,/, "");
   const buff = Buffer.from(matches, "base64");
 
   const products = await Product.find();
 
-  const resultVision = await facelandmark(buff, products, userFilterData);
+  const resultVision = await facelandmark(buff, products, filters);
 
   let results = [];
 
@@ -86,14 +88,14 @@ router.post("/uploadwebcam", upload.single("image"), async (req, res, next) => {
 // upload Url to vision
 router.post("/uploadurl", async (req, res, next) => {
   const urlBody = req.body.URL;
-  const userFilterData = req.body.userfilters;
+  const filters = req.body.filters;
 
   console.log("urlBody is", urlBody);
-  console.log("filters are ", userFilterData);
+  console.log("filters are ", filters);
 
   const products = await Product.find();
 
-  const resultVision = await facelandmarkURL(urlBody, products, userFilterData);
+  const resultVision = await facelandmarkURL(urlBody, products, filters);
 
   let results = [];
 
