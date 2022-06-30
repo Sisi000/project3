@@ -30,10 +30,15 @@ function UploadFilters(props) {
     const setColorBrown=props.setColorBrown
     const colorGreen=props.colorGreen
     const setColorGreen=props.setColorGreen
+    const colorGold=props.colorGold
+    const setColorGold=props.setColorGold
+    const colorGrey=props.colorGrey
+    const setColorGrey=props.setColorGrey
     const priceMin = props.priceMin
     const setPriceMin = props.setPriceMin
     const priceMax = props.priceMax
     const setPriceMax = props.setPriceMax
+    
 
     const [filterShow, setFilterShow] = useState(false)
 
@@ -80,6 +85,10 @@ function UploadFilters(props) {
           setColorBrown={setColorBrown}
           colorGreen={colorGreen}
           setColorGreen={setColorGreen}
+          colorGold={colorGold}
+          setColorGold={setColorGold}
+          colorGrey={colorGrey}
+          setColorGrey={setColorGrey}
           />
         </div>
         <br />
