@@ -5,7 +5,7 @@
   width: 100%;
 }
 
-.container-suggestion {
+.suggestedglasses {
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -14,7 +14,7 @@
 }
 
 .imagePreview {
-  max-width: 100%;
+  max-width: 200px;
   max-height: 320px;
 }
 
@@ -22,7 +22,8 @@
   display: flex;
   flex-direction: column;
   margin-top: 60px;
-  width: 100%;
+  width: 60%;
+
 }
 
 .buttonupload {
@@ -58,7 +59,7 @@
 }
 
 .imagePreview {
-  max-width: 100%;
+  max-width: 320px;
   max-height: 320px;
 }
 
