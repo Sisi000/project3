@@ -38,7 +38,8 @@ import logo from "./assets/logo.png";
 import About from "./components/About/about";
 import Footer from "./components/Footer/footer";
 import Uploads from "./components/Uploads";
-import Stripe from "./components/Stripe";
+// import Stripe from "./components/Stripe";
+// import SplitForm from "./components/SplitForm";
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -209,7 +210,8 @@ function App() {
             path="/stripe"
             element={
                 <Container className="mt-3">
-                    <Stripe />
+                    {/* <Stripe /> */}
+                    {/* <SplitForm /> */}
                 </Container>
             }
             />

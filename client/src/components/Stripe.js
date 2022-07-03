@@ -11,7 +11,7 @@ const CARD_OPTIONS = {
 			iconColor: "#787675",
 			color: "#000000",
 			fontWeight: 500,
-			fontFamily: "Roboto, Open Sans, Segoe UI, sans-serif",
+			fontFamily: "Montserrat, sans-serif",
 			fontSize: "16px",
 			fontSmoothing: "antialiased",
 			":-webkit-autofill": { color: "#fce883" },
@@ -60,7 +60,7 @@ export default function PaymentForm() {
 }
 
     return (
-        <>
+        <div className="stripe-container">
         {!success ? 
         <form onSubmit={handleSubmit}>
             <fieldset className="FormGroup">
@@ -76,6 +76,6 @@ export default function PaymentForm() {
        </div> 
         }
             
-        </>
+        </div>
     )
 }
