@@ -19,6 +19,7 @@ import PaymentMethodScreen from "./screens/PaymentMethodScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
 import OrderHistoryScreen from "./screens/OrderHistoryScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 import PrescriptionScreen from "./screens/PrescriptionScreen";
 import Button from "react-bootstrap/Button";
 import { getError } from "./utils";
@@ -115,6 +116,9 @@ function App() {
                   </Link>
                   {userInfo ? (
                     <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
+                      <LinkContainer to="/profile">
+                        <NavDropdown.Item>User Profile</NavDropdown.Item>
+                      </LinkContainer>
                       <LinkContainer to="/prescription">
                         <NavDropdown.Item>Prescription</NavDropdown.Item>
                       </LinkContainer>
@@ -230,6 +234,16 @@ function App() {
                 <Container className="mt-3">
                   <ProtectedRoute>
                     <PrescriptionScreen />
+                  </ProtectedRoute>
+                </Container>
+              }
+            />
+             <Route
+              path="/profile"
+              element={
+                <Container className="mt-3">
+                  <ProtectedRoute>
+                    <ProfileScreen  />
                   </ProtectedRoute>
                 </Container>
               }
