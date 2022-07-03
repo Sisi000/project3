@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Color from "./Filters/Color";
-import Perscription from "./Filters/Perscription";
+import Prescription from "./Filters/Prescription";
 import Price from "./Filters/Price";
 import Shape from "./Filters/Shape";
 import "./UploadFilters.css"
@@ -55,7 +55,7 @@ function UploadFilters(props) {
           <br />
           <div className="filters-cols">
             <div>
-              <Perscription
+              <Prescription
                 prescription={prescription}
                 setPrescription={setPrescription}
               />

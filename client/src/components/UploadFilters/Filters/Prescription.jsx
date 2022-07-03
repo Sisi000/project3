@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Perscription(props) {
+function Prescription(props) {
     const setPrescription=props.setPrescription
     const prescription = props.prescription
   return (
@@ -20,4 +20,4 @@ function Perscription(props) {
   )
 }
 
-export default Perscription
+export default Prescription
