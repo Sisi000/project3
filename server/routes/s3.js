@@ -138,16 +138,16 @@ router.post(
   }
 );
 
-// router.post(
-//   "/deleteadditionals3",
-//    async (req, res, next) => {
-//     const file = req.body.fileName
-//     console.log("file is", file);
+router.post(
+  "/deleteadditionals3",
+   async (req, res, next) => {
+    const file = req.body.Key
+    console.log("file is", file);
  
-//     await s3.deleteObject({ Key: file, Bucket: bucketName }).promise();
+    const deleted = await s3.deleteObject({ Key: file, Bucket: bucketName }).promise();
 
-//     res.send(deleted);
-//   }
-// );
+    res.send(deleted);
+  }
+);
 
 module.exports = router;

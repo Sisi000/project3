@@ -6,13 +6,12 @@ import { Container, Row, Col } from "react-bootstrap";
 import Product from "../Product";
 
 function UploadS3(props) {
-  const filters = props.filters
+  const filters = props.filters;
 
   const [file, setFile] = useState();
-  const [resultData, setResultData] = useState([]);
   const [products, setProducts] = useState([]);
 
-/* Old code for single file upload, going with multi file upload - Delete
+  /* Old code for single file upload, going with multi file upload - Delete
   async function postImage({ image }) {
     const formData = new FormData();
     formData.append("image", image);
@@ -30,32 +29,38 @@ function UploadS3(props) {
 
   async function postImage(filesForUpload, blob) {
     const formData = new FormData();
-    formData.append("UserData", filesForUpload)//image
-    formData.append("UserData", blob)//filters in Blob format
+    formData.append("UserData", filesForUpload); //image
+    formData.append("UserData", blob); //filters in Blob format
     const result = await axios({
       method: "POST",
       url: "/upload",
       data: formData,
-      headers: { 
-        "Content-Type": "multipart/form-data" 
+      headers: {
+        "Content-Type": "multipart/form-data",
       },
     });
     console.log("Suggested glasses are", result.data);
-    setResultData(result.data);
 
     return result.data;
   }
 
   const submit = async (event) => {
     event.preventDefault();
-    
-    const filtersJSON = JSON.stringify(filters);//turn filter set to JSON
-    const blob = new Blob([filtersJSON], {//turn filter (JSON) to blob for multipart form submittal
-      type: 'application/json'
+
+    const filtersJSON = JSON.stringify(filters); //turn filter set to JSON
+    const blob = new Blob([filtersJSON], {
+      //turn filter (JSON) to blob for multipart form submittal
+      type: "application/json",
     });
 
-    const result = await postImage(file,blob);
-    console.log("Suggested glasses are", result);
+    const result = await postImage(file, blob)
+      .then((result) => {
+        showSuggested(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    console.log("Suggested glasses from submit are", result);
     setFile(null);
     document.getElementById("selectedimage").value = "";
   };
@@ -71,13 +76,11 @@ function UploadS3(props) {
   const fileSelected = (event) => {
     const file = event.target.files[0];
     setFile(file);
-    setResultData("");
-    //  document.getElementById("suggestedglasses").value = "";
-  };
+    setProducts([]);
+   };
 
-  const showSuggested = async () => {
-    const params = resultData;
-    console.log("resultData is", resultData);
+  const showSuggested = async (result) => {
+    const params = result;
     const result2 = await axios.post(`/api/products/id`, { params });
     setProducts(result2.data, ...products);
   };
@@ -112,30 +115,20 @@ function UploadS3(props) {
           </button>
         </form>
       </div>
+      
       <Container fluid style={{ padding: "0" }}>
         <Container className="mt-3">
-          <div className="suggestedglasses">
-            <div className="products my-5 py-2">
-              <Row>
-              <h1>Suggested glasses</h1>
-                {products.map((product) => (
-                  <Col key={product._id} sm={6} md={4} lg={3} className="mb-3">
-                    <Product product={product}></Product>
-                  </Col>
-                ))}
-              </Row>
-            </div>
+          <div className="products my-5 py-2">
+            <Row>
+            {products.length > 0 && (<h1>Suggested Glasses</h1>)}
+              {products.map((product) => (
+                <Col key={product._id} sm={6} md={4} lg={3} className="mb-3">
+                  <Product product={product}></Product>
+                </Col>
+              ))}
+            </Row>
           </div>
         </Container>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            showSuggested();
-          }}
-          className="button-5"
-        >
-          Show
-        </button>
       </Container>
     </div>
   );
