@@ -9,7 +9,6 @@ function UploadS3(props) {
   const filters = props.filters;
 
   const [file, setFile] = useState();
-  const [resultData, setResultData] = useState([]);
   const [products, setProducts] = useState([]);
 
   /* Old code for single file upload, going with multi file upload - Delete
@@ -41,7 +40,6 @@ function UploadS3(props) {
       },
     });
     console.log("Suggested glasses are", result.data);
-    setResultData(result.data);
 
     return result.data;
   }
@@ -78,13 +76,12 @@ function UploadS3(props) {
   const fileSelected = (event) => {
     const file = event.target.files[0];
     setFile(file);
-    setResultData("");
+    setProducts([]);
     //  document.getElementById("suggestedglasses").value = "";
   };
 
   const showSuggested = async (result) => {
     const params = result;
-    console.log("resultData is", resultData);
     const result2 = await axios.post(`/api/products/id`, { params });
     setProducts(result2.data, ...products);
   };

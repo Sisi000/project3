@@ -15,6 +15,7 @@ function UploadUrl2(props) {
     const { value } = e.target;
     console.log("value is", value);
     setFile(value);
+    setProducts([]);
   };
 
   const submit = async (event) => {
@@ -64,8 +65,8 @@ function UploadUrl2(props) {
                   {products.map((product) => (
                     <Col
                       key={product._id}
-                      sm={6}
-                      md={4}
+                      sm={3}
+                      md={3}
                       lg={3}
                       className="mb-3"
                     >
