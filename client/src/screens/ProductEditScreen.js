@@ -231,23 +231,26 @@ export default function ProductEditScreen() {
   };
 
   const deleteFileHandler = async (fileName, f) => {
-    console.log(fileName, f);
-    console.log(images);
-    console.log(images.filter((x) => x !== fileName));
-    console.log(additionalS3.filter((x) => x !== fileName));
-    setImages(images.filter((x) => x !== fileName));
-    setAdditionalS3(additionalS3.filter((x) => x !== fileName));
-
-    const { data } = await axios.post(
-      "/deleteadditionals3",
-      fileName,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          authorization: `Bearer ${userInfo.token}`,
-        },
-      }
+    console.log("filename is", fileName, f);
+    console.log("images are", images);
+    console.log(
+      "images filter is",
+      images.filter((x) => x !== fileName)
     );
+    console.log("additionalS3 are", additionalS3);
+    setImages(images.filter((x) => x !== fileName));
+
+    const url = fileName;
+    let filename = "";
+    try {
+      filename = new URL(url).pathname.split("/").pop();
+    } catch (e) {
+      console.error(e);
+    }
+    console.log(`filename: ${filename}`);
+
+    setAdditionalS3(additionalS3.filter((x) => x !== filename));
+    const data = await axios.post("/deleteadditionals3", { Key: filename });
     console.log("result is", data);
 
     toast.success("Image removed successfully. click Update to apply it");
