@@ -2,8 +2,20 @@ const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
 const Product = require("../db/models/productModel.js");
 const { isAuth, isAdmin } = require("../utils.js");
+const S3 = require("aws-sdk/clients/s3");
 
 const productRouter = express.Router();
+
+const bucketName = process.env.AWS_BUCKET;
+const region = process.env.AWS_BUCKET_REGION;
+const accessKeyId = process.env.AWS_ACCESS_KEY;
+const secretAccessKey = process.env.AWS_SECRET_KEY;
+
+const s3 = new S3({
+  region,
+  accessKeyId,
+  secretAccessKey,
+});
 
 productRouter.get("/", async (req, res) => {
   const products = await Product.find();
@@ -90,7 +102,28 @@ productRouter.delete(
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
+    const S3ToDelete = product.imageS3Key;
+    const additionalS3ToDelete = product.additionalS3;
+
     if (product) {
+      const s3ImagesToDelete = [S3ToDelete, ...additionalS3ToDelete];
+      const objects = [];
+      for (const k in s3ImagesToDelete) {
+        objects.push({ Key: s3ImagesToDelete[k] });
+      }
+   
+      const options = {
+        Bucket: process.env.AWS_BUCKET,
+        Delete: {
+          Objects: objects,
+        },
+      };
+     
+      s3.deleteObjects(options, function (err, data) {
+        if (err) console.log(err, err.stack); // an error occurred
+        else console.log(data); // successful response
+      });
+
       await product.remove();
       res.send({ message: "Product Deleted" });
     } else {
@@ -182,7 +215,8 @@ productRouter.get(
           }
         : {};
     const categoryFilter = category && category !== "all" ? { category } : {};
-    const frameColorFilter = frameColor && frameColor !== "all" ? { frameColor } : {};
+    const frameColorFilter =
+      frameColor && frameColor !== "all" ? { frameColor } : {};
     const ratingFilter =
       rating && rating !== "all"
         ? {

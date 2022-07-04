@@ -198,9 +198,8 @@ export default function ProductEditScreen() {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
     bodyFormData.append("image", file);
-    console.log("file je", file);
     bodyFormData.append("oldImageS3KeyA", additionalS3);
-    console.log("Additional oldImageS3KeyA je", additionalS3);
+
     try {
       dispatch({ type: "UPLOAD_REQUEST" });
       const { data } = await axios.post(
@@ -255,6 +254,7 @@ export default function ProductEditScreen() {
 
     toast.success("Image removed successfully. click Update to apply it");
   };
+
   return (
     <Container className="small-container">
       <Helmet>
