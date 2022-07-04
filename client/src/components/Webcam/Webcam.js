@@ -15,7 +15,6 @@ function WebcamCapture(props) {
   const filters = props.filters;
 
   const [file, setFile] = useState("");
-  // const [resultData, setResultData] = useState([]);
   const [products, setProducts] = useState([]);
   const webcamRef = React.useRef(null);
 
@@ -34,8 +33,7 @@ function WebcamCapture(props) {
       },
     });
     console.log("Suggested glasses are", result.data);
-    // setResultData(result.data);
-
+ 
     return result.data;
   }
 
@@ -56,7 +54,6 @@ function WebcamCapture(props) {
   const capture = React.useCallback(() => {
     const file = webcamRef.current.getScreenshot();
     setFile(file);
-    // setProducts([]);
   }, [webcamRef]);
 
   const submit = async (event) => {
@@ -129,7 +126,7 @@ function WebcamCapture(props) {
           <div>
             <div className="products my-5 py-2">
               <Row>
-                <h1>Suggested glasses</h1>
+              {products.length > 0 && <h1>Suggested Glasses</h1>}
                 {products.map((product) => (
                   <Col key={product._id} sm={6} md={4} lg={3} className="mb-3">
                     <Product product={product}></Product>

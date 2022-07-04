@@ -32,8 +32,8 @@ function UploadUrl2(props) {
       .catch((err) => {
         console.log(err);
       });
-      setFile(null);
-      document.getElementById("enteredUrl").value = "";
+    setFile(null);
+    document.getElementById("enteredUrl").value = "";
     // return res.data;
   };
 
@@ -48,12 +48,18 @@ function UploadUrl2(props) {
       <div className="container-url">
         <form className="formsUrl">
           Enter image Url
-          <input id="enteredUrl" type="text" name="URL" value={file} onChange={changeUrl} />
+          <input
+            id="enteredUrl"
+            type="text"
+            name="URL"
+            value={file}
+            onChange={changeUrl}
+          />
           <button className="button-2" onClick={submit}>
             Submit
           </button>
         </form>
-          <img className="imagePreview" src={file} alt=""></img>
+        <img className="imagePreview" src={file} alt=""></img>
       </div>
       <div className="container-suggestion">
         <Container fluid style={{ padding: "0" }}>
@@ -61,7 +67,7 @@ function UploadUrl2(props) {
             <div className="suggestedglasses">
               <div className="products my-5 py-2">
                 <Row>
-                  <h1>Suggested glasses</h1>
+                  {products.length > 0 && <h1>Suggested Glasses</h1>}
                   {products.map((product) => (
                     <Col
                       key={product._id}
