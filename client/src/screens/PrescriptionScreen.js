@@ -45,26 +45,24 @@ export default function PrescriptionScreen() {
   const params = useParams(); // /prescription/:id
   const { id: prescriptionId } = params;
 
-  const { state, dispatch: ctxDispatch  } = useContext(Store);
+  const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const [{ loading, error, loadingUpdate, loadingUpload }, dispatch] =
-  useReducer(reducer, {
-    loading: true,
-    error: "",
-  });
+    useReducer(reducer, {
+      loading: true,
+      error: "",
+    });
   const [SphereR, setSphereR] = useState("");
   const [CylinderR, setCylinderR] = useState("");
   const [AxisR, setAxisR] = useState("");
-  const [ADDR, setADDR] =useState("");
+  const [ADDR, setADDR] = useState("");
   const [SphereL, setSphereL] = useState("");
   const [CylinderL, setCylinderL] = useState("");
   const [AxisL, setAxisL] = useState("");
   const [ADDL, setADDL] = useState("");
   const [RPD, setRPD] = useState("");
   const [LPD, setLPD] = useState("");
-  const [name, setName] = useState(userInfo.name);
-  const [email, setEmail] = useState(userInfo.email);
- 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -80,8 +78,6 @@ export default function PrescriptionScreen() {
         setADDL(data.ADDL);
         setRPD(data.RPD);
         setLPD(data.LPD);
-        setName(data.name);
-        setEmail(data.email);
 
         dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
@@ -110,9 +106,7 @@ export default function PrescriptionScreen() {
           AxisL,
           ADDL,
           RPD,
-          LPD,
-          name,
-          email       
+          LPD
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -139,7 +133,7 @@ export default function PrescriptionScreen() {
       <Helmet>
         <title>Prescription</title>
       </Helmet>
-      <h1 className="my-5 pt-5 pb-5">What is your prescription?</h1>
+      <h1 className="text-center my-5 py-5">What is your prescription?</h1>
       <form onSubmit={submitHandler} >
         <Row className="mb-3 pb-3 pt-4 text-muted bg-info text-dark bg-opacity-10">
           <Form.Group as={Col} className="mb-3" controlId="ODR">
@@ -581,11 +575,11 @@ export default function PrescriptionScreen() {
             </Form.Select>
           </Form.Group>
         </Row>
-        <Row className="mb-3 pb-4 pt-3 text-muted bg-info text-dark bg-opacity-10">
+        <Row className="mb-5 pb-4 pt-3 text-muted bg-info text-dark bg-opacity-10">
           <Form.Group as={Col} className="mb-3" controlId="PDR">
             <Form.Label className="mt-3 pt-2 fs-5">PD (Pupillary Distance)</Form.Label>
           </Form.Group>
-          <Form.Group as={Col} controlId="RPD">
+          <Form.Group as={Col} className="mb-3" controlId="RPD">
             <Form.Label></Form.Label>
             <Form.Select defaultValue="Right PD">
               <option>Right PD</option>
@@ -664,43 +658,11 @@ export default function PrescriptionScreen() {
             </Form.Select>
           </Form.Group>
         </Row>
-
-        <Form.Group as={Col} className="mb-3" controlId="Name">
-
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="name">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </Form.Group>
-        {/* <Form.Group className="mb-3" controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="password">
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control
-            type="password"
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </Form.Group> */}
-        <div className="mb-3">
-          <Button type="submit">Update</Button>
-        </div>
       </form>
+      <div className="text-center my-5 py-5">
+        <Button type="submit" className='shadow-none px-3 pt-2 ' variant="warning">Update</Button>
+      </div>
+
     </div>
   );
 }
