@@ -33,9 +33,7 @@ userRouter.put(
       user.ADDL=req.body.ADDL || user.ADDL;
       user.RPD=req.body.RPD || user.RPD;
       user.LPD=req.body.LPD || user.LPD;
-      user.name = req.body.name || user.name;
-      user.email = req.body.email || user.email;
-    
+      
 
       const updatedUser = await user.save();
       res.send({
@@ -49,8 +47,6 @@ userRouter.put(
         ADDL: updatedUser.AxisL,
         RPD: updatedUser.RPD,
         LPD: updatedUser.LPD,
-        name: updatedUser.name,
-        email: updatedUser.email,
         isAdmin: updatedUser.isAdmin,
         token: generateToken(updatedUser),
       });
