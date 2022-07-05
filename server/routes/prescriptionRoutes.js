@@ -11,13 +11,17 @@ const prescriptionRouter = express.Router();
 prescriptionRouter.get(
     "/",
     isAuth,
-    isAdmin,
     expressAsyncHandler(async (req, res) => {
-        const prescriptions = await Prescription.find().populate("user");
-        res.send(prescriptions);
+        const prescriptions = await Prescription.findOne({ user: req.user._id });
+        if (prescriptions) {
+            res.send(prescriptions);
+        } else {
+            res.status(404).send({ message: "Prescription Not Found" });
+        }
     })
 );
 
+//unused
 prescriptionRouter.get(
     "/:id",
     isAuth,
@@ -55,7 +59,7 @@ prescriptionRouter.post(
 );
 
   prescriptionRouter.put(
-    '/prescription',
+    '/',
     isAuth,
     expressAsyncHandler(async (req, res) => {
 

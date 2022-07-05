@@ -44,7 +44,7 @@ export default function PrescriptionScreen() {
   const params = useParams(); // /prescription/:id
   const { id: prescriptionId } = params;
 
-  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { state } = useContext(Store);
   const { userInfo } = state;
   const [{ loading, error, loadingUpdate, loadingUpload }, dispatch] =
     useReducer(reducer, {
@@ -118,10 +118,8 @@ export default function PrescriptionScreen() {
       dispatch({
         type: 'UPDATE_SUCCESS',
       });
-      ctxDispatch({ type: 'USER_SIGNIN', payload: data });
-      localStorage.setItem('userInfo', JSON.stringify(data));
       toast.success('Prescription updated successfully');
-      navigate("/api/prescriptions");
+      // navigate("/api/prescriptions");
     } catch (err) {
       dispatch({
         type: 'FETCH_FAIL',
@@ -635,6 +633,7 @@ export default function PrescriptionScreen() {
               placeholder="Right PD"
               value={RPD}
               onChange={(e) => setRPD(e.target.value)}>
+              <option>Right PD</option>
               <option>n/a</option>
               <option>23.0</option>
               <option>23.5</option>
@@ -680,6 +679,7 @@ export default function PrescriptionScreen() {
               placeholder="Left PD"
               value={LPD}
               onChange={(e) => setLPD(e.target.value)}>
+              <option>Left PD</option>
               <option>n/a</option>
               <option>25.0</option>
               <option>25.5</option>
