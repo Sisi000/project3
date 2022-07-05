@@ -49,6 +49,7 @@ export default function PrescriptionScreen() {
   const { userInfo } = state;
   const [{ loading, error, loadingUpdate, loadingUpload }, dispatch] =
     useReducer(reducer, {
+      prescription: [],
       loading: true,
       error: "",
     });
@@ -67,7 +68,10 @@ export default function PrescriptionScreen() {
     const fetchData = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
-        const { data } = await axios.get(`/api/users/prescription/`);
+        const { data } = await axios.get(`/api/prescriptions`,
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
         setSphereR(data.SphereR);
         setCylinderR(data.CylinderR);
         setAxisR(data.AxisR);
@@ -95,7 +99,7 @@ export default function PrescriptionScreen() {
     try {
       dispatch({ type: "UPDATE_REQUEST" });
       const { data } = await axios.put(
-        `/api/users/prescription`,
+        `/api/prescriptions`,
         {
           SphereR,
           CylinderR,
@@ -118,7 +122,7 @@ export default function PrescriptionScreen() {
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
       toast.success('Prescription updated successfully');
-      navigate("/users/prescription");
+      navigate("/api/prescriptions");
     } catch (err) {
       dispatch({
         type: 'FETCH_FAIL',
@@ -141,7 +145,12 @@ export default function PrescriptionScreen() {
           </Form.Group>
           <Form.Group as={Col} controlId="SphereR">
             <Form.Label>Sphere(SPH)</Form.Label>
-            <Form.Select defaultValue="0.00">
+            <Form.Control as="select"
+              type="number"
+              value={SphereR}
+              placeholder="0.00"
+              onChange={(e) => setSphereR(e.target.value)}
+              required>
               <option>0.00</option>
               <option>-16.00</option>
               <option>-15.75</option>
@@ -255,11 +264,16 @@ export default function PrescriptionScreen() {
               <option>+11.50</option>
               <option>+11.75</option>
               <option>+12.00</option>
-            </Form.Select>
+              </Form.Control>
           </Form.Group>
           <Form.Group as={Col} controlId="CylinderR">
             <Form.Label>Cylinder(CYL)</Form.Label>
-            <Form.Select defaultValue="0.00">
+            <Form.Control as="select"
+              type="number"
+              placeholder="0.00"
+              value={CylinderR}
+              onChange={(e) => setCylinderR(e.target.value)}
+              required>
               <option>0.00</option>
               <option>-6.00</option>
               <option>-5.75</option>
@@ -310,15 +324,26 @@ export default function PrescriptionScreen() {
               <option>+5.50</option>
               <option>+5.75</option>
               <option>+6.00</option>
-            </Form.Select>
+              </Form.Control>
           </Form.Group>
           <Form.Group as={Col} controlId="AxisR">
             <Form.Label>Axis</Form.Label>
-            <Form.Control />
+            <Form.Control
+              type="number"
+              placeholder="0"
+              value={AxisR}
+              onChange={(e) => setAxisR(e.target.value)}
+              required
+            />
           </Form.Group>
           <Form.Group as={Col} controlId="ADDR">
             <Form.Label>ADD</Form.Label>
-            <Form.Select defaultValue="n/a">
+            <Form.Control as="select"
+              type="number"
+              placeholder="n/a"
+              value={ADDR}
+              onChange={(e) => setADDR(e.target.value)}
+              required>
               <option>n/a</option>
               <option>+0.25</option>
               <option>+0.50</option>
@@ -352,7 +377,7 @@ export default function PrescriptionScreen() {
               <option>+7.50</option>
               <option>+7.75</option>
               <option>+8.00</option>
-            </Form.Select>
+            </Form.Control>
           </Form.Group>
         </Row>
         <Row className="mb-3 pb-2 pt-2 text-muted bg-info text-dark bg-opacity-10">
@@ -361,7 +386,12 @@ export default function PrescriptionScreen() {
           </Form.Group>
           <Form.Group as={Col} controlId="SphereL">
             <Form.Label>Sphere(SPH)</Form.Label>
-            <Form.Select defaultValue="0.00">
+            <Form.Control as="select"
+              type="number"
+              placeholder="0.00"
+              value={SphereL}
+              onChange={(e) => setSphereL(e.target.value)}
+              required>
               <option>0.00</option>
               <option>-16.00</option>
               <option>-15.75</option>
@@ -475,11 +505,16 @@ export default function PrescriptionScreen() {
               <option>+11.50</option>
               <option>+11.75</option>
               <option>+12.00</option>
-            </Form.Select>
+            </Form.Control>
           </Form.Group>
           <Form.Group as={Col} controlId="CylinderL">
             <Form.Label>Cylinder(CYL)</Form.Label>
-            <Form.Select defaultValue="0.00">
+            <Form.Control as="select"
+              type="number"
+              placeholder="0.00"
+              value={CylinderL}
+              onChange={(e) => setCylinderL(e.target.value)}
+              required>
               <option>0.00</option>
               <option>-6.00</option>
               <option>-5.75</option>
@@ -530,15 +565,26 @@ export default function PrescriptionScreen() {
               <option>+5.50</option>
               <option>+5.75</option>
               <option>+6.00</option>
-            </Form.Select>
+            </Form.Control>
           </Form.Group>
           <Form.Group as={Col} controlId="AxisL">
             <Form.Label>Axis</Form.Label>
-            <Form.Control />
+            <Form.Control
+              type="number"
+              placeholder="0"
+              value={AxisL}
+              onChange={(e) => setAxisL(e.target.value)}
+              required
+            />
           </Form.Group>
           <Form.Group as={Col} controlId="ADDL">
             <Form.Label>ADD</Form.Label>
-            <Form.Select defaultValue="n/a">
+            <Form.Control as="select"
+              type="number"
+              placeholder="n/a"
+              value={ADDL}
+              onChange={(e) => setADDL(e.target.value)}
+              required>
               <option>n/a</option>
               <option>+0.25</option>
               <option>+0.50</option>
@@ -572,7 +618,7 @@ export default function PrescriptionScreen() {
               <option>+7.50</option>
               <option>+7.75</option>
               <option>+8.00</option>
-            </Form.Select>
+            </Form.Control>
           </Form.Group>
         </Row>
         <Row className="mb-5 pb-4 pt-3 text-muted bg-info text-dark bg-opacity-10">
@@ -581,8 +627,12 @@ export default function PrescriptionScreen() {
           </Form.Group>
           <Form.Group as={Col} className="mb-3" controlId="RPD">
             <Form.Label></Form.Label>
-            <Form.Select defaultValue="Right PD">
-              <option>Right PD</option>
+            <Form.Control as="select"
+              type="number"
+              placeholder="Right PD"
+              value={RPD}
+              onChange={(e) => setRPD(e.target.value)}>
+              <option>n/a</option>
               <option>23.0</option>
               <option>23.5</option>
               <option>24.0</option>
@@ -618,12 +668,16 @@ export default function PrescriptionScreen() {
               <option>39.0</option>
               <option>39.5</option>
               <option>40.0</option>
-            </Form.Select>
+            </Form.Control>
           </Form.Group>
           <Form.Group as={Col} controlId="LPD">
             <Form.Label></Form.Label>
-            <Form.Select defaultValue="Left PD">
-              <option>Left PD</option>
+            <Form.Control as="select"
+              type="number"
+              placeholder="Left PD"
+              value={LPD}
+              onChange={(e) => setLPD(e.target.value)}>
+              <option>n/a</option>
               <option>25.0</option>
               <option>25.5</option>
               <option>26.0</option>
@@ -655,13 +709,14 @@ export default function PrescriptionScreen() {
               <option>39.0</option>
               <option>39.5</option>
               <option>40.0</option>
-            </Form.Select>
+            </Form.Control>
           </Form.Group>
         </Row>
+      
+        <div className="text-center my-5 py-5">
+          <Button type="submit" className='shadow-none px-3 pt-2 ' variant="warning">Update</Button>
+        </div>
       </form>
-      <div className="text-center my-5 py-5">
-        <Button type="submit" className='shadow-none px-3 pt-2 ' variant="warning">Update</Button>
-      </div>
 
     </div>
   );
