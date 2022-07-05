@@ -9,11 +9,10 @@ const PrescriptionSchema = new mongoose.Schema(
     SphereL: { type: Number, required: true },
     CylinderL: { type: Number, required: true },
     AxisL: { type: Number, required: true },
+    ADDL: { type: Number, required: true },
     RPD: { type: Number, required: true },
     LPD: { type: Number, required: true },
-    name: { type: String, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
-  
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
   },
   {
     timestamps: true,

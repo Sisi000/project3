@@ -12,7 +12,7 @@ const s3Router = require('./routes/s3');
 const productRouter = require ('./routes/productRoutes.js');
 const userRouter = require ('./routes/userRoutes.js');
 const orderRouter = require ('./routes/orderRoutes.js');
-
+const prescriptionRouter = require ('./routes/prescriptionRoutes.js');
 
 const app = express();
 
@@ -38,6 +38,7 @@ app.use('/', s3Router);
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
+app.use('/api/prescriptions', prescriptionRouter);
 
 app.use(express.static(path.join(__dirname, '/frontend/build')));
 app.get('*', (req, res) =>
