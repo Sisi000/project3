@@ -106,7 +106,6 @@ function App() {
                   <Nav.Link href="/">Home</Nav.Link>
                   <Nav.Link href="/about">About</Nav.Link>
                   <Nav.Link href="/upload">Upload</Nav.Link>
-                  <Nav.Link href="/stripe">Stripe</Nav.Link>
                   <Link to="/cart" className="nav-link">
                     Cart
                     {cart.cartItems.length > 0 && (
@@ -211,13 +210,13 @@ function App() {
               }
             />
             <Route
-            path="/stripe"
-            element={
+              path="/stripe"
+              element={
                 <Container className="mt-3">
-                    {/* <Stripe /> */}
-                    {/* <SplitForm /> */}
+                  {/* <Stripe /> */}
+                  {/* <SplitForm /> */}
                 </Container>
-            }
+              }
             />
             <Route
               path="/cart"
@@ -240,12 +239,12 @@ function App() {
                 </Container>
               }
             />
-             <Route
+            <Route
               path="/profile"
               element={
                 <Container className="mt-3">
                   <ProtectedRoute>
-                    <ProfileScreen  />
+                    <ProfileScreen />
                   </ProtectedRoute>
                 </Container>
               }
@@ -367,7 +366,7 @@ function App() {
             <Route path="/" element={<HomeScreen />} />
           </Routes>
         </main>
-         <Footer />
+        <Footer />
       </div>
     </BrowserRouter>
   );
