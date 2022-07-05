@@ -16,45 +16,6 @@ userRouter.get(
   })
 );
 
-userRouter.put(
-  '/prescription',
-  isAuth,
-  expressAsyncHandler(async (req, res) => {
-    const user = await User.findById(req.user._id);
-    if (user) {
-
-      user.SphereR=req.body.SphereR || user.SphereR;
-      user.CylinderR=req.body.CylinderR || user.CylinderR;
-      user.AxisR=req.body.AxisR || user.AxisR;
-      user.ADDR=req.body.ADDR || user.ADDR;
-      user.SphereL=req.body.SphereL || user.SphereL;
-      user.CylinderL=req.body.CylinderL || user.CylinderL;
-      user.AxisL=req.body.AxisL || user.AxisL;
-      user.ADDL=req.body.ADDL || user.ADDL;
-      user.RPD=req.body.RPD || user.RPD;
-      user.LPD=req.body.LPD || user.LPD;
-      
-
-      const updatedUser = await user.save();
-      res.send({
-        SphereR: updatedUser.SphereR,
-        CylinderR: updatedUser.CylinderR,
-        AxisR: updatedUser.AxisR,
-        ADDR: updatedUser.ADDR,
-        SphereL: updatedUser.SphereL,
-        CylinderL: updatedUser.CylinderL,
-        AxisL: updatedUser.AxisL,
-        ADDL: updatedUser.AxisL,
-        RPD: updatedUser.RPD,
-        LPD: updatedUser.LPD,
-        isAdmin: updatedUser.isAdmin,
-        token: generateToken(updatedUser),
-      });
-    } else {
-      res.status(404).send({ message: 'User not found' });
-    }
-  })
-);
 
 userRouter.post(
   '/signin',
