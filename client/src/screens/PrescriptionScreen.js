@@ -1,13 +1,12 @@
 import React, { useContext, useReducer, useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { Helmet } from 'react-helmet-async';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
 import axios from 'axios';
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Button, Form, Container } from "react-bootstrap";
+import PrescriptionImg from './PrescriptionImg';
 
 
 const reducer = (state, action) => {
@@ -69,9 +68,9 @@ export default function PrescriptionScreen() {
       try {
         dispatch({ type: "FETCH_REQUEST" });
         const { data } = await axios.get(`/api/prescriptions`,
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          });
         setSphereR(data.SphereR);
         setCylinderR(data.CylinderR);
         setAxisR(data.AxisR);
@@ -132,12 +131,16 @@ export default function PrescriptionScreen() {
   };
 
   return (
+    <Container >
+    <div>
+      <PrescriptionImg />
+    </div>
 
     <div className="container small-container">
       <Helmet>
         <title>Prescription</title>
       </Helmet>
-      <h1 className="text-center my-5 py-5">What is your prescription?</h1>
+      <h1 className="text-center my-4 mb-1 py-5">What is your prescription?</h1>
       <form onSubmit={submitHandler} >
         <Row className="mb-3 pb-3 pt-4 text-muted bg-info text-dark bg-opacity-10">
           <Form.Group as={Col} className="mb-3" controlId="ODR">
@@ -264,7 +267,7 @@ export default function PrescriptionScreen() {
               <option>+11.50</option>
               <option>+11.75</option>
               <option>+12.00</option>
-              </Form.Control>
+            </Form.Control>
           </Form.Group>
           <Form.Group as={Col} controlId="CylinderR">
             <Form.Label>Cylinder(CYL)</Form.Label>
@@ -324,7 +327,7 @@ export default function PrescriptionScreen() {
               <option>+5.50</option>
               <option>+5.75</option>
               <option>+6.00</option>
-              </Form.Control>
+            </Form.Control>
           </Form.Group>
           <Form.Group as={Col} controlId="AxisR">
             <Form.Label>Axis</Form.Label>
@@ -712,12 +715,14 @@ export default function PrescriptionScreen() {
             </Form.Control>
           </Form.Group>
         </Row>
-      
+
         <div className="text-center my-5 py-5">
           <Button type="submit" className='shadow-none px-3 pt-2 ' variant="warning">Update</Button>
         </div>
+       
       </form>
 
     </div>
-  );
+    </Container>
+     );
 }
