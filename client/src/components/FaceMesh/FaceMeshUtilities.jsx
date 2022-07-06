@@ -2654,7 +2654,7 @@ export const TRIANGULATION = [ // Ordered pair in 3x for rendering
     if (closePath) {
       region.closePath();
     }
-    ctx.strokeStyle = "yellow";
+    ctx.strokeStyle = "##00f7ff";
     ctx.stroke(region);
   };
   
@@ -2665,6 +2665,7 @@ export const TRIANGULATION = [ // Ordered pair in 3x for rendering
     if (face.keypoints.length > 0) {
         const keypoints = face.keypoints
         //  Draw Triangles
+        
         for (let i = 0; i < TRIANGULATION.length / 3; i++) {
           // Get sets of three nodes for each triangle
           const points = [
@@ -2673,8 +2674,9 @@ export const TRIANGULATION = [ // Ordered pair in 3x for rendering
             TRIANGULATION[i * 3 + 2],
           ].map((index) => keypoints[index]);
           //  Draw triangle
-          drawPath(ctx, points, false);
+          drawPath(ctx, points, true);
         }
+        
 
         // Draw Dots
         for (let i = 0; i < keypoints.length; i++) {
@@ -2683,7 +2685,7 @@ export const TRIANGULATION = [ // Ordered pair in 3x for rendering
   
           ctx.beginPath();
           ctx.arc(x, y, 1 /* radius */, 0, 3 * Math.PI);
-          ctx.fillStyle = "grey";
+          ctx.fillStyle = "#00f7ff";
           ctx.fill();
         }
     }
