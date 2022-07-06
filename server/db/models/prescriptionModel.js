@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 
 const PrescriptionSchema = new mongoose.Schema(
   {
-    SphereR: { type: Number, required: true },
-    CylinderR: { type: Number, required: true },
-    AxisR: { type: Number, required: true },
+    SphereR: { type: String, required: true },
+    CylinderR: { type: String, required: true },
+    AxisR: { type: String, required: true },
     ADDR: { type: String, required: true },
-    SphereL: { type: Number, required: true },
-    CylinderL: { type: Number, required: true },
-    AxisL: { type: Number, required: true },
+    SphereL: { type: String, required: true },
+    CylinderL: { type: String, required: true },
+    AxisL: { type: String, required: true },
     ADDL: { type: String, required: true },
     RPD: { type: String, required: true },
     LPD: { type: String, required: true },
