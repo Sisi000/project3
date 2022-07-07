@@ -1,23 +1,24 @@
-import React, { useEffect, useReducer, useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { getError } from '../utils';
-import { Helmet } from 'react-helmet-async';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Rating from '../components/Rating';
-import LoadingBox from '../components/LoadingBox';
-import MessageBox from '../components/MessageBox';
-import Button from 'react-bootstrap/Button';
-import Product from '../components/Product';
-import LinkContainer from 'react-router-bootstrap/LinkContainer';
+import React, { useEffect, useReducer, useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { getError } from "../utils";
+import { Helmet } from "react-helmet-async";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Rating from "../components/Rating";
+import LoadingBox from "../components/LoadingBox";
+import MessageBox from "../components/MessageBox";
+import Button from "react-bootstrap/Button";
+import Product from "../components/Product";
+import LinkContainer from "react-router-bootstrap/LinkContainer";
+import { Form } from "react-bootstrap";
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'FETCH_REQUEST':
+    case "FETCH_REQUEST":
       return { ...state, loading: true };
-    case 'FETCH_SUCCESS':
+    case "FETCH_SUCCESS":
       return {
         ...state,
         products: action.payload.products,
@@ -26,7 +27,7 @@ const reducer = (state, action) => {
         countProducts: action.payload.countProducts,
         loading: false,
       };
-    case 'FETCH_FAIL':
+    case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
 
     default:
@@ -36,37 +37,37 @@ const reducer = (state, action) => {
 
 const prices = [
   {
-    name: '$1 to $50',
-    value: '1-50',
+    name: "$1 to $50",
+    value: "1-50",
   },
   {
-    name: '$51 to $200',
-    value: '51-200',
+    name: "$51 to $200",
+    value: "51-200",
   },
   {
-    name: '$201 to $1000',
-    value: '201-1000',
+    name: "$201 to $1000",
+    value: "201-1000",
   },
 ];
 
 export const ratings = [
   {
-    name: '4stars & up',
+    name: "4stars & up",
     rating: 4,
   },
 
   {
-    name: '3stars & up',
+    name: "3stars & up",
     rating: 3,
   },
 
   {
-    name: '2stars & up',
+    name: "2stars & up",
     rating: 2,
   },
 
   {
-    name: '1stars & up',
+    name: "1stars & up",
     rating: 1,
   },
 ];
@@ -75,18 +76,18 @@ export default function SearchScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();
   const sp = new URLSearchParams(search); // /search?category=Oval
-  const category = sp.get('category') || 'all';
-  const frameColor = sp.get('frameColor') || 'all';
-  const query = sp.get('query') || 'all';
-  const price = sp.get('price') || 'all';
-  const rating = sp.get('rating') || 'all';
-  const order = sp.get('order') || 'newest';
-  const page = sp.get('page') || 1;
+  const category = sp.get("category") || "all";
+  const frameColor = sp.get("frameColor") || "all";
+  const query = sp.get("query") || "all";
+  const price = sp.get("price") || "all";
+  const rating = sp.get("rating") || "all";
+  const order = sp.get("order") || "newest";
+  const page = sp.get("page") || 1;
 
   const [{ loading, error, products, pages, countProducts }, dispatch] =
     useReducer(reducer, {
       loading: true,
-      error: '',
+      error: "",
     });
 
   useEffect(() => {
@@ -95,10 +96,10 @@ export default function SearchScreen() {
         const { data } = await axios.get(
           `/api/products/search?page=${page}&query=${query}&category=${category}&frameColor=${frameColor}&price=${price}&rating=${rating}&order=${order}`
         );
-        dispatch({ type: 'FETCH_SUCCESS', payload: data });
+        dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
         dispatch({
-          type: 'FETCH_FAIL',
+          type: "FETCH_FAIL",
           payload: getError(error),
         });
       }
@@ -142,6 +143,8 @@ export default function SearchScreen() {
     const sortOrder = filter.order || order;
     return `/search?category=${filterCategory}&query=${filterQuery}&frameColor=${filterFrameColor}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
   };
+
+
   return (
     <div>
       <Helmet>
@@ -149,13 +152,29 @@ export default function SearchScreen() {
       </Helmet>
       <Row>
         <Col md={3}>
-          <h3>Department</h3>
+          <Form>
+            <h3>Frame Shape</h3>
+            {categories.map((c) => (
+              <div key={c} className="mb-3">
+                <Form.Check
+                  type="checkbox"
+                  id={c}
+                  label={c}
+                  onChange={() => navigate(getFilterUrl({ category: c }))}
+                  checked={category === c}
+                  
+                ></Form.Check>
+              </div>
+            ))}
+          </Form>
+
+          {/* <h3>Frame Shape</h3>
           <div>
             <ul>
               <li>
                 <Link
-                  className={'all' === category ? 'text-bold' : ''}
-                  to={getFilterUrl({ category: 'all' })}
+                  className={"all" === category ? "text-bold" : ""}
+                  to={getFilterUrl({ category: "all" })}
                 >
                   Any
                 </Link>
@@ -163,7 +182,7 @@ export default function SearchScreen() {
               {categories.map((c) => (
                 <li key={c}>
                   <Link
-                    className={c === category ? 'text-bold' : ''}
+                    className={c === category ? "text-bold" : ""}
                     to={getFilterUrl({ category: c })}
                   >
                     {c}
@@ -171,14 +190,14 @@ export default function SearchScreen() {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
           <h3>Frame Color</h3>
           <div>
             <ul>
               <li>
                 <Link
-                  className={'all' === frameColor ? 'text-bold' : ''}
-                  to={getFilterUrl({ frameColor: 'all' })}
+                  className={"all" === frameColor ? "text-bold" : ""}
+                  to={getFilterUrl({ frameColor: "all" })}
                 >
                   Any
                 </Link>
@@ -186,7 +205,7 @@ export default function SearchScreen() {
               {frameColors.map((c) => (
                 <li key={c}>
                   <Link
-                    className={c === frameColor ? 'text-bold' : ''}
+                    className={c === frameColor ? "text-bold" : ""}
                     to={getFilterUrl({ frameColor: c })}
                   >
                     {c}
@@ -195,14 +214,14 @@ export default function SearchScreen() {
               ))}
             </ul>
           </div>
-       
+
           <div>
             <h3>Price</h3>
             <ul>
               <li>
                 <Link
-                  className={'all' === price ? 'text-bold' : ''}
-                  to={getFilterUrl({ price: 'all' })}
+                  className={"all" === price ? "text-bold" : ""}
+                  to={getFilterUrl({ price: "all" })}
                 >
                   Any
                 </Link>
@@ -211,7 +230,7 @@ export default function SearchScreen() {
                 <li key={p.value}>
                   <Link
                     to={getFilterUrl({ price: p.value })}
-                    className={p.value === price ? 'text-bold' : ''}
+                    className={p.value === price ? "text-bold" : ""}
                   >
                     {p.name}
                   </Link>
@@ -226,18 +245,18 @@ export default function SearchScreen() {
                 <li key={r.name}>
                   <Link
                     to={getFilterUrl({ rating: r.rating })}
-                    className={`${r.rating}` === `${rating}` ? 'text-bold' : ''}
+                    className={`${r.rating}` === `${rating}` ? "text-bold" : ""}
                   >
-                    <Rating caption={' & up'} rating={r.rating}></Rating>
+                    <Rating caption={" & up"} rating={r.rating}></Rating>
                   </Link>
                 </li>
               ))}
               <li>
                 <Link
-                  to={getFilterUrl({ rating: 'all' })}
-                  className={rating === 'all' ? 'text-bold' : ''}
+                  to={getFilterUrl({ rating: "all" })}
+                  className={rating === "all" ? "text-bold" : ""}
                 >
-                  <Rating caption={' & up'} rating={0}></Rating>
+                  <Rating caption={" & up"} rating={0}></Rating>
                 </Link>
               </li>
             </ul>
@@ -253,19 +272,19 @@ export default function SearchScreen() {
               <Row className="justify-content-between mb-3">
                 <Col md={6}>
                   <div>
-                    {countProducts === 0 ? 'No' : countProducts} Results
-                    {query !== 'all' && ' : ' + query}
-                    {category !== 'all' && ' : ' + category}
-                    {frameColor !== 'all' && ' : ' + frameColor}
-                    {price !== 'all' && ' : Price ' + price}
-                    {rating !== 'all' && ' : Rating ' + rating + ' & up'}
-                    {query !== 'all' ||
-                    category !== 'all' ||
-                    rating !== 'all' ||
-                    price !== 'all' ? (
+                    {countProducts === 0 ? "No" : countProducts} Results
+                    {query !== "all" && " : " + query}
+                    {category !== "all" && " : " + category}
+                    {frameColor !== "all" && " : " + frameColor}
+                    {price !== "all" && " : Price " + price}
+                    {rating !== "all" && " : Rating " + rating + " & up"}
+                    {query !== "all" ||
+                    category !== "all" ||
+                    rating !== "all" ||
+                    price !== "all" ? (
                       <Button
                         variant="light"
-                        onClick={() => navigate('/search')}
+                        onClick={() => navigate("/search")}
                       >
                         <i className="fas fa-times-circle"></i>
                       </Button>
@@ -273,7 +292,7 @@ export default function SearchScreen() {
                   </div>
                 </Col>
                 <Col className="text-end">
-                  Sort by{' '}
+                  Sort by{" "}
                   <select
                     value={order}
                     onChange={(e) => {
@@ -307,7 +326,7 @@ export default function SearchScreen() {
                     to={getFilterUrl({ page: x + 1 })}
                   >
                     <Button
-                      className={Number(page) === x + 1 ? 'text-bold' : ''}
+                      className={Number(page) === x + 1 ? "text-bold" : ""}
                       variant="light"
                     >
                       {x + 1}

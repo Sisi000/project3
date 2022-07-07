@@ -8,6 +8,7 @@ const addUrl = require("../db/models/urlmodel");
 const {
   facelandmark,
   facelandmarkURL,
+  facemesh,
 } = require("../db/models/faceDetectionCalc.js");
 const sharp = require("sharp");
 const S3 = require("aws-sdk/clients/s3");
@@ -123,6 +124,20 @@ router.post(
     res.send({ image: result.Location, imageS3Key: result.Key });
   }
 );
+
+// upload Url to vision
+router.post("/facemesh", async (req, res, next) => {
+  const userFaceData = req.body.userFaceData;
+  const filters = req.body.filters;
+
+  //console.log("userData is", userFaceData);
+  //console.log("filters are ", filters);
+
+  const userData = facemesh(userFaceData);
+
+  res.send(userData);
+  
+});
 
 router.post(
   "/uploadadditionalimage",

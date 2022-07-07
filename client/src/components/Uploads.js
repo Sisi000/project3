@@ -5,12 +5,14 @@ import UploadS3 from "./uploadS3/UploadS3";
 import Webcam from "./Webcam/Webcam";
 import UploadUrl from "./uploadUrl/UploadUrl";
 import UploadFilters from "./UploadFilters/UploadFilters";
+import FaceMesh from "./FaceMesh/FaceMesh"
 import "./Uploads.css";
 
 export default function Uploads() {
   const [isShown1, setIsShown1] = useState(false);
   const [isShown2, setIsShown2] = useState(false);
   const [isShown3, setIsShown3] = useState(false);
+  const [isShown4, setIsShown4] = useState(false);
 
   /*
   For filters
@@ -190,17 +192,27 @@ export default function Uploads() {
     setIsShown1((current) => !current);
     setIsShown2(false);
     setIsShown3(false);
+    setIsShown4(false);
   };
   const handleClick2 = () => {
     setIsShown2((current) => !current);
     setIsShown1(false);
     setIsShown3(false);
+    setIsShown4(false);
   };
 
   const handleClick3 = () => {
     setIsShown3((current) => !current);
     setIsShown1(false);
     setIsShown2(false);
+    setIsShown4(false);
+  };
+
+  const handleClick4 = () => {
+    setIsShown4((current) => !current);
+    setIsShown1(false);
+    setIsShown2(false);
+    setIsShown3(false);
   };
 
   return (
@@ -250,11 +262,15 @@ export default function Uploads() {
         <button className="btn-uploads3" onClick={handleClick3}>
           Upload Url
         </button>
+        <button className="btn-uploads4" onClick={handleClick4}>
+          Facial Node Detection
+        </button>
         </div>
         <div className="upload-content">
         {isShown1 && <UploadS3 filters = {filters}/>}
         {isShown2 && <Webcam filters = {filters}/>}
         {isShown3 && <UploadUrl filters = {filters}/>}
+        {isShown4 && <FaceMesh filters = {filters}/>}
       </div>
     </div>
     </div>
