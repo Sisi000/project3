@@ -53,7 +53,7 @@ function HomeScreen() {
         </div>
         <div>
           <Cards />
-        </div>
+           </div>
         <div>
           <TryOn />
         </div>

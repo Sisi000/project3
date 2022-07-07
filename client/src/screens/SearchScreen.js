@@ -149,7 +149,7 @@ export default function SearchScreen() {
       </Helmet>
       <Row>
         <Col md={3}>
-          <h3>Department</h3>
+          <h3>Frame Shape</h3>
           <div>
             <ul>
               <li>
