@@ -106,6 +106,7 @@ function App() {
                   <Nav.Link href="/">Home</Nav.Link>
                   <Nav.Link href="/about">About</Nav.Link>
                   <Nav.Link href="/upload">Upload</Nav.Link>
+                  <Nav.Link href="/stripe">Stripe</Nav.Link>
                   <Link to="/cart" className="nav-link">
                     Cart
                     {cart.cartItems.length > 0 && (
@@ -115,6 +116,32 @@ function App() {
                     )}
                   </Link>
                   {userInfo ? (
+
+                    userInfo.isAdmin ? (
+                      <NavDropdown title="Admin" id="admin-nav-dropdown">
+                      <LinkContainer to="/admin/dashboard">
+                        <NavDropdown.Item>Dashboard</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/products">
+                        <NavDropdown.Item>Products</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/orders">
+                        <NavDropdown.Item>Orders</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/users">
+                        <NavDropdown.Item>Users</NavDropdown.Item>
+                      </LinkContainer>
+                      <NavDropdown.Divider />
+                      <Link
+                        className="dropdown-item"
+                        to="#signout"
+                        onClick={signoutHandler}
+                      >
+                        Sign Out
+                      </Link>
+                    </NavDropdown>
+                    ) : (
+
                     <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
                       <LinkContainer to="/profile">
                         <NavDropdown.Item>User Profile</NavDropdown.Item>
@@ -134,26 +161,11 @@ function App() {
                         Sign Out
                       </Link>
                     </NavDropdown>
+                    )
                   ) : (
                     <Link className="nav-link" to="/signin">
                       Sign In
                     </Link>
-                  )}
-                  {userInfo && userInfo.isAdmin && (
-                    <NavDropdown title="Admin" id="admin-nav-dropdown">
-                      <LinkContainer to="/admin/dashboard">
-                        <NavDropdown.Item>Dashboard</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/products">
-                        <NavDropdown.Item>Products</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/orders">
-                        <NavDropdown.Item>Orders</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/users">
-                        <NavDropdown.Item>Users</NavDropdown.Item>
-                      </LinkContainer>
-                    </NavDropdown>
                   )}
                 </Nav>
               </Navbar.Collapse>
@@ -210,13 +222,13 @@ function App() {
               }
             />
             <Route
-              path="/stripe"
-              element={
+            path="/stripe"
+            element={
                 <Container className="mt-3">
-                  {/* <Stripe /> */}
-                  {/* <SplitForm /> */}
+                    {/* <Stripe /> */}
+                    {/* <SplitForm /> */}
                 </Container>
-              }
+            }
             />
             <Route
               path="/cart"
@@ -239,12 +251,12 @@ function App() {
                 </Container>
               }
             />
-            <Route
+             <Route
               path="/profile"
               element={
                 <Container className="mt-3">
                   <ProtectedRoute>
-                    <ProfileScreen />
+                    <ProfileScreen  />
                   </ProtectedRoute>
                 </Container>
               }
@@ -366,7 +378,7 @@ function App() {
             <Route path="/" element={<HomeScreen />} />
           </Routes>
         </main>
-        <Footer />
+         <Footer />
       </div>
     </BrowserRouter>
   );
