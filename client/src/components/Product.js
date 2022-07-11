@@ -5,6 +5,7 @@ import Rating from './Rating';
 import axios from 'axios';
 import { useContext } from 'react';
 import { Store } from '../Store';
+import { FiHeart } from 'react-icons/fi';
 
 function Product(props) {
   const { product } = props;
@@ -47,6 +48,7 @@ function Product(props) {
         ) : (
           <Button variant="primary" onClick={() => addToCartHandler(product)}>Add to cart</Button>
         )}
+<FiHeart style={{marginLeft:"90px"}}/>
       </Card.Body>
     </Card>
   );
