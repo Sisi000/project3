@@ -40,6 +40,7 @@ import About from "./components/About/about";
 import Footer from "./components/Footer/footer";
 import Uploads from "./components/Uploads";
 import profileimage from "./assets/profileimage.png";
+import iconadmin from "./assets/icon-admin.png";
 import "./index.css";
 
 function App() {
@@ -116,11 +117,14 @@ function App() {
                       </Badge>
                     )}
                   </Link>
-                  <div className="image-container">
-                    <img src={profileimage} alt="" />
-                  </div>
+                  
                   {userInfo ? (
                     userInfo.isAdmin ? (
+                      <>
+                      <div className="image-container">
+                    <img src={iconadmin} alt="" />
+                  </div>
+                  
                       <NavDropdown
                         style={{ fontWeight: "bold" }}
                         title="Admin"
@@ -147,7 +151,12 @@ function App() {
                           Sign Out
                         </Link>
                       </NavDropdown>
+                      </>
                     ) : (
+                      <>
+                      <div className="image-container">
+                      <img src={profileimage} alt="" />
+                    </div>
                       <NavDropdown
                         style={{ fontWeight: "bold" }}
                         title={userInfo.name}
@@ -171,6 +180,7 @@ function App() {
                           Sign Out
                         </Link>
                       </NavDropdown>
+                      </>
                     )
                   ) : (
                     <Link className="nav-link" to="/signin">
