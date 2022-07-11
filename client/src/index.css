@@ -76,10 +76,25 @@ main {
   color: #f08000;
 }
 
-/* sidebar */
+a {
+ margin-right: 20px;
+
+
+}
 .navbar-brand {
   font-weight: bold;
 }
+.nav-item.dropdown {
+ margin-left: 120px;
+}
+
+.navbar.nav {
+  display: flex !important;
+   /* justify-content: space-between; */
+  justify-content: flex-end !important;
+
+}
+
 .side-navbar {
   width: 240px;
   height: 100%;

@@ -40,7 +40,6 @@ import About from "./components/About/about";
 import Footer from "./components/Footer/footer";
 import Uploads from "./components/Uploads";
 
-
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { fullBox, cart, userInfo } = state;
@@ -102,7 +101,7 @@ function App() {
                   className="me-auto mx-auto my-2 my-lg-0"
                   style={{ fontSize: "1.2rem" }}
                 >
-                  <Nav.Link href="/">Home</Nav.Link>
+                  <Nav.Link style={{marginLeft: "500px"}} href="/">Home</Nav.Link>
                   <Nav.Link href="/about">About</Nav.Link>
                   <Nav.Link href="/upload">Upload</Nav.Link>
                   <Link to="/cart" className="nav-link">
@@ -115,7 +114,7 @@ function App() {
                   </Link>
                   {userInfo ? (
                     userInfo.isAdmin ? (
-                      <NavDropdown title="Admin" id="admin-nav-dropdown">
+                      <NavDropdown style={{fontWeight: "bold"}} title="Admin" id="admin-nav-dropdown">
                         <LinkContainer to="/admin/dashboard">
                           <NavDropdown.Item>Dashboard</NavDropdown.Item>
                         </LinkContainer>
@@ -138,7 +137,7 @@ function App() {
                         </Link>
                       </NavDropdown>
                     ) : (
-                      <NavDropdown
+                      <NavDropdown style={{fontWeight: "bold"}}
                         title={userInfo.name}
                         id="basic-nav-dropdown"
                       >
@@ -368,7 +367,6 @@ function App() {
             <Route path="/" element={<HomeScreen />} />
           </Routes>
         </main>
-        {/* <SearchScreen /> */}
         <Footer />
       </div>
     </BrowserRouter>
