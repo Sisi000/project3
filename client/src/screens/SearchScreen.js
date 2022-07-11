@@ -9,10 +9,12 @@ import Col from "react-bootstrap/Col";
 import Rating from "../components/Rating";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
-import Button from "react-bootstrap/Button";
+// import Button from "react-bootstrap/Button";
 import Product from "../components/Product";
 import LinkContainer from "react-router-bootstrap/LinkContainer";
-import { Form } from "react-bootstrap";
+// import { Form } from "react-bootstrap";
+import { Button, ButtonGroup, Dropdown, Form } from "react-bootstrap";
+import "./Screens.css";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -72,7 +74,7 @@ export const ratings = [
   },
 ];
 
-export default function SearchScreen() {
+export default function SearchScreen({ items }) {
   const navigate = useNavigate();
   const { search } = useLocation();
   const sp = new URLSearchParams(search); // /search?category=Oval
@@ -144,125 +146,187 @@ export default function SearchScreen() {
     return `/search?category=${filterCategory}&query=${filterQuery}&frameColor=${filterFrameColor}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
   };
 
+  const CheckboxMenu = React.forwardRef(
+    (
+      {
+        children,
+        style,
+        className,
+        "aria-labelledby": labeledBy,
+        onSelectAll,
+        onSelectNone,
+      },
+      ref
+    ) => {
+      return (
+        <div
+          ref={ref}
+          style={style}
+          className={`${className} CheckboxMenu`}
+          aria-labelledby={labeledBy}
+        >
+          <div
+            className="d-flex flex-column"
+            style={{ maxHeight: "calc(100vh)", overflow: "none" }}
+          >
+            <ul
+              className="list-unstyled flex-shrink mb-0"
+              style={{ overflow: "auto" }}
+            >
+              {children}
+            </ul>
+            <div className="dropdown-item border-top pt-2 pb-0">
+              <ButtonGroup size="sm">
+                <Button variant="link" onClick={onSelectAll}>
+                  Select All
+                </Button>
+                <Button variant="link" onClick={onSelectNone}>
+                  Select None
+                </Button>
+              </ButtonGroup>
+            </div>
+          </div>
+        </div>
+      );
+    }
+  );
+
+  const CheckDropdownItem = React.forwardRef(
+    ({ children, id, checked, onChange }, ref) => {
+      return (
+        <Form.Group ref={ref} className="dropdown-item mb-0" controlId={id}>
+          <Form.Check
+            type="checkbox"
+            label={children}
+            checked={checked}
+            onChange={onChange && onChange.bind(onChange, id)}
+          />
+        </Form.Group>
+      );
+    }
+  );
+
+  //  const CheckboxDropdown = observer(({ items }) => {
+  const handleChecked = (key, event) => {
+    items.find((i) => i.id === key).checked = event.target.checked;
+  };
+
+  const handleSelectAll = () => {
+    items.forEach((i) => (i.checked = true));
+  };
+
+  const handleSelectNone = () => {
+    items.forEach((i) => (i.checked = false));
+  };
+  // })
 
   return (
     <div>
       <Helmet>
         <title>Search Products</title>
       </Helmet>
-      <Row>
-        <Col md={3}>
-          <Form>
-            <h3>Frame Shape</h3>
-            {categories.map((c) => (
-              <div key={c} className="mb-3">
-                <Form.Check
-                  type="checkbox"
+      {/* <Row> */}
+       
+          <div className="dropdown-container">
+          <Dropdown>
+            <Dropdown.Toggle variant="primary" id="dropdown-basic">
+              Frame Shape
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu
+              as={CheckboxMenu}
+              onSelectAll={handleSelectAll}
+              onSelectNone={handleSelectNone}
+            >
+              {categories.map((c) => (
+                <Dropdown.Item
+                  key={c}
+                  as={CheckDropdownItem}
                   id={c}
-                  label={c}
                   onChange={() => navigate(getFilterUrl({ category: c }))}
                   checked={category === c}
-                  
-                ></Form.Check>
-              </div>
-            ))}
-          </Form>
-
-          {/* <h3>Frame Shape</h3>
-          <div>
-            <ul>
-              <li>
-                <Link
-                  className={"all" === category ? "text-bold" : ""}
-                  to={getFilterUrl({ category: "all" })}
                 >
-                  Any
-                </Link>
-              </li>
-              {categories.map((c) => (
-                <li key={c}>
-                  <Link
-                    className={c === category ? "text-bold" : ""}
-                    to={getFilterUrl({ category: c })}
-                  >
-                    {c}
-                  </Link>
-                </li>
+                  {c}
+                </Dropdown.Item>
               ))}
-            </ul>
-          </div> */}
-          <h3>Frame Color</h3>
-          <div>
-            <ul>
-              <li>
-                <Link
-                  className={"all" === frameColor ? "text-bold" : ""}
-                  to={getFilterUrl({ frameColor: "all" })}
-                >
-                  Any
-                </Link>
-              </li>
+            </Dropdown.Menu>
+            </Dropdown>
+            <Dropdown>
+          <Dropdown.Toggle variant="primary" id="dropdown-basic">
+          Frame Color
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu
+              as={CheckboxMenu}
+              onSelectAll={handleSelectAll}
+              onSelectNone={handleSelectNone}
+            >
               {frameColors.map((c) => (
-                <li key={c}>
-                  <Link
-                    className={c === frameColor ? "text-bold" : ""}
-                    to={getFilterUrl({ frameColor: c })}
-                  >
-                    {c}
-                  </Link>
-                </li>
+                <Dropdown.Item
+                  key={c}
+                  as={CheckDropdownItem}
+                  id={c}
+                  onChange={() => navigate(getFilterUrl({ frameColor: c }))}
+                  checked={frameColor === c}
+                >
+                  {c}
+                </Dropdown.Item>
               ))}
-            </ul>
-          </div>
+            </Dropdown.Menu>
+            </Dropdown>
+         
+            <Dropdown>
+          <Dropdown.Toggle variant="primary" id="dropdown-basic">
+          Price
+            </Dropdown.Toggle>
 
-          <div>
-            <h3>Price</h3>
-            <ul>
-              <li>
-                <Link
-                  className={"all" === price ? "text-bold" : ""}
-                  to={getFilterUrl({ price: "all" })}
+            <Dropdown.Menu
+              as={CheckboxMenu}
+              onSelectAll={handleSelectAll}
+              onSelectNone={handleSelectNone}
+            >
+              {prices.map((c) => (
+                <Dropdown.Item
+                  key={c.value}
+                  as={CheckDropdownItem}
+                  id={c}
+                  onChange={() => navigate(getFilterUrl({ price: c.value }))}
+                  checked={price === c.value}
                 >
-                  Any
-                </Link>
-              </li>
-              {prices.map((p) => (
-                <li key={p.value}>
-                  <Link
-                    to={getFilterUrl({ price: p.value })}
-                    className={p.value === price ? "text-bold" : ""}
-                  >
-                    {p.name}
-                  </Link>
-                </li>
+                  {c.name}
+                </Dropdown.Item>
               ))}
-            </ul>
-          </div>
-          <div>
-            <h3>Avg. Customer Review</h3>
-            <ul>
+            </Dropdown.Menu>
+            </Dropdown>
+
+            <Dropdown>
+          <Dropdown.Toggle variant="primary" id="dropdown-basic">
+          Avg. Customer Review
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu
+              as={CheckboxMenu}
+              onSelectAll={handleSelectAll}
+              onSelectNone={handleSelectNone}
+            >
               {ratings.map((r) => (
-                <li key={r.name}>
-                  <Link
-                    to={getFilterUrl({ rating: r.rating })}
-                    className={`${r.rating}` === `${rating}` ? "text-bold" : ""}
-                  >
-                    <Rating caption={" & up"} rating={r.rating}></Rating>
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link
-                  to={getFilterUrl({ rating: "all" })}
-                  className={rating === "all" ? "text-bold" : ""}
+                <Dropdown.Item
+                  key={r.name}
+                  as={CheckDropdownItem}
+                  id={r}
+                  onChange={() => navigate(getFilterUrl({ rating: r.rating }))}
+                  checked={rating === r.rating}
                 >
-                  <Rating caption={" & up"} rating={0}></Rating>
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </Col>
-        <Col md={9}>
+                  <Rating caption={" & up"} rating={r.rating}></Rating>
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+            </Dropdown>
+  </div>
+         
+         
+  <div className="products my-5 py-2">
+        {/* <Col md={9}> */}
           {loading ? (
             <LoadingBox></LoadingBox>
           ) : error ? (
@@ -310,9 +374,9 @@ export default function SearchScreen() {
                 <MessageBox>No Product Found</MessageBox>
               )}
 
-              <Row>
+              <Row className="filtered-products">
                 {products.map((product) => (
-                  <Col sm={6} lg={4} className="mb-3" key={product._id}>
+                  <Col sm={6} md={4} lg={4} className="mb-3" key={product.slug}>
                     <Product product={product}></Product>
                   </Col>
                 ))}
@@ -336,8 +400,8 @@ export default function SearchScreen() {
               </div>
             </>
           )}
-        </Col>
-      </Row>
+        </div>
+      {/* </Row> */}
     </div>
   );
 }

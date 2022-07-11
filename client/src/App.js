@@ -40,6 +40,7 @@ import About from "./components/About/about";
 import Footer from "./components/Footer/footer";
 import Uploads from "./components/Uploads";
 
+
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { fullBox, cart, userInfo } = state;
@@ -367,6 +368,7 @@ function App() {
             <Route path="/" element={<HomeScreen />} />
           </Routes>
         </main>
+        {/* <SearchScreen /> */}
         <Footer />
       </div>
     </BrowserRouter>
