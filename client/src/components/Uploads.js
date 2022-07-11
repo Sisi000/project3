@@ -253,16 +253,16 @@ export default function Uploads() {
       />
     <div className="uploads-container">
       <div className="uploads-btns-container">
-        <button className="btn-uploads1" onClick={handleClick1}>
+        <button className="btn btn-primary" onClick={handleClick1}>
           Upload Photo
         </button>
-        <button className="btn-uploads2" onClick={handleClick2}>
+        <button className="btn btn-primary" onClick={handleClick2}>
           Web Cam
         </button>
-        <button className="btn-uploads3" onClick={handleClick3}>
+        <button className="btn btn-primary" onClick={handleClick3}>
           Upload Url
         </button>
-        <button className="btn-uploads4" onClick={handleClick4}>
+        <button className="btn btn-primary" onClick={handleClick4}>
           Facial Node Detection
         </button>
         </div>

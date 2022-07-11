@@ -39,8 +39,9 @@ import logo from "./assets/logo.png";
 import About from "./components/About/about";
 import Footer from "./components/Footer/footer";
 import Uploads from "./components/Uploads";
-// import Stripe from "./components/Stripe";
-// import SplitForm from "./components/SplitForm";
+import profileimage from "./assets/profileimage.png";
+import iconadmin from "./assets/icon-admin.png";
+import "./index.css";
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -103,7 +104,9 @@ function App() {
                   className="me-auto mx-auto my-2 my-lg-0"
                   style={{ fontSize: "1.2rem" }}
                 >
-                  <Nav.Link href="/">Home</Nav.Link>
+                  <Nav.Link style={{ marginLeft: "500px" }} href="/">
+                    Home
+                  </Nav.Link>
                   <Nav.Link href="/about">About</Nav.Link>
                   <Nav.Link href="/upload">Upload</Nav.Link>
                   <Link to="/cart" className="nav-link">
@@ -114,46 +117,75 @@ function App() {
                       </Badge>
                     )}
                   </Link>
+                  
                   {userInfo ? (
-                    <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
-                      <LinkContainer to="/profile">
-                        <NavDropdown.Item>User Profile</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/prescription">
-                        <NavDropdown.Item>Prescription</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/orderhistory">
-                        <NavDropdown.Item>Order History</NavDropdown.Item>
-                      </LinkContainer>
-                      <NavDropdown.Divider />
-                      <Link
-                        className="dropdown-item"
-                        to="#signout"
-                        onClick={signoutHandler}
+                    userInfo.isAdmin ? (
+                      <>
+                      <div className="image-container">
+                    <img src={iconadmin} alt="" />
+                  </div>
+                  
+                      <NavDropdown
+                        style={{ fontWeight: "bold" }}
+                        title="Admin"
+                        id="admin-nav-dropdown"
                       >
-                        Sign Out
-                      </Link>
-                    </NavDropdown>
+                        <LinkContainer to="/admin/dashboard">
+                          <NavDropdown.Item>Dashboard</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/admin/products">
+                          <NavDropdown.Item>Products</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/admin/orders">
+                          <NavDropdown.Item>Orders</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/admin/users">
+                          <NavDropdown.Item>Users</NavDropdown.Item>
+                        </LinkContainer>
+                        <NavDropdown.Divider />
+                        <Link
+                          className="dropdown-item"
+                          to="#signout"
+                          onClick={signoutHandler}
+                        >
+                          Sign Out
+                        </Link>
+                      </NavDropdown>
+                      </>
+                    ) : (
+                      <>
+                      <div className="image-container">
+                      <img src={profileimage} alt="" />
+                    </div>
+                      <NavDropdown
+                        style={{ fontWeight: "bold" }}
+                        title={userInfo.name}
+                        id="basic-nav-dropdown"
+                      >
+                        <LinkContainer to="/profile">
+                          <NavDropdown.Item>User Profile</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/prescription">
+                          <NavDropdown.Item>Prescription</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/orderhistory">
+                          <NavDropdown.Item>Order History</NavDropdown.Item>
+                        </LinkContainer>
+                        <NavDropdown.Divider />
+                        <Link
+                          className="dropdown-item"
+                          to="#signout"
+                          onClick={signoutHandler}
+                        >
+                          Sign Out
+                        </Link>
+                      </NavDropdown>
+                      </>
+                    )
                   ) : (
                     <Link className="nav-link" to="/signin">
                       Sign In
                     </Link>
-                  )}
-                  {userInfo && userInfo.isAdmin && (
-                    <NavDropdown title="Admin" id="admin-nav-dropdown">
-                      <LinkContainer to="/admin/dashboard">
-                        <NavDropdown.Item>Dashboard</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/products">
-                        <NavDropdown.Item>Products</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/orders">
-                        <NavDropdown.Item>Orders</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/users">
-                        <NavDropdown.Item>Users</NavDropdown.Item>
-                      </LinkContainer>
-                    </NavDropdown>
                   )}
                 </Nav>
               </Navbar.Collapse>
@@ -169,7 +201,7 @@ function App() {
         >
           <Nav className="flex-column text-white w-100 p-2">
             <Nav.Item>
-              <strong>Categories</strong>
+              <strong className="sidebar-categories">Categories</strong>
             </Nav.Item>
             {categories.map((category) => (
               <Nav.Item key={category}>
@@ -206,15 +238,6 @@ function App() {
               element={
                 <Container className="mt-3">
                   <About />
-                </Container>
-              }
-            />
-            <Route
-              path="/stripe"
-              element={
-                <Container className="mt-3">
-                  {/* <Stripe /> */}
-                  {/* <SplitForm /> */}
                 </Container>
               }
             />

@@ -100,7 +100,7 @@ function WebcamCapture(props) {
                   setFile("");
                   setProducts([]);
                 }}
-                className="button-5"
+                className="btn btn-primary"
               >
                 Retake Image
               </button>
@@ -110,13 +110,13 @@ function WebcamCapture(props) {
                   e.preventDefault();
                   capture();
                 }}
-                className="button-5"
+                className="btn btn-primary"
               >
                 Capture
               </button>
             )}
           </div>
-          <button className="button-4" type="submit">
+          <button className="btn btn-primary" type="submit">
             Submit
           </button>
         </form>

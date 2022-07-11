@@ -77,7 +77,7 @@ function UploadS3(props) {
     const file = event.target.files[0];
     setFile(file);
     setProducts([]);
-   };
+  };
 
   const showSuggested = async (result) => {
     const params = result;
@@ -93,7 +93,7 @@ function UploadS3(props) {
             <img className="imgphoto" src={imgphoto} alt="" />
             <span>&nbsp;Choose Photo</span>
           </div>
-          <input
+          <input 
             id="selectedimage"
             onChange={fileSelected}
             type="file"
@@ -110,17 +110,17 @@ function UploadS3(props) {
               </div>
             )}
           </div>
-          <button className="button-4" type="submit">
+          <button className="btn btn-primary" type="submit">
             Submit
           </button>
         </form>
       </div>
-      
+
       <Container fluid style={{ padding: "0" }}>
         <Container className="mt-3">
           <div className="products my-5 py-2">
             <Row>
-            {products.length > 0 && (<h1>Suggested Glasses</h1>)}
+              {products.length > 0 && <h1>Suggested Glasses</h1>}
               {products.map((product) => (
                 <Col key={product._id} sm={6} md={4} lg={3} className="mb-3">
                   <Product product={product}></Product>

@@ -17,14 +17,28 @@ body {
 main {
   flex: 1;
 }
+
 .btn-primary,
 .btn-outline-primary {
-  background-color: #f0c040;
-  color: #000000;
+  background-color: #ffffff !important;
+  border-color: #34ebb1 !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  margin: 10px;
 }
+
+.btn-primary:hover {
+	color: #fff;
+  background-color: #e8ebea !important;
+	cursor: pointer;
+	transform: translateY(-1px);
+	box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+  }
+
 .products {
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
+  flex-direction: column;
   justify-content: center;
 }
 
@@ -62,10 +76,49 @@ main {
   color: #f08000;
 }
 
-/* sidebar */
+a {
+ margin-right: 20px;
+color: #333232 !important;
+}
+
+a:hover {
+  color: black;
+  font-weight: bold;
+}
+
+.side-navbar {
+  background-color: #f8f8f8 !important;
+ }
+
 .navbar-brand {
   font-weight: bold;
 }
+.nav-item.dropdown {
+ margin-left: 8px;
+}
+
+.sidebar-categories {
+  color:#000000 !important;
+}
+
+.navbar.nav {
+  display: flex !important;
+   /* justify-content: space-between; */
+  justify-content: flex-end !important;
+
+}
+
+.image-container {
+  display: flex;
+  /* margin-right: 12px; */
+  margin-left: 100px;
+  align-items: center;
+}
+
+.image-container img {
+  border-radius: 50px;
+}
+
 .side-navbar {
   width: 240px;
   height: 100%;
@@ -135,6 +188,7 @@ button.thumbnail {
   background-color: #34ebb1;
   height: 70px;
   justify-content: space-between;
+   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .logo {

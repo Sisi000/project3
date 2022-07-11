@@ -1,23 +1,26 @@
-import React, { useEffect, useReducer, useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { getError } from '../utils';
-import { Helmet } from 'react-helmet-async';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Rating from '../components/Rating';
-import LoadingBox from '../components/LoadingBox';
-import MessageBox from '../components/MessageBox';
-import Button from 'react-bootstrap/Button';
-import Product from '../components/Product';
-import LinkContainer from 'react-router-bootstrap/LinkContainer';
+import React, { useEffect, useReducer, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { getError } from "../utils";
+import { Helmet } from "react-helmet-async";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Rating from "../components/Rating";
+import LoadingBox from "../components/LoadingBox";
+import MessageBox from "../components/MessageBox";
+// import Button from "react-bootstrap/Button";
+import Product from "../components/Product";
+import LinkContainer from "react-router-bootstrap/LinkContainer";
+// import { Form } from "react-bootstrap";
+import { Button, ButtonGroup, Dropdown, Form } from "react-bootstrap";
+import "./Screens.css";
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'FETCH_REQUEST':
+    case "FETCH_REQUEST":
       return { ...state, loading: true };
-    case 'FETCH_SUCCESS':
+    case "FETCH_SUCCESS":
       return {
         ...state,
         products: action.payload.products,
@@ -26,7 +29,7 @@ const reducer = (state, action) => {
         countProducts: action.payload.countProducts,
         loading: false,
       };
-    case 'FETCH_FAIL':
+    case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
 
     default:
@@ -36,57 +39,57 @@ const reducer = (state, action) => {
 
 const prices = [
   {
-    name: '$1 to $50',
-    value: '1-50',
+    name: "$1 to $50",
+    value: "1-50",
   },
   {
-    name: '$51 to $200',
-    value: '51-200',
+    name: "$51 to $200",
+    value: "51-200",
   },
   {
-    name: '$201 to $1000',
-    value: '201-1000',
+    name: "$201 to $1000",
+    value: "201-1000",
   },
 ];
 
 export const ratings = [
   {
-    name: '4stars & up',
+    name: "4stars & up",
     rating: 4,
   },
 
   {
-    name: '3stars & up',
+    name: "3stars & up",
     rating: 3,
   },
 
   {
-    name: '2stars & up',
+    name: "2stars & up",
     rating: 2,
   },
 
   {
-    name: '1stars & up',
+    name: "1stars & up",
     rating: 1,
   },
 ];
 
-export default function SearchScreen() {
+export default function SearchScreen({ items }) {
   const navigate = useNavigate();
   const { search } = useLocation();
   const sp = new URLSearchParams(search); // /search?category=Oval
-  const category = sp.get('category') || 'all';
-  const frameColor = sp.get('frameColor') || 'all';
-  const query = sp.get('query') || 'all';
-  const price = sp.get('price') || 'all';
-  const rating = sp.get('rating') || 'all';
-  const order = sp.get('order') || 'newest';
-  const page = sp.get('page') || 1;
+  const category = sp.get("category") || "all";
+  const frameColor = sp.get("frameColor") || "all";
+  const query = sp.get("query") || "all";
+  const price = sp.get("price") || "all";
+  const rating = sp.get("rating") || "all";
+  const order = sp.get("order") || "newest";
+  const page = sp.get("page") || 1;
 
   const [{ loading, error, products, pages, countProducts }, dispatch] =
     useReducer(reducer, {
       loading: true,
-      error: '',
+      error: "",
     });
 
   useEffect(() => {
@@ -95,10 +98,10 @@ export default function SearchScreen() {
         const { data } = await axios.get(
           `/api/products/search?page=${page}&query=${query}&category=${category}&frameColor=${frameColor}&price=${price}&rating=${rating}&order=${order}`
         );
-        dispatch({ type: 'FETCH_SUCCESS', payload: data });
+        dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
         dispatch({
-          type: 'FETCH_FAIL',
+          type: "FETCH_FAIL",
           payload: getError(error),
         });
       }
@@ -142,183 +145,256 @@ export default function SearchScreen() {
     const sortOrder = filter.order || order;
     return `/search?category=${filterCategory}&query=${filterQuery}&frameColor=${filterFrameColor}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
   };
+
+  const CheckboxMenu = React.forwardRef(
+    (
+      {
+        children,
+        style,
+        className,
+        "aria-labelledby": labeledBy,
+        onSelectAll,
+        onSelectNone,
+      },
+      ref
+    ) => {
+      return (
+        <div
+          ref={ref}
+          style={style}
+          className={`${className} CheckboxMenu`}
+          aria-labelledby={labeledBy}
+        >
+          <div
+            className="d-flex flex-column"
+            style={{ maxHeight: "calc(100vh)", overflow: "none" }}
+          >
+            <ul
+              className="list-unstyled flex-shrink mb-0"
+              style={{ overflow: "auto" }}
+            >
+              {children}
+            </ul>
+            <div className="dropdown-item border-top pt-2 pb-0">
+              <ButtonGroup size="sm">
+                <Button variant="link" onClick={onSelectAll}>
+                  Select All
+                </Button>
+                <Button variant="link" onClick={onSelectNone}>
+                  Select None
+                </Button>
+              </ButtonGroup>
+            </div>
+          </div>
+        </div>
+      );
+    }
+  );
+
+  const CheckDropdownItem = React.forwardRef(
+    ({ children, id, checked, onChange }, ref) => {
+      return (
+        <Form.Group ref={ref} className="dropdown-item mb-0" controlId={id}>
+          <Form.Check
+            type="checkbox"
+            label={children}
+            checked={checked}
+            onChange={onChange && onChange.bind(onChange, id)}
+          />
+        </Form.Group>
+      );
+    }
+  );
+
+  //  const CheckboxDropdown = observer(({ items }) => {
+  // const handleChecked = (key, event) => {
+  //   items.find((i) => i.id === key).checked = event.target.checked;
+  // };
+
+  const handleSelectAll = () => {
+    items.forEach((i) => (i.checked = true));
+  };
+
+  const handleSelectNone = () => {
+    items.forEach((i) => (i.checked = false));
+  };
+  // })
+
   return (
-    <div>
+    <div className="container-search">
+ 
       <Helmet>
         <title>Search Products</title>
       </Helmet>
-      <Row>
-        <Col md={3}>
-          <h3>Department</h3>
-          <div>
-            <ul>
-              <li>
-                <Link
-                  className={'all' === category ? 'text-bold' : ''}
-                  to={getFilterUrl({ category: 'all' })}
-                >
-                  Any
-                </Link>
-              </li>
-              {categories.map((c) => (
-                <li key={c}>
-                  <Link
-                    className={c === category ? 'text-bold' : ''}
-                    to={getFilterUrl({ category: c })}
-                  >
-                    {c}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <h3>Frame Color</h3>
-          <div>
-            <ul>
-              <li>
-                <Link
-                  className={'all' === frameColor ? 'text-bold' : ''}
-                  to={getFilterUrl({ frameColor: 'all' })}
-                >
-                  Any
-                </Link>
-              </li>
-              {frameColors.map((c) => (
-                <li key={c}>
-                  <Link
-                    className={c === frameColor ? 'text-bold' : ''}
-                    to={getFilterUrl({ frameColor: c })}
-                  >
-                    {c}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-       
-          <div>
-            <h3>Price</h3>
-            <ul>
-              <li>
-                <Link
-                  className={'all' === price ? 'text-bold' : ''}
-                  to={getFilterUrl({ price: 'all' })}
-                >
-                  Any
-                </Link>
-              </li>
-              {prices.map((p) => (
-                <li key={p.value}>
-                  <Link
-                    to={getFilterUrl({ price: p.value })}
-                    className={p.value === price ? 'text-bold' : ''}
-                  >
-                    {p.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3>Avg. Customer Review</h3>
-            <ul>
-              {ratings.map((r) => (
-                <li key={r.name}>
-                  <Link
-                    to={getFilterUrl({ rating: r.rating })}
-                    className={`${r.rating}` === `${rating}` ? 'text-bold' : ''}
-                  >
-                    <Rating caption={' & up'} rating={r.rating}></Rating>
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link
-                  to={getFilterUrl({ rating: 'all' })}
-                  className={rating === 'all' ? 'text-bold' : ''}
-                >
-                  <Rating caption={' & up'} rating={0}></Rating>
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </Col>
-        <Col md={9}>
-          {loading ? (
-            <LoadingBox></LoadingBox>
-          ) : error ? (
-            <MessageBox variant="danger">{error}</MessageBox>
-          ) : (
-            <>
-              <Row className="justify-content-between mb-3">
-                <Col md={6}>
-                  <div>
-                    {countProducts === 0 ? 'No' : countProducts} Results
-                    {query !== 'all' && ' : ' + query}
-                    {category !== 'all' && ' : ' + category}
-                    {frameColor !== 'all' && ' : ' + frameColor}
-                    {price !== 'all' && ' : Price ' + price}
-                    {rating !== 'all' && ' : Rating ' + rating + ' & up'}
-                    {query !== 'all' ||
-                    category !== 'all' ||
-                    rating !== 'all' ||
-                    price !== 'all' ? (
-                      <Button
-                        variant="light"
-                        onClick={() => navigate('/search')}
-                      >
-                        <i className="fas fa-times-circle"></i>
-                      </Button>
-                    ) : null}
-                  </div>
-                </Col>
-                <Col className="text-end">
-                  Sort by{' '}
-                  <select
-                    value={order}
-                    onChange={(e) => {
-                      navigate(getFilterUrl({ order: e.target.value }));
-                    }}
-                  >
-                    <option value="newest">Newest Arrivals</option>
-                    <option value="lowest">Price: Low to High</option>
-                    <option value="highest">Price: High to Low</option>
-                    <option value="toprated">Avg. Customer Reviews</option>
-                  </select>
-                </Col>
-              </Row>
-              {products.length === 0 && (
-                <MessageBox>No Product Found</MessageBox>
-              )}
+      {/* <Row> */}
 
-              <Row>
-                {products.map((product) => (
-                  <Col sm={6} lg={4} className="mb-3" key={product._id}>
-                    <Product product={product}></Product>
-                  </Col>
-                ))}
-              </Row>
+      <div className="dropdown-container">
+        <Dropdown>
+          <Dropdown.Toggle variant="primary" id="dropdown-basic">
+            Frame Shape
+          </Dropdown.Toggle>
 
-              <div>
-                {[...Array(pages).keys()].map((x) => (
-                  <LinkContainer
-                    key={x + 1}
-                    className="mx-1"
-                    to={getFilterUrl({ page: x + 1 })}
-                  >
-                    <Button
-                      className={Number(page) === x + 1 ? 'text-bold' : ''}
-                      variant="light"
-                    >
-                      {x + 1}
+          <Dropdown.Menu
+            as={CheckboxMenu}
+            onSelectAll={handleSelectAll}
+            onSelectNone={handleSelectNone}
+          >
+            {categories.map((c) => (
+              <Dropdown.Item
+                key={c}
+                as={CheckDropdownItem}
+                id={c}
+                onChange={() => navigate(getFilterUrl({ category: c }))}
+                checked={category === c}
+              >
+                {c}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+        <Dropdown>
+          <Dropdown.Toggle variant="primary" id="dropdown-basic">
+            Frame Color
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu
+            as={CheckboxMenu}
+            onSelectAll={handleSelectAll}
+            onSelectNone={handleSelectNone}
+          >
+            {frameColors.map((c) => (
+              <Dropdown.Item
+                key={c}
+                as={CheckDropdownItem}
+                id={c}
+                onChange={() => navigate(getFilterUrl({ frameColor: c }))}
+                checked={frameColor === c}
+              >
+                {c}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <Dropdown>
+          <Dropdown.Toggle variant="primary" id="dropdown-basic">
+            Price
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu
+            as={CheckboxMenu}
+            onSelectAll={handleSelectAll}
+            onSelectNone={handleSelectNone}
+          >
+            {prices.map((c) => (
+              <Dropdown.Item
+                key={c.value}
+                as={CheckDropdownItem}
+                id={c}
+                onChange={() => navigate(getFilterUrl({ price: c.value }))}
+                checked={price === c.value}
+              >
+                {c.name}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <Dropdown>
+          <Dropdown.Toggle variant="primary" id="dropdown-basic">
+            Avg. Customer Review
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu
+            as={CheckboxMenu}
+            onSelectAll={handleSelectAll}
+            onSelectNone={handleSelectNone}
+          >
+            {ratings.map((r) => (
+              <Dropdown.Item
+                key={r.name}
+                as={CheckDropdownItem}
+                id={r}
+                onChange={() => navigate(getFilterUrl({ rating: r.rating }))}
+                checked={rating === r.rating}
+              >
+                <Rating caption={" & up"} rating={r.rating}></Rating>
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
+
+      <div className="products my-5 py-2">
+        {loading ? (
+          <LoadingBox></LoadingBox>
+        ) : error ? (
+          <MessageBox variant="danger">{error}</MessageBox>
+        ) : (
+          <>
+            <Row className="justify-content-between mb-3">
+              <Col md={6}>
+                <div>
+                  {countProducts === 0 ? "No" : countProducts} Results
+                  {query !== "all" && " : " + query}
+                  {category !== "all" && " : " + category}
+                  {frameColor !== "all" && " : " + frameColor}
+                  {price !== "all" && " : Price " + price}
+                  {rating !== "all" && " : Rating " + rating + " & up"}
+                  {query !== "all" ||
+                  category !== "all" ||
+                  rating !== "all" ||
+                  price !== "all" ? (
+                    <Button variant="light" onClick={() => navigate("/search")}>
+                      <i className="fas fa-times-circle"></i>
                     </Button>
-                  </LinkContainer>
-                ))}
-              </div>
-            </>
-          )}
-        </Col>
-      </Row>
+                  ) : null}
+                </div>
+              </Col>
+              <Col className="text-end">
+                Sort by{" "}
+                <select
+                  value={order}
+                  onChange={(e) => {
+                    navigate(getFilterUrl({ order: e.target.value }));
+                  }}
+                >
+                  <option value="newest">Newest Arrivals</option>
+                  <option value="lowest">Price: Low to High</option>
+                  <option value="highest">Price: High to Low</option>
+                  <option value="toprated">Avg. Customer Reviews</option>
+                </select>
+              </Col>
+            </Row>
+            {products.length === 0 && <MessageBox>No Product Found</MessageBox>}
+
+            <Row>
+              {products.map((product) => (
+                <Col sm={6} md={4} lg={3} className="mb-3" key={product.slug}>
+                  <Product product={product}></Product>
+                </Col>
+              ))}
+            </Row>
+
+            <div>
+              {[...Array(pages).keys()].map((x) => (
+                <LinkContainer
+                  key={x + 1}
+                  className="mx-1"
+                  to={getFilterUrl({ page: x + 1 })}
+                >
+                  <Button
+                    className={Number(page) === x + 1 ? "text-bold" : ""}
+                    variant="light"
+                  >
+                    {x + 1}
+                  </Button>
+                </LinkContainer>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }

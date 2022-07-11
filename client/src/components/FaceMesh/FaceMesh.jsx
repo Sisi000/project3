@@ -124,7 +124,7 @@ function FaceMesh(props) {
         />
     </div>
     <br/>
-    <button className="btn-facemesh-submit" 
+    <button className="btn btn-primary" 
     style={{
       position: "absolute",
       marginTop: 10 
