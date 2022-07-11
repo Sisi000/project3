@@ -39,6 +39,8 @@ import logo from "./assets/logo.png";
 import About from "./components/About/about";
 import Footer from "./components/Footer/footer";
 import Uploads from "./components/Uploads";
+import profileimage from "./assets/profileimage.png";
+import "./index.css";
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -112,6 +114,9 @@ function App() {
                       </Badge>
                     )}
                   </Link>
+                  <div className="comment-image-container">
+        <img src={profileimage} alt="" />
+      </div>
                   {userInfo ? (
                     userInfo.isAdmin ? (
                       <NavDropdown style={{fontWeight: "bold"}} title="Admin" id="admin-nav-dropdown">

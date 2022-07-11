@@ -85,7 +85,7 @@ a {
   font-weight: bold;
 }
 .nav-item.dropdown {
- margin-left: 120px;
+ margin-left: 8px;
 }
 
 .navbar.nav {
@@ -93,6 +93,17 @@ a {
    /* justify-content: space-between; */
   justify-content: flex-end !important;
 
+}
+
+.comment-image-container {
+  display: flex;
+  /* margin-right: 12px; */
+  margin-left: 100px;
+  align-items: center;
+}
+
+.comment-image-container img {
+  border-radius: 50px;
 }
 
 .side-navbar {
