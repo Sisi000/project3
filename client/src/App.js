@@ -103,7 +103,9 @@ function App() {
                   className="me-auto mx-auto my-2 my-lg-0"
                   style={{ fontSize: "1.2rem" }}
                 >
-                  <Nav.Link style={{marginLeft: "500px"}} href="/">Home</Nav.Link>
+                  <Nav.Link style={{ marginLeft: "500px" }} href="/">
+                    Home
+                  </Nav.Link>
                   <Nav.Link href="/about">About</Nav.Link>
                   <Nav.Link href="/upload">Upload</Nav.Link>
                   <Link to="/cart" className="nav-link">
@@ -114,12 +116,16 @@ function App() {
                       </Badge>
                     )}
                   </Link>
-                  <div className="comment-image-container">
-        <img src={profileimage} alt="" />
-      </div>
+                  <div className="image-container">
+                    <img src={profileimage} alt="" />
+                  </div>
                   {userInfo ? (
                     userInfo.isAdmin ? (
-                      <NavDropdown style={{fontWeight: "bold"}} title="Admin" id="admin-nav-dropdown">
+                      <NavDropdown
+                        style={{ fontWeight: "bold" }}
+                        title="Admin"
+                        id="admin-nav-dropdown"
+                      >
                         <LinkContainer to="/admin/dashboard">
                           <NavDropdown.Item>Dashboard</NavDropdown.Item>
                         </LinkContainer>
@@ -142,7 +148,8 @@ function App() {
                         </Link>
                       </NavDropdown>
                     ) : (
-                      <NavDropdown style={{fontWeight: "bold"}}
+                      <NavDropdown
+                        style={{ fontWeight: "bold" }}
                         title={userInfo.name}
                         id="basic-nav-dropdown"
                       >
@@ -184,7 +191,7 @@ function App() {
         >
           <Nav className="flex-column text-white w-100 p-2">
             <Nav.Item>
-              <strong>Categories</strong>
+              <strong className="sidebar-categories">Categories</strong>
             </Nav.Item>
             {categories.map((category) => (
               <Nav.Item key={category}>
