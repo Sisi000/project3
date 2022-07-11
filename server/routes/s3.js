@@ -9,6 +9,7 @@ const {
   facelandmark,
   facelandmarkURL,
   facemesh,
+  tranformToGoogle,
 } = require("../db/models/faceDetectionCalc.js");
 const sharp = require("sharp");
 const S3 = require("aws-sdk/clients/s3");
@@ -107,6 +108,26 @@ router.post("/uploadurl", async (req, res, next) => {
   res.send(results);
 });
 
+// upload Url to vision
+router.post("/facemesh", async (req, res, next) => {
+  const userFaceData = req.body.userFaceData;
+  const filters = req.body.filters;
+
+  //console.log("userData is", userFaceData);
+  //console.log("filters are ", filters);
+  const products = await Product.find();
+  let userFaceData_Google = tranformToGoogle(userFaceData)
+  let resultsFacemesh = facemesh(userFaceData_Google.landmarks, products, filters)
+  
+  let results = [];
+  for (let array of resultsFacemesh) {
+    results.push(array[1]);
+  }
+  console.log(results)
+  res.send(results);
+  
+});
+
 // upload product image to S3
 router.post(
   "/uploadproductimage",
@@ -125,19 +146,6 @@ router.post(
   }
 );
 
-// upload Url to vision
-router.post("/facemesh", async (req, res, next) => {
-  const userFaceData = req.body.userFaceData;
-  const filters = req.body.filters;
-
-  //console.log("userData is", userFaceData);
-  //console.log("filters are ", filters);
-
-  const userData = facemesh(userFaceData);
-
-  res.send(userData);
-  
-});
 
 router.post(
   "/uploadadditionalimage",

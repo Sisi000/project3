@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1657558181278" clover="3.2.0">
-  <project timestamp="1657558181278" name="All files">
+<coverage generated="1657563751559" clover="3.2.0">
+  <project timestamp="1657563751560" name="All files">
     <metrics statements="189" coveredstatements="135" conditionals="51" coveredconditionals="45" methods="14" coveredmethods="11" elements="254" coveredelements="191" complexity="0" loc="189" ncloc="189" packages="1" files="1" classes="1"/>
     <file name="faceDetectionCalc.js" path="C:\Users\adria\Documents\Programming\InceptionU\project3\project3\server\db\models\faceDetectionCalc.js">
       <metrics statements="189" coveredstatements="135" conditionals="51" coveredconditionals="45" methods="14" coveredmethods="11"/>

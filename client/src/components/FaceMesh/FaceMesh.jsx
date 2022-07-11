@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as faceLandmarksDetection from "@tensorflow-models/face-landmarks-detection";
+import Product from "../Product";
 
 //Added as per TF api suggestions
 import "@mediapipe/face_mesh";
@@ -9,12 +10,13 @@ import "@tensorflow/tfjs-backend-webgl";
 import axios from "axios";
 import Webcam from "react-webcam";
 import { drawMesh } from "./FaceMeshUtilities";
+import { Col, Container, Row } from "react-bootstrap";
 
 function FaceMesh(props) {
   const filters = props.filters;
 
   const [userFaceData, setUserFaceData] = useState(null);
-  const [userResults, setUserResults] = useState(null);
+  const [products, setProducts] = useState(null);
 
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
@@ -78,7 +80,7 @@ function FaceMesh(props) {
       console.log("This is the submission: ",userFaceData)
       try{
         let result = await axios.post("/facemesh", { userFaceData, filters })
-        //console.log("This is the result: ",result)
+        console.log("This is the result: ",result)
         return result
       }catch(error){
         console.log("Error with submission: ",error)
@@ -132,27 +134,11 @@ function FaceMesh(props) {
     onClick={async (event) => {
       event.preventDefault();
       let result = await uploadNodes(userFaceData);
-      setUserResults(result.data)
+      setProducts(result)
       }}>
        Facial Node Detection
      </button>
-     {(userResults)
-     ?(<div style={{
-      position: "absolute",
-      marginTop: 30 
-      }}>
-        <br/>
-        <b>Nose Projection (Z-Direction): {userResults.nose_projection}</b>
-        <br/>
-        <b>Face Sphericality: {userResults.face_sphericality}</b>
-        <br/>
-        <b>Face Circularity: {userResults.face_circularity}</b>
-        <br/>
-        <b>Eye Circularity: {userResults.eye_circularity}</b>
-     </div>)
-     :<></>
-     }
-     </div>
+  </div>
   );
 }
 

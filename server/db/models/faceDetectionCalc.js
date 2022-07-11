@@ -155,8 +155,8 @@ function glassesDataReturn(glassesData, userData, dataRemove = null, dataRequire
 /*
 calculateUserData destructures the landmarks into positions for calculations
 */
-function calculateUserData(imageInformation){
-    let landmarks=imageInformation[0].faceAnnotations[0].landmarks
+function calculateUserData(landmarks){
+    console.log(landmarks[16])
     //used for eye ratio
     let left_eye_top = landmarks[16].position
     let left_eye_bottom = landmarks[18].position
@@ -281,14 +281,15 @@ async function facelandmark(imageFile, dataBaseProducts, filters) {
         }
     };  
 
-    console.log(filters)
+    //console.log(filters)
 
     //To detemine the image size in case we want to show nodes
     let originalImageSize = sizeOf(imageFile);
     //API call being made
     let imageInformation = await setEndpoint(request);
     //Function to calculate unique user information
-    let userData = calculateUserData(imageInformation)
+    let landmarks=imageInformation[0].faceAnnotations[0].landmarks
+    let userData = calculateUserData(landmarks)
     //Unranked glasses for merge (with top n picks, UNORDERED)
     let rawResults = glassesDataReturn(dataBaseProducts,userData, filters.remove, filters.required, filters.minimum, filters.maximum)//No filters right now, add later
     //Mergesort being called (with top n picks, ORDERED)
@@ -299,7 +300,7 @@ async function facelandmark(imageFile, dataBaseProducts, filters) {
     return results
 }
 
-async function facelandmarkURL(url, dataBaseProducts, userFilterData) {
+async function facelandmarkURL(url, dataBaseProducts, filters) {
     //Image URL for google - Requires body to have a key value pair URL:<URL>
     let imageURL = url
 
@@ -325,9 +326,10 @@ async function facelandmarkURL(url, dataBaseProducts, userFilterData) {
     let imageInformation = await setEndpoint(imageURL);
 
     //Function to calculate unique user information
-    let userData = calculateUserData(imageInformation)
+    let landmarks=imageInformation[0].faceAnnotations[0].landmarks
+    let userData = calculateUserData(landmarks)
     //Unranked glasses for merge (with top n picks, UNORDERED)
-    let rawResults = glassesDataReturn(dataBaseProducts,userData)//No filters right now, add later
+    let rawResults = glassesDataReturn(dataBaseProducts,userData, filters.remove, filters.required, filters.minimum, filters.maximum)//No filters right now, add later
     //Mergesort being called (with top n picks, ORDERED)
     let results = mergesort(rawResults)
 
@@ -337,7 +339,58 @@ async function facelandmarkURL(url, dataBaseProducts, userFilterData) {
     return results
 }
 
-function facemesh(userFaceData){
+function tranformToGoogle(userFaceData){
+
+    let userFaceData_Google = {
+        landmarks: new Array(34).fill(0).map(()=> {return {position:null}})
+    }
+    console.log(userFaceData_Google)
+
+    userFaceData_Google.landmarks[16].position = userFaceData[386];
+    userFaceData_Google.landmarks[18].position = userFaceData[374];
+    userFaceData_Google.landmarks[17].position = userFaceData[362];
+    userFaceData_Google.landmarks[19].position = userFaceData[263];
+    //used for eye ratio
+    userFaceData_Google.landmarks[20].position = userFaceData[159];
+    userFaceData_Google.landmarks[22].position = userFaceData[145];
+    userFaceData_Google.landmarks[21].position = userFaceData[133];
+    userFaceData_Google.landmarks[23].position = userFaceData[33];
+    //used for general face shape
+    userFaceData_Google.landmarks[6].position = userFaceData[68];
+    userFaceData_Google.landmarks[29].position = userFaceData[152];
+    userFaceData_Google.landmarks[26].position = userFaceData[162];
+    userFaceData_Google.landmarks[27].position = userFaceData[389];
+    //used for cheek location as a function of chin
+    userFaceData_Google.landmarks[32].position = userFaceData[427];
+    userFaceData_Google.landmarks[33].position = userFaceData[207];
+    userFaceData_Google.landmarks[30].position = userFaceData[148];
+    userFaceData_Google.landmarks[31].position = userFaceData[377];
+    //used for general nose shape
+    userFaceData_Google.landmarks[7].position = userFaceData[4];
+    userFaceData_Google.landmarks[13].position = userFaceData[459];
+    userFaceData_Google.landmarks[14].position = userFaceData[239];
+    userFaceData_Google.landmarks[15].position = userFaceData[19];
+
+    console.log(userFaceData_Google.landmarks[16])
+    
+    return userFaceData_Google;
+}
+function facemesh(landmarks, dataBaseProducts, filters){
+
+    //Function to calculate unique user information
+    let userData = calculateUserData(landmarks)
+    //Unranked glasses for merge (with top n picks, UNORDERED)
+    let rawResults = glassesDataReturn(dataBaseProducts, userData, filters.remove, filters.required, filters.minimum, filters.maximum)//No filters right now, add later
+    //Mergesort being called (with top n picks, ORDERED)
+    let results = mergesort(rawResults)
+
+    console.log("This is the unordered list: ", rawResults)
+    console.log("This is the ordered list: ",results)
+
+return results
+}
+
+function facemeshTest(userFaceData){
     let vortex = [(userFaceData[10].x+userFaceData[152].x)/2,(userFaceData[10].y+userFaceData[152].y)/2,(userFaceData[10].z+userFaceData[152].z)/2]
     let radius_sphere = euclideandistance(userFaceData[10].x,userFaceData[10].y,userFaceData[10].z,vortex[0],vortex[1],vortex[2])
     let radius_circle = euclideandistance(userFaceData[10].x,userFaceData[10].y,0,vortex[0],vortex[1],0)
@@ -407,6 +460,7 @@ function facemesh(userFaceData){
 }
 
 module.exports = {
+    tranformToGoogle,
     facemesh,
     facelandmark,
     facelandmarkURL,
