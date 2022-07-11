@@ -55,7 +55,7 @@ function UploadUrl2(props) {
             value={file}
             onChange={changeUrl}
           />
-          <button className="button-2" onClick={submit}>
+          <button className="btn btn-primary" onClick={submit}>
             Submit
           </button>
         </form>
