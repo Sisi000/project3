@@ -16,7 +16,7 @@ function FaceMesh(props) {
   const filters = props.filters;
 
   const [userFaceData, setUserFaceData] = useState(null);
-  const [products, setProducts] = useState(null);
+  const [products, setProducts] = useState([]);
 
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
@@ -70,31 +70,48 @@ function FaceMesh(props) {
       });
     }
   };
+  useEffect(() => {
+    console.log("Products in useEffect: ", products);
+  }, [products]);
 
   useEffect(() => {
     runFacemesh();
   }, []);
 
+  const showSuggestedMesh = async (result) => {
+    const params = result;
+    try {
+      const products = await axios.post(`/api/products/id`, { params });
+      console.log("Products from DB: ", products.data);
+      setProducts(products.data);
+    } catch (error) {
+      console.log("Error with the database API: ", error);
+    }
+  };
+
   const uploadNodes = async (userFaceData) => {
-    if(userFaceData){
-      console.log("This is the submission: ",userFaceData)
-      try{
-        let result = await axios.post("/facemesh", { userFaceData, filters })
-        console.log("This is the result: ",result)
-        return result
-      }catch(error){
-        console.log("Error with submission: ",error)
+    if (userFaceData) {
+      //console.log("This is the submission: ",userFaceData)
+      try {
+        let result = await axios.post("/facemesh", { userFaceData, filters });
+        console.log("This is the result: ", result.data);
+        await showSuggestedMesh(result.data);
+        
+      } catch (error) {
+        console.log("Error with submission: ", error);
       }
     }
   };
 
   return (
     <div>
-      <div className="Facemesh"
-      style={{
-        width: 640,
-        height: 480,
-      }}>
+      <div
+        className="Facemesh"
+        style={{
+          width: 640,
+          height: 480,
+        }}
+      >
         <Webcam
           ref={webcamRef}
           style={{
@@ -124,21 +141,50 @@ function FaceMesh(props) {
             height: 480,
           }}
         />
+      </div>
+      <br />
+      <button
+        className="btn btn-primary"
+        style={{
+          position: "absolute",
+          marginTop: 10,
+        }}
+        onClick={async (event) => {
+          event.preventDefault();
+          let result = await uploadNodes(userFaceData);
+        }}
+      >
+        Facial Node Detection
+      </button>
+
+      <Container fluid style={{ padding: "0" }}>
+        <Container className="mt-3">
+          <div>
+            <div className="products my-5 py-2">
+              <Row>
+                {(products) ? (
+                  <><h2>....</h2>
+                    {products.map((product) => (
+                      <Col
+                        key={product._id}
+                        sm={6}
+                        md={4}
+                        lg={3}
+                        className="mb-3"
+                      >
+                        <Product product={product}></Product>
+                      </Col>
+                    ))}
+                  </>
+                ) : (
+                  <></>
+                )}
+              </Row>
+            </div>
+          </div>
+        </Container>
+      </Container>
     </div>
-    <br/>
-    <button className="btn btn-primary" 
-    style={{
-      position: "absolute",
-      marginTop: 10 
-    }}
-    onClick={async (event) => {
-      event.preventDefault();
-      let result = await uploadNodes(userFaceData);
-      setProducts(result)
-      }}>
-       Facial Node Detection
-     </button>
-  </div>
   );
 }
 
