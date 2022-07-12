@@ -58,14 +58,18 @@ function WebcamCapture(props) {
 
   const submit = async (event) => {
     event.preventDefault();
-    const result = await postImage(file)
-      .then((result) => {
-        showSuggestedCam(result);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    setFile(result.image);
+    if(file){
+      const result = await postImage(file)
+        .then((result) => {
+          showSuggestedCam(result);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      setFile(result.image);
+    }else{
+      console.log("No file taken, please take picture")
+    }
   };
 
   const showSuggestedCam = async (result) => {
