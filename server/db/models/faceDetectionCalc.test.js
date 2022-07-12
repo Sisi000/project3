@@ -7,7 +7,6 @@ const {
   euclideandistance,
   glassesToUserDataCalc,
   glassesDataReturn,
-  uploadImageTest,
   calculateUserData,
 } = require("./faceDetectionCalc");
 const fs = require("fs");
