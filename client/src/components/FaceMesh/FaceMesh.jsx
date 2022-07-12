@@ -70,9 +70,6 @@ function FaceMesh(props) {
       });
     }
   };
-  useEffect(() => {
-    console.log("Products in useEffect: ", products);
-  }, [products]);
 
   useEffect(() => {
     runFacemesh();
@@ -82,7 +79,6 @@ function FaceMesh(props) {
     const params = result;
     try {
       const products = await axios.post(`/api/products/id`, { params });
-      console.log("Products from DB: ", products.data);
       setProducts(products.data);
     } catch (error) {
       console.log("Error with the database API: ", error);
@@ -94,7 +90,6 @@ function FaceMesh(props) {
       //console.log("This is the submission: ",userFaceData)
       try {
         let result = await axios.post("/facemesh", { userFaceData, filters });
-        console.log("This is the result: ", result.data);
         await showSuggestedMesh(result.data);
         
       } catch (error) {
@@ -151,7 +146,7 @@ function FaceMesh(props) {
         }}
         onClick={async (event) => {
           event.preventDefault();
-          let result = await uploadNodes(userFaceData);
+          await uploadNodes(userFaceData);
         }}
       >
         Facial Node Detection
@@ -163,7 +158,7 @@ function FaceMesh(props) {
             <div className="products my-5 py-2">
               <Row>
                 {(products) ? (
-                  <><h2>....</h2>
+                  <><h2>Suggested Glasses</h2>
                     {products.map((product) => (
                       <Col
                         key={product._id}
