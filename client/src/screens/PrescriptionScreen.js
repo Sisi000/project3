@@ -138,7 +138,7 @@ export default function PrescriptionScreen() {
       <Helmet>
         <title>Prescription</title>
       </Helmet>
-      <h1 className="text-center my-4 mb-1 py-5">What is your prescription?</h1>
+      <h1 className="text-center mb-4 mt-5 py-4">What is your prescription?</h1>
       <form onSubmit={submitHandler} >
         <Row className="mb-3 pb-3 pt-4 text-muted bg-info text-dark bg-opacity-10">
           <Form.Group as={Col} className="mb-3" controlId="ODR">
@@ -716,8 +716,8 @@ export default function PrescriptionScreen() {
           </Form.Group>
         </Row>
 
-        <div className="text-center my-5 py-5">
-          <Button type="submit" className='shadow-none px-3 pt-2 ' variant="warning">Update</Button>
+        <div className="text-center my-3 mb-5">
+          <Button type="submit">Update</Button>
         </div>
        
       </form>
