@@ -35,8 +35,8 @@ export default function CartScreen() {
 
   return (
     <div>
-        <Card className="my-3" >
-        <Card.Img  src={Images} alt="Card image" />
+      <Card className="my-3" >
+        <Card.Img src={Images} alt="Card image" />
       </Card>
       <Helmet>
         <title>Shopping Cart</title>
@@ -118,7 +118,7 @@ export default function CartScreen() {
                     >
                       Proceed to Checkout
                     </Button>
-                    
+
                   </div>
                 </ListGroup.Item>
               </ListGroup>
