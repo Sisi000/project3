@@ -1,11 +1,11 @@
 import React, { useContext, useReducer, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import { Form, Button, Card } from 'react-bootstrap';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
 import axios from 'axios';
+import Images from "../assets/profileImg.jpg"
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -63,10 +63,13 @@ export default function ProfileScreen() {
 
   return (
     <div className="container small-container">
+      <Card className="my-3" >
+        <Card.Img src={Images} alt="Card image" />
+      </Card>
       <Helmet>
         <title>User Profile</title>
       </Helmet>
-      <h1 className="my-3">User Profile</h1>
+      <h1 className="text-center my-5">User Profile</h1>
       <form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="name">
           <Form.Label>Name</Form.Label>
@@ -99,7 +102,7 @@ export default function ProfileScreen() {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </Form.Group>
-        <div className="mb-3">
+        <div className="text-center my-3 mb-5">
           <Button type="submit">Update</Button>
         </div>
       </form>
