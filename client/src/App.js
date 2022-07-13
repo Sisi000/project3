@@ -41,6 +41,7 @@ import Footer from "./components/Footer/footer";
 import Uploads from "./components/Uploads";
 import profileimage from "./assets/profileimage.png";
 import iconadmin from "./assets/icon-admin.png";
+import cartimg from "./assets/cart.png";
 import "./index.css";
 
 function App() {
@@ -110,76 +111,77 @@ function App() {
                   <Nav.Link href="/about">About</Nav.Link>
                   <Nav.Link href="/upload">Upload</Nav.Link>
                   <Link to="/cart" className="nav-link">
-                    Cart
+                    <img src={cartimg} alt="" />
+
                     {cart.cartItems.length > 0 && (
                       <Badge pill bg="danger">
                         {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
                       </Badge>
                     )}
                   </Link>
-                  
+
                   {userInfo ? (
                     userInfo.isAdmin ? (
                       <>
-                      <div className="image-container">
-                    <img src={iconadmin} alt="" />
-                  </div>
-                  
-                      <NavDropdown
-                        style={{ fontWeight: "bold" }}
-                        title="Admin"
-                        id="admin-nav-dropdown"
-                      >
-                        <LinkContainer to="/admin/dashboard">
-                          <NavDropdown.Item>Dashboard</NavDropdown.Item>
-                        </LinkContainer>
-                        <LinkContainer to="/admin/products">
-                          <NavDropdown.Item>Products</NavDropdown.Item>
-                        </LinkContainer>
-                        <LinkContainer to="/admin/orders">
-                          <NavDropdown.Item>Orders</NavDropdown.Item>
-                        </LinkContainer>
-                        <LinkContainer to="/admin/users">
-                          <NavDropdown.Item>Users</NavDropdown.Item>
-                        </LinkContainer>
-                        <NavDropdown.Divider />
-                        <Link
-                          className="dropdown-item"
-                          to="#signout"
-                          onClick={signoutHandler}
+                        <div className="image-container">
+                          <img src={iconadmin} alt="" />
+                        </div>
+
+                        <NavDropdown
+                          style={{ fontWeight: "bold" }}
+                          title="Admin"
+                          id="admin-nav-dropdown"
                         >
-                          Sign Out
-                        </Link>
-                      </NavDropdown>
+                          <LinkContainer to="/admin/dashboard">
+                            <NavDropdown.Item>Dashboard</NavDropdown.Item>
+                          </LinkContainer>
+                          <LinkContainer to="/admin/products">
+                            <NavDropdown.Item>Products</NavDropdown.Item>
+                          </LinkContainer>
+                          <LinkContainer to="/admin/orders">
+                            <NavDropdown.Item>Orders</NavDropdown.Item>
+                          </LinkContainer>
+                          <LinkContainer to="/admin/users">
+                            <NavDropdown.Item>Users</NavDropdown.Item>
+                          </LinkContainer>
+                          <NavDropdown.Divider />
+                          <Link
+                            className="dropdown-item"
+                            to="#signout"
+                            onClick={signoutHandler}
+                          >
+                            Sign Out
+                          </Link>
+                        </NavDropdown>
                       </>
                     ) : (
                       <>
-                      <div className="image-container">
-                      <img src={profileimage} alt="" />
-                    </div>
-                      <NavDropdown
-                        style={{ fontWeight: "bold" }}
-                        title={userInfo.name}
-                        id="basic-nav-dropdown"
-                      >
-                        <LinkContainer to="/profile">
-                          <NavDropdown.Item>User Profile</NavDropdown.Item>
-                        </LinkContainer>
-                        <LinkContainer to="/prescription">
-                          <NavDropdown.Item>Prescription</NavDropdown.Item>
-                        </LinkContainer>
-                        <LinkContainer to="/orderhistory">
-                          <NavDropdown.Item>Order History</NavDropdown.Item>
-                        </LinkContainer>
-                        <NavDropdown.Divider />
-                        <Link
-                          className="dropdown-item"
-                          to="#signout"
-                          onClick={signoutHandler}
+                        <div className="image-container">
+                          <img src={profileimage} alt="" />
+                        </div>
+                        <NavDropdown
+                          style={{ fontWeight: "bold" }}
+                          title={userInfo.name}
+                          id="basic-nav-dropdown"
                         >
-                          Sign Out
-                        </Link>
-                      </NavDropdown>
+                          <LinkContainer to="/profile">
+                            <NavDropdown.Item>User Profile</NavDropdown.Item>
+                          </LinkContainer>
+                          <LinkContainer to="/prescription">
+                            <NavDropdown.Item>Prescription</NavDropdown.Item>
+                          </LinkContainer>
+                          <LinkContainer to="/orderhistory">
+                            <NavDropdown.Item>Order History</NavDropdown.Item>
+                          </LinkContainer>
+                          <NavDropdown.Divider />
+                          <Link
+                            className="dropdown-item"
+                            to="#signout"
+                            onClick={signoutHandler}
+                          >
+                            Sign Out
+                          </Link>
+                        </NavDropdown>
                       </>
                     )
                   ) : (
