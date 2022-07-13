@@ -104,7 +104,7 @@ function App() {
                   className="me-auto mx-auto my-2 my-lg-0"
                   style={{ fontSize: "1.2rem" }}
                 >
-                  <Nav.Link style={{ marginLeft: "500px" }} href="/">
+                  <Nav.Link style={{ marginLeft: "200px" }} href="/">
                     Home
                   </Nav.Link>
                   <Nav.Link href="/about">About</Nav.Link>
