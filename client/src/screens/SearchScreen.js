@@ -4,8 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { getError } from "../utils";
 import { Helmet } from "react-helmet-async";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Container, Row, Col } from "react-bootstrap";
 import Rating from "../components/Rating";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
@@ -85,6 +84,7 @@ export default function SearchScreen({ items }) {
   const rating = sp.get("rating") || "all";
   const order = sp.get("order") || "newest";
   const page = sp.get("page") || 1;
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   const [{ loading, error, products, pages, countProducts }, dispatch] =
     useReducer(reducer, {
@@ -95,8 +95,9 @@ export default function SearchScreen({ items }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
+
         const { data } = await axios.get(
-          `/api/products/search?page=${page}&query=${query}&category=${category}&frameColor=${frameColor}&price=${price}&rating=${rating}&order=${order}`
+          `/api/products/search?page=${page}&query=${query}&category=${selectedCategories[0] || "all"}&frameColor=${frameColor}&price=${price}&rating=${rating}&order=${order}`
         );
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
@@ -107,14 +108,16 @@ export default function SearchScreen({ items }) {
       }
     };
     fetchData();
-  }, [category, frameColor, error, order, page, price, query, rating]);
+  }, [selectedCategories, frameColor, error, order, page, price, query, rating]);
 
   const [categories, setCategories] = useState([]);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const { data } = await axios.get(`/api/products/categories`);
         setCategories(data);
+        // setSelectedCategories([]);
       } catch (err) {
         toast.error(getError(err));
       }
@@ -211,6 +214,19 @@ export default function SearchScreen({ items }) {
   //   items.find((i) => i.id === key).checked = event.target.checked;
   // };
 
+
+const toggleCategory = (category) => {
+let newCategories = [...selectedCategories];
+if (newCategories.includes(category)) {
+  newCategories = newCategories.filter((c) => c !== category);
+} else {
+  newCategories.push(category);
+}
+  setSelectedCategories(newCategories)
+}
+
+
+
   const handleSelectAll = () => {
     items.forEach((i) => (i.checked = true));
   };
@@ -221,7 +237,9 @@ export default function SearchScreen({ items }) {
   // })
 
   return (
-    <div className="container-search">
+    <>
+    <Container fluid style={{ padding: "0" }}>
+    {/* <div className="container-search"> */}
  
       <Helmet>
         <title>Search Products</title>
@@ -230,7 +248,7 @@ export default function SearchScreen({ items }) {
 
       <div className="dropdown-container">
         <Dropdown>
-          <Dropdown.Toggle variant="primary" id="dropdown-basic">
+          <Dropdown.Toggle id="dropdown-basic">
             Frame Shape
           </Dropdown.Toggle>
 
@@ -244,8 +262,8 @@ export default function SearchScreen({ items }) {
                 key={c}
                 as={CheckDropdownItem}
                 id={c}
-                onChange={() => navigate(getFilterUrl({ category: c }))}
-                checked={category === c}
+                onChange={() => toggleCategory(c)}
+                checked={selectedCategories.includes (c)}
               >
                 {c}
               </Dropdown.Item>
@@ -395,6 +413,8 @@ export default function SearchScreen({ items }) {
           </>
         )}
       </div>
-    </div>
+    {/* </div> */}
+    </Container>
+    </>
   );
 }

@@ -9,7 +9,7 @@ import MessageBox from "../components/MessageBox";
 import Slider from "../components/Home/Slider";
 import Cards from "../components/Home/Cards";
 import TryOn from "../components/Home/tryOn";
-// import SearchScreen from "./SearchScreen";
+import SearchScreen from "./SearchScreen";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -55,8 +55,8 @@ function HomeScreen() {
             <Helmet>
               <title>eyelovecoding</title>
             </Helmet>
-            {/* <SearchScreen /> */}
-            <h1>Featured Products</h1>
+            <SearchScreen />
+            {/* <h1>Featured Products</h1>
             <div className="products my-5 py-2">
               {loading ? (
                 <LoadingBox />
@@ -71,7 +71,7 @@ function HomeScreen() {
                   ))}
                 </Row>
               )}
-            </div>
+            </div> */}
           </div>
         </Container>
         <TryOn />
