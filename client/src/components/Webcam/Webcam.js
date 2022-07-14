@@ -37,20 +37,6 @@ function WebcamCapture(props) {
     return result.data;
   }
 
-  /* Remove - see above
-  async function postImage({ image }) {
-    const formData = new FormData();
-    formData.append("image", image);
-
-    const result = await axios.post("/uploadwebcam", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-
-    setResultData(result.data);
-    return result.data;
-  }
-*/
-
   const capture = React.useCallback(() => {
     const file = webcamRef.current.getScreenshot();
     setFile(file);
