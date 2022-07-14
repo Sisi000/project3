@@ -109,7 +109,7 @@ function App() {
                     Home
                   </Nav.Link>
                   <Nav.Link href="/about">About</Nav.Link>
-                  <Nav.Link href="/upload">Upload</Nav.Link>
+                  <Nav.Link href="/upload">Virtual Optician</Nav.Link>
                   <Link to="/cart" className="nav-link">
                     <img src={cartimg} alt="" />
 
