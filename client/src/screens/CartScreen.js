@@ -1,12 +1,9 @@
 import { useContext } from 'react';
 import { Store } from '../Store';
 import { Helmet } from 'react-helmet-async';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Row, Col, Card, Button, ListGroup } from 'react-bootstrap';
 import MessageBox from '../components/MessageBox';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
+import Images from "../assets/cardImg.jpg"
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -38,10 +35,13 @@ export default function CartScreen() {
 
   return (
     <div>
+      <Card className="my-3" >
+        <Card.Img src={Images} alt="Card image" />
+      </Card>
       <Helmet>
         <title>Shopping Cart</title>
       </Helmet>
-      <h1>Shopping Cart</h1>
+      <h1 className=" text-center my-5">Shopping Cart</h1>
       <Row>
         <Col md={8}>
           {cartItems.length === 0 ? (
@@ -118,7 +118,7 @@ export default function CartScreen() {
                     >
                       Proceed to Checkout
                     </Button>
-                    
+
                   </div>
                 </ListGroup.Item>
               </ListGroup>

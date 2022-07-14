@@ -7,6 +7,8 @@ import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import { getError } from '../utils';
 import Button from 'react-bootstrap/esm/Button';
+import Card from "react-bootstrap/Card";
+import Images from "../assets/orderImg.jpg"
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -50,12 +52,15 @@ export default function OrderHistoryScreen() {
     fetchData();
   }, [userInfo]);
   return (
-    <div>
+    <div className="my-3 mb-5 pb-5">
+      <Card className="my-3" >
+        <Card.Img src={Images} alt="Card image" />
+      </Card>
       <Helmet>
-        <title>Order History</title>
+        <title >Order History</title>
       </Helmet>
 
-      <h1>Order History</h1>
+      <h1 className=" text-center my-5">Order History</h1>
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (
