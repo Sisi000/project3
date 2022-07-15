@@ -1,9 +1,9 @@
 import { useState } from "react";
-import axios from "axios";
 import "./UploadS3.css";
 import imgphoto from "../../assets/photo.png";
 import { Container, Row, Col } from "react-bootstrap";
 import Product from "../Product";
+import {axiosPost, axiosPostMPFD} from "../AxiosHelper"
 
 function UploadS3(props) {
   const filters = props.filters;
@@ -15,17 +15,10 @@ function UploadS3(props) {
     const formData = new FormData();
     formData.append("UserData", filesForUpload); //image
     formData.append("UserData", blob); //filters in Blob format
-    const result = await axios({
-      method: "POST",
-      url: "/upload",
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    console.log("Suggested glasses are", result.data);
-
-    return result.data;
+    const endpoint = "/upload";
+    const result = await axiosPostMPFD(endpoint, formData);
+    //console.log("Suggested glasses are", result);
+    return result;
   }
 
   const submit = async (event) => {
@@ -44,7 +37,7 @@ function UploadS3(props) {
       .catch((err) => {
         console.log(err);
       });
-    console.log("Suggested glasses from submit are", result);
+    //console.log("Suggested glasses from submit are", result);
     setFile(null);
     document.getElementById("selectedimage").value = "";
   };
@@ -56,7 +49,8 @@ function UploadS3(props) {
 
   const showSuggested = async (result) => {
     const params = result;
-    const result2 = await axios.post(`/api/products/id`, { params });
+    const endpoint = `/api/products/id`;
+    const result2 = await axiosPost(endpoint, {params});
     setProducts(result2.data, ...products);
   };
 

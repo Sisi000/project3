@@ -23,7 +23,7 @@ import ProfileScreen from "./screens/ProfileScreen";
 import PrescriptionScreen from "./screens/PrescriptionScreen";
 import Button from "react-bootstrap/Button";
 import { getError } from "./utils";
-import axios from "axios";
+import {axiosGet} from "./components/AxiosHelper"
 import SearchBox from "./components/SearchBox";
 import SearchScreen from "./screens/SearchScreen";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -61,7 +61,8 @@ function App() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const { data } = await axios.get(`/api/products/categories`);
+        const endpoint = `/api/products/categories`
+        const { data } = await axiosGet(endpoint);
         setCategories(data);
       } catch (err) {
         toast.error(getError(err));

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {axiosGetAuth, axiosDeleteByIDAuth} from "../components/AxiosHelper"
 import React, { useContext, useEffect, useReducer } from 'react';
 import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
@@ -51,9 +51,8 @@ export default function OrderListScreen() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/orders`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const endpoint = `/api/orders`;
+        const { data } = await axiosGetAuth(endpoint, userInfo.token);
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({
@@ -73,9 +72,8 @@ export default function OrderListScreen() {
     if (window.confirm('Are you sure to delete?')) {
       try {
         dispatch({ type: 'DELETE_REQUEST' });
-        await axios.delete(`/api/orders/${order._id}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const endpoint =`/api/orders/`
+        await axiosDeleteByIDAuth(endpoint,order._id,userInfo.token);
         toast.success('order deleted successfully');
         dispatch({ type: 'DELETE_SUCCESS' });
       } catch (err) {

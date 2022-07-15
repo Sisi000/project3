@@ -1,9 +1,9 @@
 import { useState } from "react";
-import axios from "axios";
+import {axiosPost} from "../AxiosHelper";
 import "./UploadUrl.css";
-// import imgphoto from "../../assets/photo.png";
 import { Container, Row, Col } from "react-bootstrap";
 import Product from "../Product";
+
 
 function UploadUrl2(props) {
   const filters = props.filters;
@@ -13,7 +13,7 @@ function UploadUrl2(props) {
 
   const changeUrl = (e) => {
     const { value } = e.target;
-    console.log("value is", value);
+    //console.log("value is", value);
     setFile(value);
     setProducts([]);
   };
@@ -21,12 +21,13 @@ function UploadUrl2(props) {
   const submit = async (event) => {
     event.preventDefault();
     const URL = file;
-    console.log("URL is", URL);
-
-    await axios.post("/uploadurl", { URL, filters })
+    //console.log("URL is", URL);
+    const endpoint = "/uploadurl";
+    const payload = { URL, filters };
+    await axiosPost(endpoint, payload)
       .then((result) => {
         showSuggested(result.data);
-        console.log("result from submit is", result.data);
+        //console.log("result from submit is", result.data);
       })
       .catch((err) => {
         console.log(err);
@@ -38,7 +39,9 @@ function UploadUrl2(props) {
 
   const showSuggested = async (result) => {
     const params = result;
-    const result2 = await axios.post(`/api/products/id`, { params });
+    const endpoint = `/api/products/id`;
+    const payload = { params };
+    const result2 = await axiosPost(endpoint, payload);
     setProducts(result2.data, ...products);
   };
 

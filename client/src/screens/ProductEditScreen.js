@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import axios from "axios";
+import {axiosGetID, axiosPutIdAuth, axiosPostMPFDAuth, axiosDeletePost} from "../components/AxiosHelper"
 import { Store } from "../Store";
 import { getError } from "../utils";
 import Container from "react-bootstrap/Container";
@@ -83,7 +83,8 @@ export default function ProductEditScreen() {
     const fetchData = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
-        const { data } = await axios.get(`/api/products/${productId}`);//when i change this, note that I have this already in a helper but we destructure here
+        const endpoint = `/api/products/`
+        const { data } = await axiosGetID(endpoint,productId);
         setName(data.name);
         setSlug(data.slug);
         setPrice(data.price);
@@ -148,13 +149,9 @@ export default function ProductEditScreen() {
         countInStock,
         description,
       }
-      await axios.put(
-        `/api/products/${productId}`,
-        payload,
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+
+      const endpoint =  `/api/products/`;
+      await axiosPutIdAuth(endpoint,productId,payload,userInfo.token);
       dispatch({
         type: "UPDATE_SUCCESS",
       });
@@ -172,12 +169,8 @@ export default function ProductEditScreen() {
     bodyFormData.append("oldImageS3Key", imageS3Key);
     try {
       dispatch({ type: "UPLOAD_REQUEST" });
-      const { data } = await axios.post("/uploadproductimage", bodyFormData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          authorization: `Bearer ${userInfo.token}`,
-        },
-      });
+      const endpoint = "/uploadproductimage"
+      const { data } = await axiosPostMPFDAuth(endpoint, bodyFormData, userInfo.token);
 
       dispatch({ type: "UPLOAD_SUCCESS" });
 
@@ -203,16 +196,8 @@ export default function ProductEditScreen() {
 
     try {
       dispatch({ type: "UPLOAD_REQUEST" });
-      const { data } = await axios.post(
-        "/uploadadditionalimage",
-        bodyFormData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            authorization: `Bearer ${userInfo.token}`,
-          },
-        }
-      );
+      const endpoint = "/uploadadditionalimage";
+      const { data } = await axiosPostMPFDAuth(endpoint,bodyFormData,userInfo.token);
 
       dispatch({ type: "UPLOAD_SUCCESS" });
 
@@ -250,7 +235,8 @@ export default function ProductEditScreen() {
     console.log(`filename: ${filename}`);
 
     setAdditionalS3(additionalS3.filter((x) => x !== filename));
-    const data = await axios.post("/deleteadditionals3", { Key: filename });
+    const endpoint = "/deleteadditionals3"
+    const data = await axiosDeletePost(endpoint,filename);
     console.log("result is", data);
 
     toast.success("Image removed successfully. click Update to apply it");

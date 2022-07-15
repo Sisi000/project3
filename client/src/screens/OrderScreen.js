@@ -1,4 +1,4 @@
-import axios from "axios";
+import {axiosPutFinalEndpointAuth,  axiosGetAuth, getParamsAuth} from "../components/AxiosHelper"
 import React, { useContext, useEffect, useReducer } from "react";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { Helmet } from "react-helmet-async";
@@ -96,13 +96,10 @@ export default function OrderScreen() {
     return actions.order.capture().then(async function (details) {
       try {
         dispatch({ type: "PAY_REQUEST" });
-        const { data } = await axios.put(
-          `/api/orders/${order._id}/pay`,
-          details,
-          {
-            headers: { authorization: `Bearer ${userInfo.token}` },
-          }
-        );
+        const endpoint =`/api/orders/`;
+        const finalEndpoint = `/pay`;
+        const payload = details
+        const { data } = await axiosPutFinalEndpointAuth(endpoint,order._id,finalEndpoint,payload,userInfo.token);
         dispatch({ type: "PAY_SUCCESS", payload: data });
         console.log("data is", data);
         toast.success("Order is paid");
@@ -120,9 +117,8 @@ export default function OrderScreen() {
     const fetchOrder = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
-        const { data } = await axios.get(`/api/orders/${orderId}`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
+        const endpoint = `/api/orders/`;
+        const { data } = await getParamsAuth(endpoint,orderId,userInfo.token);
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
         dispatch({ type: "FETCH_FAIL", payload: getError(err) });
@@ -147,9 +143,8 @@ export default function OrderScreen() {
       }
     } else {
       const loadPaypalScript = async () => {
-        const { data: clientId } = await axios.get("/api/keys/paypal", {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
+        const endpoint ="/api/keys/paypal"
+        const { data: clientId } = await axiosGetAuth(endpoint,userInfo.token);
         paypalDispatch({
           type: "resetOptions",
           value: {
@@ -174,13 +169,10 @@ export default function OrderScreen() {
   async function deliverOrderHandler() {
     try {
       dispatch({ type: "DELIVER_REQUEST" });
-      const { data } = await axios.put(
-        `/api/orders/${order._id}/deliver`,
-        {},
-        {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+      const endpoint = `/api/orders/`;
+      const finalEndpoint = `/deliver`;
+      const payload = {};
+      const { data } = await axiosPutFinalEndpointAuth(endpoint,order._id,finalEndpoint,payload,userInfo.token)
       dispatch({ type: "DELIVER_SUCCESS", payload: data });
       toast.success("Order is delivered");
     } catch (err) {

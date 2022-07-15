@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useReducer } from 'react';
 import { Helmet } from 'react-helmet-async';
-import axios from 'axios';
+import {axiosGetAuth} from "../components/AxiosHelper"
 import { useNavigate } from 'react-router-dom';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
@@ -36,11 +36,8 @@ export default function OrderHistoryScreen() {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
       try {
-        const { data } = await axios.get(
-          `/api/orders/mine`,
-
-          { headers: { Authorization: `Bearer ${userInfo.token}` } }
-        );
+        const endpoint = `/api/orders/mine`;
+        const { data } = await axiosGetAuth(endpoint,userInfo.token);
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (error) {
         dispatch({

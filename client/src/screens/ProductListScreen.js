@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useReducer } from 'react';
-import axios from 'axios';
+import {getParamsAuth, axiosPostAuth,axiosDeleteByIDAuth} from "../components/AxiosHelper"
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -80,10 +80,8 @@ export default function ProductListScreen() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(`/api/products/admin?page=${page} `, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
-
+        const endpoint = "/api/products/admin?page=";
+        const { data } = await getParamsAuth(endpoint,page,userInfo.token);
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {}
     };
@@ -99,13 +97,8 @@ export default function ProductListScreen() {
     if (window.confirm('Are you sure to create?')) {
       try {
         dispatch({ type: 'CREATE_REQUEST' });
-        const { data } = await axios.post(
-          '/api/products',
-          {},
-          {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          }
-        );
+        const endpoint = '/api/products';
+        const { data } = await axiosPostAuth(endpoint,{},userInfo.token);
         toast.success('product created successfully');
         dispatch({ type: 'CREATE_SUCCESS' });
         navigate(`/admin/product/${data.product._id}`);
@@ -121,9 +114,8 @@ export default function ProductListScreen() {
   const deleteHandler = async (product) => {
     if (window.confirm('Are you sure to delete?')) {
       try {
-        await axios.delete(`/api/products/${product._id}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const endpoint = "/api/products/"
+        await axiosDeleteByIDAuth(endpoint,product._id,userInfo.token);
         toast.success('product deleted successfully');
         dispatch({ type: 'DELETE_SUCCESS' });
       } catch (err) {

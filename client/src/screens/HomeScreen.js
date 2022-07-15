@@ -1,5 +1,5 @@
 import { useEffect, useReducer } from "react";
-import axios from "axios";
+import {axiosGet} from "../components/AxiosHelper"
 import logger from "use-reducer-logger";
 import { Container, Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
@@ -35,7 +35,8 @@ function HomeScreen() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get("/api/products");
+        const endpoint = "/api/products"
+        const result = await axiosGet(endpoint);
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (err) {
         dispatch({ type: "FETCH_FAIL", payload: err.message });

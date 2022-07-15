@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as faceLandmarksDetection from "@tensorflow-models/face-landmarks-detection";
 import Product from "../Product";
+import {axiosPost} from "../AxiosHelper";
 
 //Added as per TF api suggestions
 import "@mediapipe/face_mesh";
 import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-backend-webgl";
 
-import axios from "axios";
 import Webcam from "react-webcam";
 import { drawMesh } from "./FaceMeshUtilities";
 import { Col, Container, Row } from "react-bootstrap";
@@ -78,7 +78,9 @@ function FaceMesh(props) {
   const showSuggestedMesh = async (result) => {
     const params = result;
     try {
-      const products = await axios.post(`/api/products/id`, { params });
+      const endpoint = `/api/products/id`;
+      const payload = {params};
+      const products = await axiosPost(endpoint,payload)
       setProducts(products.data);
     } catch (error) {
       console.log("Error with the database API: ", error);
@@ -87,9 +89,10 @@ function FaceMesh(props) {
 
   const uploadNodes = async (userFaceData,filters) => {
     if (userFaceData) {
-      //console.log("This is the submission: ",userFaceData)
       try {
-        let result = await axios.post("/facemesh", { userFaceData, filters });
+        const endpoint = "/facemesh";
+        const payload = { userFaceData, filters };
+        const result = await axiosPost(endpoint,payload);
         await showSuggestedMesh(result.data);
         
       } catch (error) {

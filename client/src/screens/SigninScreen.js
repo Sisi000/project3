@@ -1,4 +1,4 @@
-import Axios from 'axios';
+import {axiosPost} from "../components/AxiosHelper"
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -23,10 +23,12 @@ export default function SigninScreen() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await Axios.post('/api/users/signin', {
+      const endpoint = '/api/users/signin';
+      const payload = {
         email,
         password,
-      });
+      };
+      const { data } = await axiosPost(endpoint,payload);
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
       navigate(redirect || '/');

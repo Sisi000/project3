@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {getParamsAuth, axiosPutIdAuth} from "../components/AxiosHelper"
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -51,9 +51,8 @@ export default function UserEditScreen() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/users/${userId}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const endpoint = `/api/users/`
+        const { data } = await getParamsAuth(endpoint,userId,userInfo.token);
         setName(data.name);
         setEmail(data.email);
         setIsAdmin(data.isAdmin);
@@ -72,13 +71,9 @@ export default function UserEditScreen() {
     e.preventDefault();
     try {
       dispatch({ type: 'UPDATE_REQUEST' });
-      await axios.put(
-        `/api/users/${userId}`,
-        { _id: userId, name, email, isAdmin },
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+      const endpoint = "/api/users/";
+      const payload = { _id: userId, name, email, isAdmin }
+      await axiosPutIdAuth(endpoint,userId,payload,userInfo.token);
       dispatch({
         type: 'UPDATE_SUCCESS',
       });

@@ -40,7 +40,7 @@ function About() {
               <Card style={{ width: "18rem" }}>
                 <Card.Img variant="top" className="rounded-circle" src={Images} />
                 <Card.Body className='text-center'>
-                  <Card.Title className='bold'>Adrian Chin</Card.Title>
+                  <Card.Title className='bold'>MIKE Chin</Card.Title>
                   <Card.Text>Full-stack web developer
                   </Card.Text>
                   <a href="https://github.com/Adrianchin" target="_blank" rel="noreferrer">

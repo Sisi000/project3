@@ -1,4 +1,4 @@
-import Axios from 'axios';
+import {axiosPost} from "../components/AxiosHelper"
 import React, { useContext, useEffect, useReducer } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -47,24 +47,17 @@ export default function PlaceOrderScreen() {
   const placeOrderHandler = async () => {
     try {
       dispatch({ type: 'CREATE_REQUEST' });
-
-      const { data } = await Axios.post(
-        '/api/orders',
-        {
-          orderItems: cart.cartItems,
-          shippingAddress: cart.shippingAddress,
-          paymentMethod: cart.paymentMethod,
-          itemsPrice: cart.itemsPrice,
-          shippingPrice: cart.shippingPrice,
-          taxPrice: cart.taxPrice,
-          totalPrice: cart.totalPrice,
-        },
-        {
-          headers: {
-            authorization: `Bearer ${userInfo.token}`,
-          },
-        }
-      );
+      const endpoint = '/api/orders';
+      const payload = {
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+        totalPrice: cart.totalPrice,
+      };
+      const { data } = await axiosPost(endpoint,payload,userInfo.token);
       ctxDispatch({ type: 'CART_CLEAR' });
       dispatch({ type: 'CREATE_SUCCESS' });
       localStorage.removeItem('cartItems');
