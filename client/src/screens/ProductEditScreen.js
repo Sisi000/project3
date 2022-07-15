@@ -83,7 +83,7 @@ export default function ProductEditScreen() {
     const fetchData = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
-        const { data } = await axios.get(`/api/products/${productId}`);
+        const { data } = await axios.get(`/api/products/${productId}`);//when i change this, note that I have this already in a helper but we destructure here
         setName(data.name);
         setSlug(data.slug);
         setPrice(data.price);
@@ -122,34 +122,35 @@ export default function ProductEditScreen() {
     e.preventDefault();
     try {
       dispatch({ type: "UPDATE_REQUEST" });
+      const payload = {
+        _id: productId,
+        name,
+        slug,
+        price,
+        image,
+        imageS3Key,
+        images,
+        additionalS3,
+        category,
+        brand,
+        lensWidth,
+        lensHeight,
+        bridge,
+        lensDiagonal,
+        templeLength,
+        eyeRatio,
+        earFaceRatio,
+        cheekChinRatio,
+        noseRatio,
+        frameColor,
+        prescriptionMin,
+        prescriptionMax,
+        countInStock,
+        description,
+      }
       await axios.put(
         `/api/products/${productId}`,
-        {
-          _id: productId,
-          name,
-          slug,
-          price,
-          image,
-          imageS3Key,
-          images,
-          additionalS3,
-          category,
-          brand,
-          lensWidth,
-          lensHeight,
-          bridge,
-          lensDiagonal,
-          templeLength,
-          eyeRatio,
-          earFaceRatio,
-          cheekChinRatio,
-          noseRatio,
-          frameColor,
-          prescriptionMin,
-          prescriptionMax,
-          countInStock,
-          description,
-        },
+        payload,
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
