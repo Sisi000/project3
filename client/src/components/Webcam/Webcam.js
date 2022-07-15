@@ -32,7 +32,6 @@ function WebcamCapture(props) {
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log("Suggested glasses are", result.data);
  
     return result.data;
   }

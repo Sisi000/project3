@@ -85,7 +85,7 @@ function FaceMesh(props) {
     }
   };
 
-  const uploadNodes = async (userFaceData) => {
+  const uploadNodes = async (userFaceData,filters) => {
     if (userFaceData) {
       //console.log("This is the submission: ",userFaceData)
       try {
@@ -146,7 +146,7 @@ function FaceMesh(props) {
         }}
         onClick={async (event) => {
           event.preventDefault();
-          await uploadNodes(userFaceData);
+          await uploadNodes(userFaceData,filters);
         }}
       >
         Facial Node Detection
