@@ -182,7 +182,7 @@ export default function Uploads() {
     maximum: (maximumList.price) ? maximumList : null,
   }
 
-  console.log("filters are : ",filters)
+  //console.log("filters are : ",filters)
 
   /*
   Filters done
