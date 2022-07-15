@@ -97,7 +97,7 @@ export default function SearchScreen({ items }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(
+        const { data } = await axios.get(//This is messed, might need a special helper for this
           `/api/products/search?page=${page}&query=${query}&category=${
             selectedCategories[0] || "all"
           }&frameColor=${selectedFrameColors[0] || "all"}&price=${

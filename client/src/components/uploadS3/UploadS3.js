@@ -11,22 +11,6 @@ function UploadS3(props) {
   const [file, setFile] = useState();
   const [products, setProducts] = useState([]);
 
-  /* Old code for single file upload, going with multi file upload - Delete
-  async function postImage({ image }) {
-    const formData = new FormData();
-    formData.append("image", image);
-
-    const result = await axios.post("/upload", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-
-    console.log("Suggested glasses are", result.data);
-    setResultData(result.data);
-
-    return result.data;
-  }
-*/
-
   async function postImage(filesForUpload, blob) {
     const formData = new FormData();
     formData.append("UserData", filesForUpload); //image
@@ -64,15 +48,6 @@ function UploadS3(props) {
     setFile(null);
     document.getElementById("selectedimage").value = "";
   };
-  /* Old code for single file upload, going with multi file upload - Delete
-  const submit = async (event) => {
-    event.preventDefault();
-    const result = await postImageTest({ image: file });
-    console.log("Suggested glasses are", result);
-    setFile(null);
-    document.getElementById("selectedimage").value = "";
-  };
-  */
   const fileSelected = (event) => {
     const file = event.target.files[0];
     setFile(file);

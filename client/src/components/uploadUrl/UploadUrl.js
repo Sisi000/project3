@@ -23,8 +23,7 @@ function UploadUrl2(props) {
     const URL = file;
     console.log("URL is", URL);
 
-    await axios
-      .post("/uploadurl", { URL, filters })
+    await axios.post("/uploadurl", { URL, filters })
       .then((result) => {
         showSuggested(result.data);
         console.log("result from submit is", result.data);
