@@ -192,6 +192,17 @@ productRouter.get(
   })
 );
 
+productRouter.post(
+  "/search",
+  expressAsyncHandler(async (req, res) => {
+    
+   console.log(req.body);
+   res.send(req.body)
+  }
+  )
+);
+
+
 productRouter.get(
   "/search",
   expressAsyncHandler(async (req, res) => {

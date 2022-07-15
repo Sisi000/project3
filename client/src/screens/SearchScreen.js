@@ -104,6 +104,14 @@ export default function SearchScreen({ items }) {
             selectedPrices || "all"
           }&rating=${rating}&order=${order}`
         );
+        const result = await axios.post(
+          "/api/products/search",
+          { selectedCategories, selectedFrameColors, selectedPrices },
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        console.log("result is", result.data);
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
         dispatch({
@@ -250,24 +258,23 @@ export default function SearchScreen({ items }) {
   };
 
   const togglePrice = (price) => {
-    var price = Object.values(price);
     let newPrices = [...selectedPrices];
     console.log("newPrices is", newPrices);
-    console.log("price is", price[1]);
-    if (newPrices.includes(price[1])) {
-      newPrices = newPrices.filter((p) => p !== price[1]);
+    console.log("price is", price);
+    if (newPrices.includes(price)) {
+      newPrices = newPrices.filter((p) => p !== price);
     } else {
-      newPrices.push(price[1]);
+      newPrices.push(price);
     }
     setSelectedPrices(newPrices);
   };
 
-  const handleSelectAll = () => {
-    items.forEach((i) => (i.checked = true));
+  const handleSelectAll = (setter, values) => {
+    setter([...values]);
   };
 
-  const handleSelectNone = () => {
-    items.forEach((i) => (i.checked = false));
+  const handleSelectNone = (setter) => {
+    setter([]);
   };
   // })
 
@@ -287,8 +294,12 @@ export default function SearchScreen({ items }) {
 
             <Dropdown.Menu
               as={CheckboxMenu}
-              onSelectAll={handleSelectAll}
-              onSelectNone={handleSelectNone}
+              onSelectAll={() => {
+                handleSelectAll(setSelectedCategories, categories);
+              }}
+              onSelectNone={() => {
+                handleSelectNone(setSelectedCategories);
+              }}
             >
               {categories.map((c) => (
                 <Dropdown.Item
@@ -340,8 +351,8 @@ export default function SearchScreen({ items }) {
                   key={p.value}
                   as={CheckDropdownItem}
                   id={p}
-                  onChange={() => togglePrice(p)}
-                  checked={selectedPrices.includes(p)}
+                  onChange={() => togglePrice(p.value)}
+                  checked={selectedPrices.includes(p.value)}
                 >
                   {p.name}
                 </Dropdown.Item>
@@ -398,11 +409,11 @@ export default function SearchScreen({ items }) {
                   <div>
                     {countProducts === 0 ? "No" : countProducts} Results
                     {query !== "all" && " : " + query}
-                    {selectedCategories !== "all" && " : " + selectedCategories}
-                    {selectedFrameColors !== "all" &&
+                    {selectedCategories.length > 0 &&
+                      " : " + selectedCategories}
+                    {selectedFrameColors.length > 0 &&
                       " : " + selectedFrameColors}
-                    {selectedPrices[0] !== "all" &&
-                      " : Price " + selectedPrices[0]}
+                    {selectedPrices.length > 0 && " Price " + selectedPrices[0]}
                     {rating !== "all" && " : Rating " + rating + " & up"}
                     {query !== "all" ||
                     category !== "all" ||
