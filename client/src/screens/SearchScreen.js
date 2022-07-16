@@ -84,35 +84,33 @@ export default function SearchScreen({ items }) {
   const rating = sp.get("rating") || "all";
   const order = sp.get("order") || "newest";
   const page = sp.get("page") || 1;
+  
+  const [products, setProducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedFrameColors, setSelectedFrameColors] = useState([]);
   const [selectedPrices, setSelectedPrices] = useState([]);
 
-  const [{ loading, error, products, pages, countProducts }, dispatch] =
-    useReducer(reducer, {
+  const [{ loading, error, pages, countProducts }, dispatch] = useReducer(
+    reducer,
+    {
       loading: true,
       error: "",
-    });
+    }
+  );
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(//This is messed, might need a special helper for this
-          `/api/products/search?page=${page}&query=${query}&category=${
-            selectedCategories[0] || "all"
-          }&frameColor=${selectedFrameColors[0] || "all"}&price=${
-            selectedPrices || "all"
-          }&rating=${rating}&order=${order}`
+        const { data } = await axios.get(
+          //This is messed, might need a special helper for this
+          `/api/products/`
         );
-        const result = await axios.post(
-          "/api/products/search",
-          { selectedCategories, selectedFrameColors, selectedPrices },
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-        console.log("result is", result.data);
-        dispatch({ type: "FETCH_SUCCESS", payload: data });
+        // dispatch({ type: "SUCCESS", payload: data });
+        // setProducts(data);
+        console.log("data get all", data);
+        setProducts(data);
+
+      
       } catch (err) {
         dispatch({
           type: "FETCH_FAIL",
@@ -121,19 +119,35 @@ export default function SearchScreen({ items }) {
       }
     };
     fetchData();
-  }, [
-    selectedCategories,
-    selectedFrameColors,
-    error,
-    order,
-    page,
-    selectedPrices,
-    query,
-    rating,
-  ]);
+  }, []);
+ 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await axios.post(
+          "/api/products/search",
+          { selectedCategories, selectedFrameColors, selectedPrices },
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        console.log("result is", result.data);
+
+        setProducts(result.data);
+      } catch (err) {
+        dispatch({
+          type: "FETCH_FAIL",
+          payload: getError(error),
+        });
+      }
+    };
+    fetchData();
+  }, [selectedCategories, selectedFrameColors, selectedPrices]);
+
+  console.log("products is", products);
 
   const [categories, setCategories] = useState([]);
-
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -238,6 +252,7 @@ export default function SearchScreen({ items }) {
 
   const toggleCategory = (category) => {
     let newCategories = [...selectedCategories];
+    console.log("newCategories is", newCategories);
     if (newCategories.includes(category)) {
       newCategories = newCategories.filter((c) => c !== category);
     } else {
@@ -398,7 +413,7 @@ export default function SearchScreen({ items }) {
         </div>
 
         <div className="products my-5 py-2">
-          {loading ? (
+          {/* {loading ? (
             <LoadingBox></LoadingBox>
           ) : error ? (
             <MessageBox variant="danger">{error}</MessageBox>
@@ -442,37 +457,35 @@ export default function SearchScreen({ items }) {
                     <option value="toprated">Avg. Customer Reviews</option>
                   </select>
                 </Col>
-              </Row>
-              {products.length === 0 && (
-                <MessageBox>No Product Found</MessageBox>
-              )}
+              </Row> */}
+          {products.length === 0 && <MessageBox>No Product Found</MessageBox>}
 
-              <Row>
-                {products.map((product) => (
-                  <Col sm={6} md={4} lg={3} className="mb-3" key={product.slug}>
-                    <Product product={product}></Product>
-                  </Col>
-                ))}
-              </Row>
+          <Row>
+            {products.map((product) => (
+              <Col sm={6} md={4} lg={3} className="mb-3" key={product.slug}>
+                <Product product={product}></Product>
+              </Col>
+            ))}
+          </Row>
 
-              <div>
-                {[...Array(pages).keys()].map((x) => (
-                  <LinkContainer
-                    key={x + 1}
-                    className="mx-1"
-                    to={getFilterUrl({ page: x + 1 })}
-                  >
-                    <Button
-                      className={Number(page) === x + 1 ? "text-bold" : ""}
-                      variant="light"
-                    >
-                      {x + 1}
-                    </Button>
-                  </LinkContainer>
-                ))}
-              </div>
-            </>
-          )}
+          <div>
+            {[...Array(pages).keys()].map((x) => (
+              <LinkContainer
+                key={x + 1}
+                className="mx-1"
+                to={getFilterUrl({ page: x + 1 })}
+              >
+                <Button
+                  className={Number(page) === x + 1 ? "text-bold" : ""}
+                  variant="light"
+                >
+                  {x + 1}
+                </Button>
+              </LinkContainer>
+            ))}
+          </div>
+          {/* </> */}
+          {/* )} */}
         </div>
         {/* </div> */}
       </Container>

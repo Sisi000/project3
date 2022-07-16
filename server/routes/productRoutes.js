@@ -111,14 +111,14 @@ productRouter.delete(
       for (const k in s3ImagesToDelete) {
         objects.push({ Key: s3ImagesToDelete[k] });
       }
-   
+
       const options = {
         Bucket: process.env.AWS_BUCKET,
         Delete: {
           Objects: objects,
         },
       };
-     
+
       s3.deleteObjects(options, function (err, data) {
         if (err) console.log(err, err.stack); // an error occurred
         else console.log(data); // successful response
@@ -195,13 +195,34 @@ productRouter.get(
 productRouter.post(
   "/search",
   expressAsyncHandler(async (req, res) => {
-    
-   console.log(req.body);
-   res.send(req.body)
-  }
-  )
-);
+    const query = req.body;
+    console.log("query is", query);
+    const category = query.selectedCategories || "";
+    console.log("category is", category);
+    const frameColor = query.selectedFrameColors || "";
 
+    // const categoryFilter = category && category !== "all" ? { category } : {};
+    // console.log("categoryFilter is", categoryFilter);
+    // const frameColorFilter =
+    //   frameColor && frameColor !== "all" ? { frameColor } : {};
+
+    // const products = await Product.find({ $and: [{ $or: [{category: { $in: category},  frameColor: { $in: frameColor} }]}]
+    const products = await Product.find({ category: { $in: category}, $or: [{ frameColor: { $in: frameColor} }]
+      //  category: { $in: category},
+      //  frameColor: { $in: frameColor}
+    });
+    
+       
+    let results = [];
+
+    for (let array of products) {
+      results.push(array);
+    }
+  
+      console.log("results are", results);
+    res.send(results);
+  })
+);
 
 productRouter.get(
   "/search",
@@ -225,6 +246,7 @@ productRouter.get(
             },
           }
         : {};
+
     const categoryFilter = category && category !== "all" ? { category } : {};
     const frameColorFilter =
       frameColor && frameColor !== "all" ? { frameColor } : {};
