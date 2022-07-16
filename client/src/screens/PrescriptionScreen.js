@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
-import axios from 'axios';
+import {axiosPost, axiosPutAuth} from "../components/AxiosHelper"
 import { Row, Col, Button, Form, Container } from "react-bootstrap";
 import PrescriptionImg from './PrescriptionImg';
 
@@ -67,10 +67,8 @@ export default function PrescriptionScreen() {
     const fetchData = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
-        const { data } = await axios.get(`/api/prescriptions`,
-          {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          });
+        const endpoint = `/api/prescriptions`
+        const { data } = await axiosPost(endpoint,userInfo.token);
         setSphereR(data.SphereR);
         setCylinderR(data.CylinderR);
         setAxisR(data.AxisR);
@@ -97,24 +95,20 @@ export default function PrescriptionScreen() {
     e.preventDefault();
     try {
       dispatch({ type: "UPDATE_REQUEST" });
-      const { data } = await axios.put(
-        `/api/prescriptions`,
-        {
-          SphereR,
-          CylinderR,
-          AxisR,
-          ADDR,
-          SphereL,
-          CylinderL,
-          AxisL,
-          ADDL,
-          RPD,
-          LPD
-        },
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+      const endpoint = `/api/prescriptions`;
+      const payload = {
+        SphereR,
+        CylinderR,
+        AxisR,
+        ADDR,
+        SphereL,
+        CylinderL,
+        AxisL,
+        ADDL,
+        RPD,
+        LPD
+      };
+      const { data } = await axiosPutAuth(endpoint, payload, userInfo.token);
       dispatch({
         type: 'UPDATE_SUCCESS',
       });

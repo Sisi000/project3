@@ -17,7 +17,7 @@ const Footer = () => {
                     <Nav className="me-auto mx-auto my-2 my-lg-0" style={{ fontSize: "1.2rem" }}>
                         <Nav.Link href="/">Home</Nav.Link>
                         <Nav.Link href="/about">About</Nav.Link>
-                        <Nav.Link href="/upload">Upload</Nav.Link>
+                        <Nav.Link href="/upload">Virtual Optician</Nav.Link>
                         <Nav.Link className='mx-5 mt-1' style={{ fontSize: "1.2rem" }} eventKey={2} href="#home">
                             &copy; eyelovecoding 2022
                         </Nav.Link>

@@ -11,7 +11,7 @@ function TryOn() {
         <Card.Img src={Images} alt="Card image" />
         <Card.ImgOverlay>
           <Card.Body className='position-absolute bottom-0 end-10 mx-5 mb-5 pb-5 px-5'>
-            <a className="btn btn-light btn-lg mx-5 px-5" href="/upload" role="button"><h1>VIRTUAL ASSISTANT</h1></a>
+            <a className="btn btn-light btn-lg mx-5 px-5" href="/upload" role="button"><h1>VIRTUAL OPTICIAN</h1></a>
           </Card.Body>
         </Card.ImgOverlay>
       </Card>

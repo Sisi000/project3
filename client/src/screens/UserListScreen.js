@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {axiosGetAuth, axiosDeleteByIDAuth} from "../components/AxiosHelper"
 import React, { useContext, useEffect, useReducer } from 'react';
 import Button from 'react-bootstrap/Button';
 import { Helmet } from 'react-helmet-async';
@@ -52,9 +52,8 @@ export default function UserListScreen() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/users`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const endpoint = `/api/users`
+        const { data } = await axiosGetAuth(endpoint,userInfo.token);
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({
@@ -74,9 +73,8 @@ export default function UserListScreen() {
     if (window.confirm('Are you sure to delete?')) {
       try {
         dispatch({ type: 'DELETE_REQUEST' });
-        await axios.delete(`/api/users/${user._id}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const endpoint = `/api/users/`
+        await axiosDeleteByIDAuth(endpoint,user._id,userInfo.token);
         toast.success('user deleted successfully');
         dispatch({ type: 'DELETE_SUCCESS' });
       } catch (error) {

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {axiosGetAuth} from "../components/AxiosHelper"
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   LoadScript,
@@ -44,9 +44,8 @@ export default function MapScreen() {
   };
   useEffect(() => {
     const fetch = async () => {
-      const { data } = await axios('/api/keys/google', {
-        headers: { Authorization: `BEARER ${userInfo.token}` },
-      });
+      const endpoint = '/api/keys/google'
+      const { data } = await axiosGetAuth(endpoint,userInfo.token);
       setGoogleApiKey(data.key);
       getUserCurrentLocation();
     };

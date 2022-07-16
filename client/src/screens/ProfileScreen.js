@@ -4,7 +4,7 @@ import { Form, Button, Card } from 'react-bootstrap';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
-import axios from 'axios';
+import {axiosPutAuth} from "../components/AxiosHelper"
 import Images from "../assets/profileImg.jpg"
 
 const reducer = (state, action) => {
@@ -36,17 +36,13 @@ export default function ProfileScreen() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.put(
-        '/api/users/profile',
-        {
-          name,
-          email,
-          password,
-        },
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+      const endpoint = '/api/users/profile'
+      const payload = {
+        name,
+        email,
+        password,
+      };
+      const { data } = await axiosPutAuth(endpoint,payload,userInfo.token);
       dispatch({
         type: 'UPDATE_SUCCESS',
       });

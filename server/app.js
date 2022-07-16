@@ -1,4 +1,5 @@
 const createError = require('http-errors');
+const cors = require ('cors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -15,6 +16,13 @@ const orderRouter = require ('./routes/orderRoutes.js');
 const prescriptionRouter = require ('./routes/prescriptionRoutes.js');
 
 const app = express();
+
+const corsOptions = {
+  origin: process.env.FRONT_END_URL,
+  credentials:  true
+}
+
+app.use(cors(corsOptions))
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())

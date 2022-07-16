@@ -6,7 +6,7 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import "bootstrap/dist/css/bootstrap.css";
 import Images from "../images/developers/Adrian_Chin.jpg"
 import Image1 from "../images/developers/Sanja_Ivansic.jpg"
-import Image3 from "../images/w.png"
+import Image3 from "../images/developers/Yulia.jpg"
 import "./About.css";
 
 function About() {
@@ -44,7 +44,8 @@ function About() {
                 <Card.Img variant="top" className="img-thumbnail mx-auto d-block" style={{ width: "fit-content", height: "15rem"}} src={Images} />
                 <Card.Body className='text-center'>
                   <Card.Title className='bold'>Adrian Chin</Card.Title>
-                  <Card.Text>Full-stack developer
+                  <Card.Text>
+                    Full Stack Developer
                     <br/>
                     <br/>
                     Interests:
@@ -68,7 +69,7 @@ function About() {
                 <Card.Body className='text-center'>
                   <Card.Title className='bold'>Sanja Ivansic</Card.Title>
                   <Card.Text>
-                  Full-stack developer
+                  Full Stack Developer
                   <br/>
                   <br/>
                   Interests:
@@ -92,7 +93,7 @@ function About() {
                 <Card.Body className='text-center'>
                   <Card.Title className='bold'>Yulia Sinko</Card.Title>
                   <Card.Text>
-                  Full-stack developer
+                  Full Stack Developer
                   <br/>
                   <br/>
                   Interests:

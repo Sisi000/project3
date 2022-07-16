@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {axiosGetID, axiosPostFinalEndpointAuth} from "../components/AxiosHelper"
 import { useContext, useEffect, useReducer, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
@@ -59,7 +59,8 @@ function ProductScreen() {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
       try {
-        const result = await axios.get(`/api/products/slug/${slug}`);
+        const endpont = `/api/products/slug/`
+        const result = await axiosGetID(endpont,slug);
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
@@ -73,7 +74,8 @@ function ProductScreen() {
   const addToCartHandler = async () => {
     const existItem = cart.cartItems.find((x) => x._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios.get(`/api/products/${product._id}`);
+    const endpoint = "/api/products/"
+    const { data } = await axiosGetID(endpoint,product._id);
     if (data.countInStock < quantity) {
       window.alert('Sorry. Product is out of stock');
       return;
@@ -92,14 +94,10 @@ function ProductScreen() {
       return;
     }
     try {
-      const { data } = await axios.post(
-        `/api/products/${product._id}/reviews`,
-        { rating, comment, name: userInfo.name },
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
-
+      const endpoint = `/api/products/`;
+      const finalEndpoint = "/reviews";
+      const payload ={ rating, comment, name: userInfo.name };
+      const { data } = await axiosPostFinalEndpointAuth(endpoint,product._id,finalEndpoint,payload,userInfo.token);
       dispatch({
         type: 'CREATE_SUCCESS',
       });

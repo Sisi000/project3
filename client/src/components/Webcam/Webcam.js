@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Webcam from "react-webcam";
-import axios from "axios";
+import {axiosPostMPFD, axiosPost} from "../AxiosHelper";
 import { Container, Row, Col } from "react-bootstrap";
 import "./Webcam.css";
 import Product from "../Product";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 const videoConstraints = {
   width: 400,
@@ -22,18 +23,11 @@ function WebcamCapture(props) {
 
   async function postImage(filesForUpload) {
     const formData = new FormData();
-    formData.append("image", filesForUpload); //image
-    formData.append("filters", filterJSON); //image
-    const result = await axios({
-      method: "POST",
-      url: "/uploadwebcam",
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
- 
-    return result.data;
+    formData.append("image", filesForUpload); 
+    formData.append("filters", filterJSON); 
+    const endpoint = "/uploadwebcam";
+    const result = await axiosPostMPFD(endpoint,formData);
+    return result;
   }
 
   const capture = React.useCallback(() => {
@@ -41,12 +35,19 @@ function WebcamCapture(props) {
     setFile(file);
   }, [webcamRef]);
 
+  const showSuggestedCam = async (result) => {
+    const params = result;
+    const endpoint = `/api/products/id`;
+    const result2 = await axiosPost(endpoint, {params});
+    setProducts(result2.data);
+  };
+
   const submit = async (event) => {
     event.preventDefault();
     if(file){
       const result = await postImage(file)
-        .then((result) => {
-          showSuggestedCam(result);
+        .then(async (result) => {
+          await showSuggestedCam(result);
         })
         .catch((err) => {
           console.log(err);
@@ -55,12 +56,6 @@ function WebcamCapture(props) {
     }else{
       console.log("No file taken, please take picture")
     }
-  };
-
-  const showSuggestedCam = async (result) => {
-    const params = result;
-    const result2 = await axios.post(`/api/products/id`, { params });
-    setProducts(result2.data);
   };
 
   return (
