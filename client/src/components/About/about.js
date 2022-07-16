@@ -74,11 +74,11 @@ function About() {
                   <br/>
                   Interests:
                     <br/>
-                    Ecommerce Applications
+                    Solving Difficult Business Problems
                     <br/>
-                    Applied Business Logic and Analytics
+                    Pushing Efficient and Practical Code
                     <br/>
-                    Security
+                    "I simply love everything about coding!"
                   </Card.Text>
                   <a href="https://github.com/Sisi000" target="_blank" rel="noreferrer">
                   <Button type='button' className='shadow-none' variant="primary"><FontAwesomeIcon className='px-2 mx-3' icon={faGithub} size="2x"  /></Button></a>
