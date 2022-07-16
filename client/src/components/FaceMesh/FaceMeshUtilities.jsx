@@ -2655,6 +2655,7 @@ export const TRIANGULATION = [ // Ordered pair in 3x for rendering
       region.closePath();
     }
     ctx.strokeStyle = "##00f7ff";
+    ctx.lineWidth=0.2;
     ctx.stroke(region);
   };
   
