@@ -3,8 +3,8 @@ const sizeOf = require("image-size");
 
 var config = {credentials:
     {
-        client_email:process.env.GOOGLE_API_EMAIL,
-        private_key:process.env.GOOGLE_API_KEY,
+        client_email:process.env.GOOGLE_API_EMAIL.replace(/\\n/g, '\n'),
+        private_key:process.env.GOOGLE_API_KEY.replace(/\\n/g, '\n'),
     }
 };
 
