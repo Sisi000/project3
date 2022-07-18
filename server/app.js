@@ -19,6 +19,7 @@ const app = express();
 
 const corsOptions = {
   origin: process.env.FRONT_END_URL,
+  credentials: true,
 }
 
 app.use(cors(corsOptions))
