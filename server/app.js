@@ -16,7 +16,7 @@ const orderRouter = require ('./routes/orderRoutes.js');
 const prescriptionRouter = require ('./routes/prescriptionRoutes.js');
 
 const app = express();
-/*
+/*Cors issue with front end url extensions
 const corsOptions = {
   origin: process.env.FRONT_END_URL,
   credentials: true,
