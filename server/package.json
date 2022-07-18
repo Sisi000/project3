@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "devStart": "nodemon ./bin/www",
+    "startDev": "nodemon ./bin/www",
     "test": "jest --coverage --setupFiles dotenv/config",
     "dev": "concurrently --kill-others \"npm run start\" \"cd  ../client && npm run start\""
   },
