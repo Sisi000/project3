@@ -1,5 +1,5 @@
 import { useEffect, useReducer } from "react";
-import {axiosGet} from "../components/AxiosHelper"
+import { axiosGet } from "../components/AxiosHelper";
 // import logger from "use-reducer-logger";
 import { Container, Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
@@ -25,7 +25,7 @@ const reducer = (state, action) => {
 };
 
 function HomeScreen() {
-  const [{ loading, error, products }, dispatch] = useReducer((reducer), {
+  const [{ loading, error, products }, dispatch] = useReducer(reducer, {
     products: [],
     loading: true,
     error: "",
@@ -35,7 +35,7 @@ function HomeScreen() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const endpoint = "/api/products"
+        const endpoint = "/api/products";
         const result = await axiosGet(endpoint);
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (err) {
@@ -52,10 +52,7 @@ function HomeScreen() {
         <Slider />
         {/* <Cards /> */}
         <Container className="my-5 pt-5">
-          <div>
-            <Helmet>
-              <title>eyelovecoding</title>
-            </Helmet>
+      
             <SearchScreen />
             {/* <h1>Featured Products</h1>
             <div className="products my-5 py-2">
@@ -73,7 +70,7 @@ function HomeScreen() {
                 </Row>
               )}
             </div> */}
-          </div>
+        
         </Container>
         <TryOn />
       </Container>

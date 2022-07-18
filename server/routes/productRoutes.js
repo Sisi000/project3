@@ -213,12 +213,13 @@ productRouter.post(
     }
     if (price.length > 0) {
       searchObj.price = {
-        price: {
-          $gte: Number(price.split("-")[0]),
-          $lte: Number(price.split("-")[1]),
-        },
+        // price: {
+        //   $gte: Number(price[0].split("-")[0]),
+        //   $lte: Number(price[0].split("-")[1]),
+        // },
       };
     }
+    
     const products = await Product.find(searchObj);
     console.log("products are", products);
 
@@ -267,16 +268,16 @@ productRouter.get(
             },
           }
         : {};
-    const priceFilter =
-      price && price !== "all"
-        ? {
-            // 1-50
-            price: {
-              $gte: Number(price.split("-")[0]),
-              $lte: Number(price.split("-")[1]),
-            },
-          }
-        : {};
+    // const priceFilter =
+    //   price && price !== "all"
+    //     ? {
+    //         // 1-50
+    //         price: {
+    //           $gte: Number(price.split("-")[0]),
+    //           $lte: Number(price.split("-")[1]),
+    //         },
+    //       }
+    //     : {};
     const sortOrder =
       order === "featured"
         ? { featured: -1 }
