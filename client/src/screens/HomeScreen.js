@@ -50,7 +50,7 @@ function HomeScreen() {
     <>
       <Container fluid style={{ padding: "0" }}>
         <Slider />
-        <Cards />
+        {/* <Cards /> */}
         <Container className="my-5 pt-5">
           <div>
             <Helmet>
