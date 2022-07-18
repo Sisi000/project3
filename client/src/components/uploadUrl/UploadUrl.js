@@ -46,7 +46,7 @@ function UploadUrl2(props) {
   };
 
   return (
-    <div className="containers3">
+<>
       <div className="container-url">
         <form className="formsUrl">
           Enter image Url
@@ -57,12 +57,12 @@ function UploadUrl2(props) {
             value={file}
             onChange={changeUrl}
           />
+        </form>
           <button className="btn btn-primary" onClick={submit}>
             Submit
           </button>
-        </form>
         <img className="imagePreview" src={file} alt=""></img>
-      </div>
+     
       <div className="container-suggestion">
         <Container fluid style={{ padding: "0" }}>
           <Container className="mt-3">
@@ -73,8 +73,8 @@ function UploadUrl2(props) {
                   {products.map((product) => (
                     <Col
                       key={product._id}
-                      sm={3}
-                      md={3}
+                      sm={6}
+                      md={4}
                       lg={3}
                       className="mb-3"
                     >
@@ -87,7 +87,8 @@ function UploadUrl2(props) {
           </Container>
         </Container>
       </div>
-    </div>
+      </div>
+      </>
   );
 }
 

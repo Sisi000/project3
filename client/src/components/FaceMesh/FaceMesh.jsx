@@ -159,24 +159,13 @@ function FaceMesh(props) {
         <Container className="mt-3">
           <div>
             <div className="products my-5 py-2">
-              <Row>
-                {(products) ? (
-                  <><h2>Suggested Glasses</h2>
-                    {products.map((product) => (
-                      <Col
-                        key={product._id}
-                        sm={6}
-                        md={4}
-                        lg={3}
-                        className="mb-3"
-                      >
-                        <Product product={product}></Product>
-                      </Col>
-                    ))}
-                  </>
-                ) : (
-                  <></>
-                )}
+            <Row>
+              {products.length > 0 && <h1>Suggested Glasses</h1>}
+                {products.map((product) => (
+                  <Col key={product._id} sm={6} md={4} lg={3} className="mb-3">
+                    <Product product={product}></Product>
+                  </Col>
+                ))}
               </Row>
             </div>
           </div>

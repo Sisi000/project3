@@ -37,8 +37,7 @@ const uploadProduct = multer({ dest: "uploads/" });
 router.post("/upload", upload.array("UserData", 2), async (req, res, next) => {
   const image = req.files[0];
   const filters = JSON.parse(req.files[1].buffer);
-  console.log("filters :", filters);
-  console.log("Image", image);
+ 
 
   // resize and send to google vision
   await sharp(image.buffer)
@@ -46,7 +45,7 @@ router.post("/upload", upload.array("UserData", 2), async (req, res, next) => {
     .toBuffer()
     .then(async (resized) => {
       const buffer = resized;
-      try{
+      try {
         const products = await Product.find();
         const resultVision = await facelandmark(buffer, products, filters);
 
@@ -57,9 +56,9 @@ router.post("/upload", upload.array("UserData", 2), async (req, res, next) => {
         }
 
         res.send(results);
-      }catch(error){
+      } catch (error) {
         res.status(500).json(`problem with the Image Submit`);
-    }
+      }
     });
   res.status("Successfully uploaded!");
 });
@@ -70,13 +69,10 @@ router.post("/uploadwebcam", upload.single("image"), async (req, res, next) => {
 
   const filters = JSON.parse(req.body.filters);
 
-  console.log(filters)
-
   const matches = file.replace(/^data:image\/(png);base64,/, "");
   const buff = Buffer.from(matches, "base64");
-  try{
+  try {
     const products = await Product.find();
-
     const resultVision = await facelandmark(buff, products, filters);
 
     let results = [];
@@ -87,7 +83,7 @@ router.post("/uploadwebcam", upload.single("image"), async (req, res, next) => {
 
     res.send(results);
     res.status("Successfully uploaded!");
-  }catch(error){
+  } catch (error) {
     res.status(500).json(`problem with the Image Submit`);
   }
 });
@@ -97,25 +93,20 @@ router.post("/uploadurl", async (req, res, next) => {
   const urlBody = req.body.URL;
   const filters = req.body.filters;
 
-  console.log("urlBody is", urlBody);
-  console.log("filters are ", filters);
-  
-  try{
+  try {
     const products = await Product.find();
-
     const resultVision = await facelandmarkURL(urlBody, products, filters);
-  
+
     let results = [];
-  
+
     for (let array of resultVision) {
       results.push(array[1]);
     }
-  
+
     res.send(results);
-  }catch(error){
+  } catch (error) {
     res.status(500).json(`problem with the Link Submit`);
   }
-  
 });
 
 // upload Url to vision
@@ -123,19 +114,20 @@ router.post("/facemesh", async (req, res, next) => {
   const userFaceData = req.body.userFaceData;
   const filters = req.body.filters;
 
-  //console.log("userData is", userFaceData);
-  //console.log("filters are ", filters);
   const products = await Product.find();
-  let userFaceData_Google = tranformToGoogle(userFaceData)
-  let resultsFacemesh = facemesh(userFaceData_Google.landmarks, products, filters)
-  
+  let userFaceData_Google = tranformToGoogle(userFaceData);
+  let resultsFacemesh = facemesh(
+    userFaceData_Google.landmarks,
+    products,
+    filters
+  );
+
   let results = [];
   for (let array of resultsFacemesh) {
     results.push(array[1]);
   }
-  console.log(results)
+  console.log(results);
   res.send(results);
-  
 });
 
 // upload product image to S3
@@ -145,7 +137,6 @@ router.post(
   async (req, res, next) => {
     const file = req.file;
     const fileToDelete = req.body.oldImageS3Key;
-    // console.log("fileToDelete is", fileToDelete);
 
     const result = await uploadFile(file);
     console.log("result is", result);
@@ -156,31 +147,26 @@ router.post(
   }
 );
 
-
 router.post(
   "/uploadadditionalimage",
   upload.single("image"),
   async (req, res, next) => {
     const file = req.file;
-    console.log("file is", file);
- 
     const result = await uploadFile(file);
-    console.log("result is", result.Location, result.Key);
 
     res.send({ images: result.Location, additionalS3: result.Key });
   }
 );
 
-router.post(
-  "/deleteadditionals3",
-   async (req, res, next) => {
-    const file = req.body.Key
-    console.log("file is", file);
- 
-    const deleted = await s3.deleteObject({ Key: file, Bucket: bucketName }).promise();
+router.post("/deleteadditionals3", async (req, res, next) => {
+  const file = req.body.Key;
+  console.log("file is", file);
 
-    res.send(deleted);
-  }
-);
+  const deleted = await s3
+    .deleteObject({ Key: file, Bucket: bucketName })
+    .promise();
+
+  res.send(deleted);
+});
 
 module.exports = router;
