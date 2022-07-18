@@ -29,3 +29,8 @@
    /* background-color: blue; */
 /* } */
 
+.thumbnail-product {
+  border-color: white !important;
+  box-shadow: none;
+  margin: 0;
+}
