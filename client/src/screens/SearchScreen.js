@@ -5,7 +5,7 @@ import { getError } from "../utils";
 import { Helmet } from "react-helmet-async";
 import { Container, Row, Col } from "react-bootstrap";
 import Rating from "../components/Rating";
-import {axiosPost,axiosGet } from "../components/AxiosHelper"
+import { axiosPost, axiosGet } from "../components/AxiosHelper";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 // import Button from "react-bootstrap/Button";
@@ -38,12 +38,12 @@ const reducer = (state, action) => {
 
 const prices = [
   {
-    name: "$1 to $50",
-    value: "1-50",
+    name: "$1 to $100",
+    value: "1-100",
   },
   {
-    name: "$51 to $200",
-    value: "51-200",
+    name: "$101 to $200",
+    value: "101-200",
   },
   {
     name: "$201 to $1000",
@@ -84,11 +84,12 @@ export default function SearchScreen({ items }) {
   const rating = sp.get("rating") || "all";
   const order = sp.get("order") || "newest";
   const page = sp.get("page") || 1;
-  
+
   const [products, setProducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedFrameColors, setSelectedFrameColors] = useState([]);
   const [selectedPrices, setSelectedPrices] = useState([]);
+  const [selectedRatings, setSelectedRatings] = useState([]);
 
   const [{ loading, error, pages, countProducts }, dispatch] = useReducer(
     reducer,
@@ -102,13 +103,10 @@ export default function SearchScreen({ items }) {
     const fetchData = async () => {
       try {
         const endpoint = `/api/products/`;
-        const { data } = await axiosGet(endpoint)
+        const { data } = await axiosGet(endpoint);
         // dispatch({ type: "SUCCESS", payload: data });
-        // setProducts(data);
         console.log("data get all", data);
         setProducts(data);
-
-      
       } catch (err) {
         dispatch({
           type: "FETCH_FAIL",
@@ -118,13 +116,17 @@ export default function SearchScreen({ items }) {
     };
     fetchData();
   }, []);
- 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const endpoint = "/api/products/search";
-        const payload = { selectedCategories, selectedFrameColors, selectedPrices };
+        const payload = {
+          selectedCategories,
+          selectedFrameColors,
+          selectedPrices,
+          selectedRatings,
+        };
         const result = await axiosPost(endpoint, payload);
         console.log("result is", result.data);
         setProducts(result.data);
@@ -136,7 +138,7 @@ export default function SearchScreen({ items }) {
       }
     };
     fetchData();
-  }, [selectedCategories, selectedFrameColors, selectedPrices]);
+  }, [selectedCategories, selectedFrameColors, selectedPrices, selectedRatings]);
 
   console.log("products is", products);
 
@@ -240,10 +242,9 @@ export default function SearchScreen({ items }) {
     }
   );
 
-
   const toggleCategory = (category) => {
     let newCategories = [...selectedCategories];
-     if (newCategories.includes(category)) {
+    if (newCategories.includes(category)) {
       newCategories = newCategories.filter((c) => c !== category);
     } else {
       newCategories.push(category);
@@ -253,7 +254,7 @@ export default function SearchScreen({ items }) {
 
   const toggleFrameColor = (frameColor) => {
     let newFrameColors = [...selectedFrameColors];
-     if (newFrameColors.includes(frameColor)) {
+    if (newFrameColors.includes(frameColor)) {
       newFrameColors = newFrameColors.filter((f) => f !== frameColor);
     } else {
       newFrameColors.push(frameColor);
@@ -272,6 +273,16 @@ export default function SearchScreen({ items }) {
     }
     setSelectedPrices(newPrices);
   };
+
+  const toggleRating = (rating) => {
+    let newRatings = [...selectedRatings];
+    if (newRatings.includes(rating)) {
+      newRatings = newRatings.filter((r) => r !== rating);
+    } else {
+      newRatings.push(rating);
+    }
+    setSelectedRatings(newRatings);
+  }
 
   const handleSelectAll = (setter, values) => {
     setter([...values]);
@@ -351,8 +362,8 @@ export default function SearchScreen({ items }) {
 
             <Dropdown.Menu
               as={CheckboxMenu}
-              onSelectAll={handleSelectAll}
-              onSelectNone={handleSelectNone}
+              onSelectAll={() => {handleSelectAll(setSelectedPrices, prices)}}
+              onSelectNone={() => {handleSelectNone(setSelectedPrices)}}
             >
               {prices.map((p) => (
                 <Dropdown.Item
@@ -365,18 +376,6 @@ export default function SearchScreen({ items }) {
                   {p.name}
                 </Dropdown.Item>
               ))}
-
-              {/* {prices.map((c) => (
-                <Dropdown.Item
-                  key={c.value}
-                  as={CheckDropdownItem}
-                  id={c}
-                  onChange={() => navigate(getFilterUrl({ price: c.value }))}
-                  checked={price === c.value}
-                >
-                  {c.name}
-                </Dropdown.Item>
-              ))} */}
             </Dropdown.Menu>
           </Dropdown>
 
@@ -387,16 +386,20 @@ export default function SearchScreen({ items }) {
 
             <Dropdown.Menu
               as={CheckboxMenu}
-              onSelectAll={handleSelectAll}
-              onSelectNone={handleSelectNone}
+              onSelectAll={() => {
+                handleSelectAll(setSelectedRatings, ratings);
+              }}
+              onSelectNone={() => {
+                handleSelectNone(setSelectedRatings)
+              }}
             >
               {ratings.map((r) => (
                 <Dropdown.Item
                   key={r.name}
                   as={CheckDropdownItem}
                   id={r}
-                  onChange={() => navigate(getFilterUrl({ rating: r.rating }))}
-                  checked={rating === r.rating}
+                  onChange={() => toggleRating(r.rating)}
+                  checked={selectedRatings.includes(r.rating)}
                 >
                   <Rating caption={" & up"} rating={r.rating}></Rating>
                 </Dropdown.Item>
