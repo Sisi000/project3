@@ -16,15 +16,12 @@ const orderRouter = require ('./routes/orderRoutes.js');
 const prescriptionRouter = require ('./routes/prescriptionRoutes.js');
 
 const app = express();
-
-/* Not using options, letting everything through
+/*Cors issue with front end url extensions
 const corsOptions = {
-  //origin: process.env.FRONT_END_URL,
-  credentials:  true,
-  origin: true
+  origin: process.env.FRONT_END_URL,
+  credentials: true,
 }
 */
-
 app.use(cors())
 
 app.use(bodyParser.urlencoded({ extended: true }))
