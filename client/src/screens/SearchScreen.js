@@ -240,15 +240,10 @@ export default function SearchScreen({ items }) {
     }
   );
 
-  //  const CheckboxDropdown = observer(({ items }) => {
-  // const handleChecked = (key, event) => {
-  //   items.find((i) => i.id === key).checked = event.target.checked;
-  // };
 
   const toggleCategory = (category) => {
     let newCategories = [...selectedCategories];
-    console.log("newCategories is", newCategories);
-    if (newCategories.includes(category)) {
+     if (newCategories.includes(category)) {
       newCategories = newCategories.filter((c) => c !== category);
     } else {
       newCategories.push(category);
@@ -258,8 +253,7 @@ export default function SearchScreen({ items }) {
 
   const toggleFrameColor = (frameColor) => {
     let newFrameColors = [...selectedFrameColors];
-    console.log(newFrameColors);
-    if (newFrameColors.includes(frameColor)) {
+     if (newFrameColors.includes(frameColor)) {
       newFrameColors = newFrameColors.filter((f) => f !== frameColor);
     } else {
       newFrameColors.push(frameColor);
@@ -329,8 +323,12 @@ export default function SearchScreen({ items }) {
 
             <Dropdown.Menu
               as={CheckboxMenu}
-              onSelectAll={handleSelectAll}
-              onSelectNone={handleSelectNone}
+              onSelectAll={() => {
+                handleSelectAll(setSelectedFrameColors, frameColors);
+              }}
+              onSelectNone={() => {
+                handleSelectNone(setSelectedFrameColors);
+              }}
             >
               {frameColors.map((f) => (
                 <Dropdown.Item

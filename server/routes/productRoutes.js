@@ -201,6 +201,8 @@ productRouter.post(
     console.log("category is", category);
     const frameColor = query.selectedFrameColors;
     console.log("frameColor is", frameColor);
+    const price = query.selectedPrices;
+    console.log("price is", price);
 
     let searchObj = {};
     if (category.length > 0) {
@@ -209,7 +211,14 @@ productRouter.post(
     if (frameColor.length > 0) {
       searchObj.frameColor = { $in: frameColor };
     }
-
+    if (price.length > 0) {
+      searchObj.price = {
+        price: {
+          $gte: Number(price.split("-")[0]),
+          $lte: Number(price.split("-")[1]),
+        },
+      };
+    }
     const products = await Product.find(searchObj);
     console.log("products are", products);
 
