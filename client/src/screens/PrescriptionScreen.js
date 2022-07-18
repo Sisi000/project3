@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
-import {axiosPost, axiosPutAuth} from "../components/AxiosHelper"
+import {axiosGetAuth, axiosPutAuth} from "../components/AxiosHelper"
 import { Row, Col, Button, Form, Container } from "react-bootstrap";
 import PrescriptionImg from './PrescriptionImg';
 
@@ -68,7 +68,7 @@ export default function PrescriptionScreen() {
       try {
         dispatch({ type: "FETCH_REQUEST" });
         const endpoint = `/api/prescriptions`
-        const { data } = await axiosPost(endpoint,userInfo.token);
+        const { data } = await axiosGetAuth(endpoint,userInfo.token);
         setSphereR(data.SphereR);
         setCylinderR(data.CylinderR);
         setAxisR(data.AxisR);
