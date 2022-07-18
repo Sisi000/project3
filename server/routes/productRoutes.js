@@ -197,29 +197,29 @@ productRouter.post(
   expressAsyncHandler(async (req, res) => {
     const query = req.body;
     console.log("query is", query);
-    const category = query.selectedCategories || "";
+    const category = query.selectedCategories;
     console.log("category is", category);
-    const frameColor = query.selectedFrameColors || "";
+    const frameColor = query.selectedFrameColors;
+    console.log("frameColor is", frameColor);
 
-    // const categoryFilter = category && category !== "all" ? { category } : {};
-    // console.log("categoryFilter is", categoryFilter);
-    // const frameColorFilter =
-    //   frameColor && frameColor !== "all" ? { frameColor } : {};
+    let searchObj = {};
+    if (category.length > 0) {
+      searchObj.category = { $in: category };
+    }
+    if (frameColor.length > 0) {
+      searchObj.frameColor = { $in: frameColor };
+    }
 
-    // const products = await Product.find({ $and: [{ $or: [{category: { $in: category},  frameColor: { $in: frameColor} }]}]
-    const products = await Product.find({ category: { $in: category}, $or: [{ frameColor: { $in: frameColor} }]
-      //  category: { $in: category},
-      //  frameColor: { $in: frameColor}
-    });
-    
-       
+    const products = await Product.find(searchObj);
+    console.log("products are", products);
+
     let results = [];
 
     for (let array of products) {
       results.push(array);
     }
-  
-      console.log("results are", results);
+
+    console.log("results are", results);
     res.send(results);
   })
 );
