@@ -1,11 +1,11 @@
 import React, { useEffect, useReducer, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { getError } from "../utils";
 import { Helmet } from "react-helmet-async";
 import { Container, Row, Col } from "react-bootstrap";
 import Rating from "../components/Rating";
+import {axiosPost,axiosGet } from "../components/AxiosHelper"
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 // import Button from "react-bootstrap/Button";
@@ -101,10 +101,8 @@ export default function SearchScreen({ items }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(
-          //This is messed, might need a special helper for this
-          `/api/products/`
-        );
+        const endpoint = `/api/products/`;
+        const { data } = await axiosGet(endpoint)
         // dispatch({ type: "SUCCESS", payload: data });
         // setProducts(data);
         console.log("data get all", data);
@@ -125,15 +123,10 @@ export default function SearchScreen({ items }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.post(
-          "/api/products/search",
-          { selectedCategories, selectedFrameColors, selectedPrices },
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        );
+        const endpoint = "/api/products/search";
+        const payload = { selectedCategories, selectedFrameColors, selectedPrices };
+        const result = await axiosPost(endpoint, payload);
         console.log("result is", result.data);
-
         setProducts(result.data);
       } catch (err) {
         dispatch({
@@ -151,7 +144,8 @@ export default function SearchScreen({ items }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const { data } = await axios.get(`/api/products/categories`);
+        const endpoint = `/api/products/categories`;
+        const { data } = await axiosGet(endpoint);
         setCategories(data);
         // setSelectedCategories([]);
       } catch (err) {
@@ -165,7 +159,8 @@ export default function SearchScreen({ items }) {
   useEffect(() => {
     const fetchFrameColors = async () => {
       try {
-        const { data } = await axios.get(`/api/products/framecolors`);
+        const endpoint = `/api/products/framecolors`;
+        const { data } = await axiosGet(endpoint);
         setFrameColors(data);
       } catch (err) {
         toast.error(getError(err));
