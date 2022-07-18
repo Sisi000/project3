@@ -68,14 +68,14 @@ function UploadUrl2(props) {
           <Container className="mt-3">
             <div className="suggestedglasses">
               <div className="products my-5 py-2">
-                <Row>
+                <Row sm>
                   {products.length > 0 && <h1>Suggested Glasses</h1>}
                   {products.map((product) => (
                     <Col
                       key={product._id}
                       sm={6}
                       md={4}
-                      lg={3}
+                      lg={4}
                       className="mb-3"
                     >
                       <Product product={product}></Product>

@@ -162,7 +162,7 @@ function FaceMesh(props) {
             <Row>
               {products.length > 0 && <h1>Suggested Glasses</h1>}
                 {products.map((product) => (
-                  <Col key={product._id} sm={6} md={4} lg={3} className="mb-3">
+                  <Col key={product._id} sm={6} md={4} lg={4} className="mb-3">
                     <Product product={product}></Product>
                   </Col>
                 ))}
