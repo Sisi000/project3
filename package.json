@@ -6,7 +6,7 @@
   "scripts": {
     "build": "cd ${directoryToRun:=WebPage} && npm run build --if-present && cd ..",
     "install": "cd ${directoryToRun:=WebPage} && npm install --force && cd ..",
-    "start": "cd ${directoryToRun:=WebPage} && npm startProd && cd .."
+    "start": "cd ${directoryToRun:=WebPage} && npm start && cd .."
   },
   "repository": {
     "type": "git",

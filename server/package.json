@@ -6,8 +6,7 @@
     "start": "node ./bin/www",
     "devStart": "nodemon ./bin/www",
     "test": "jest --coverage --setupFiles dotenv/config",
-    "dev": "concurrently --kill-others \"npm run start\" \"cd  ../client && npm run start\"",
-    "startProd":"node ./bin/www"
+    "dev": "concurrently --kill-others \"npm run start\" \"cd  ../client && npm run start\""
   },
   "dependencies": {
     "@google-cloud/vision": "^2.4.2",
