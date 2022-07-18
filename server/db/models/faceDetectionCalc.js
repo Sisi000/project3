@@ -8,7 +8,7 @@ var config = {credentials:
     }
 };
 
-console.log("Google Config: ",config)
+//console.log("Google Config: ",config)
 
 /*
 filter is a function to filter results

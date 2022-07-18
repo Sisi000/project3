@@ -69,6 +69,7 @@ router.post("/uploadwebcam", upload.single("image"), async (req, res, next) => {
   const filters = JSON.parse(req.body.filters);
 
   console.log(filters)
+  console.log(file)
 
   const matches = file.replace(/^data:image\/(png);base64,/, "");
   const buff = Buffer.from(matches, "base64");
