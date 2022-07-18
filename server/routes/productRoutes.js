@@ -203,6 +203,7 @@ productRouter.post(
     console.log("frameColor is", frameColor);
     const price = query.selectedPrices;
     console.log("price is", price);
+    const rating = query.selectedRatings;
 
     let searchObj = {};
     if (category.length > 0) {
@@ -217,6 +218,12 @@ productRouter.post(
         $lte: Number(price[0].split("-")[1]),
       };
     }
+    if (rating.length > 0) {
+      searchObj.rating = {
+        $gte: Number(rating[0])
+      }
+    }
+
     console.log("searchObj is", searchObj);
     const products = await Product.find(searchObj);
     console.log("products are", products);
@@ -266,16 +273,16 @@ productRouter.get(
             },
           }
         : {};
-    // const priceFilter =
-    //   price && price !== "all"
-    //     ? {
-    //         // 1-50
-    //         price: {
-    //           $gte: Number(price.split("-")[0]),
-    //           $lte: Number(price.split("-")[1]),
-    //         },
-    //       }
-    //     : {};
+    const priceFilter =
+      price && price !== "all"
+        ? {
+            // 1-50
+            price: {
+              $gte: Number(price.split("-")[0]),
+              $lte: Number(price.split("-")[1]),
+            },
+          }
+        : {};
     const sortOrder =
       order === "featured"
         ? { featured: -1 }
