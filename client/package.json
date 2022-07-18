@@ -30,7 +30,8 @@
     "styled-components": "^5.3.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm install -g serve && serve -s build",
+    "startDev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

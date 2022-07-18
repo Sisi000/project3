@@ -3,7 +3,7 @@ const router = express.Router();
 var debug = require("debug")("server:routes");
 require("dotenv").config();
 const multer = require("multer");
-const { uploadFile } = require("../db/models/s3Model");
+const { uploadFile } = require("../db/models/s3model");
 const addUrl = require("../db/models/urlmodel");
 const {
   facelandmark,

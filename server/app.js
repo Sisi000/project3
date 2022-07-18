@@ -18,8 +18,9 @@ const prescriptionRouter = require ('./routes/prescriptionRoutes.js');
 const app = express();
 
 const corsOptions = {
-  origin: process.env.FRONT_END_URL,
-  credentials:  true
+  //origin: process.env.FRONT_END_URL,
+  credentials:  true,
+  origin: true
 }
 
 app.use(cors(corsOptions))
