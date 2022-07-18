@@ -18,6 +18,15 @@ main {
   flex: 1;
 }
 
+.dropdown-item.active {
+  background-color: #b6b4b4 !important;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+ 
+  background-color: #a9a7a7 !important;
+}
+
 .btn-primary,
 .btn-light,
 .btn-outline-primary {
