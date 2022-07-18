@@ -17,13 +17,15 @@ const prescriptionRouter = require ('./routes/prescriptionRoutes.js');
 
 const app = express();
 
+/*
 const corsOptions = {
   //origin: process.env.FRONT_END_URL,
   credentials:  true,
   origin: true
 }
+*/
 
-app.use(cors(corsOptions))
+app.use(cors())
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())

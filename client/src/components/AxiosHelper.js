@@ -38,7 +38,10 @@ export async function axiosPostAuth(endpoint, payload ,userInfo){
     return await axios.post(
         server+endpoint,
         payload,
-        {headers: {authorization: `Bearer ${userInfo}`},
+        {
+          headers: {
+            authorization: `Bearer ${userInfo}`
+          },
         }
       );
 }
@@ -48,13 +51,19 @@ export async function axiosPostFinalEndpointAuth(endpoint,product_id,finalEndpoi
         server+endpoint+product_id+finalEndpoint,
         payload,
         {
-          headers: { Authorization: `Bearer ${userInfo}` },
+          headers: { 
+            Authorization: `Bearer ${userInfo}` 
+          },
         }
       );
 }
 //Used
 export async function axiosDeletePost(endpoint,filename ){
-  return await axios.post(server+endpoint, { Key: filename });
+  return await axios.post(server+endpoint, 
+    { 
+      Key: filename
+    }
+    );
 }
 
 //Used
@@ -70,20 +79,26 @@ export async function axiosGet(endpoint){
 //Used
 export async function axiosGetAuth(endpoint, userInfo){
     return await axios.get(server+endpoint, {
-        headers: { Authorization: `Bearer ${userInfo}` },
+        headers: { 
+          Authorization: `Bearer ${userInfo}` 
+      },
       });
     }
     //Used
     export async function getParamsAuth(endpoint, detail, userInfo){
       return await axios.get(server+endpoint+detail, {
-        headers: { Authorization: `Bearer ${userInfo}` },
+        headers: { 
+          Authorization: `Bearer ${userInfo}` 
+        },
       });
     }
     
     //Used
     export async function axiosDeleteByIDAuth(endpoint, id, userInfo){
       return await axios.delete(server+endpoint+id, {
-        headers: { Authorization: `Bearer ${userInfo}` },
+        headers: { 
+          Authorization: `Bearer ${userInfo}` 
+        },
       });
     }
     
@@ -93,7 +108,9 @@ export async function axiosGetAuth(endpoint, userInfo){
         server+endpoint,
         payload,
         {
-          headers: { Authorization: `Bearer ${userInfo}` },
+          headers: { 
+            Authorization: `Bearer ${userInfo}` 
+          },
         }
         );
       };
@@ -104,7 +121,9 @@ export async function axiosGetAuth(endpoint, userInfo){
           server+endpoint+order+finalEndpoint,
           payload,
           {
-            headers: { authorization: `Bearer ${userInfo}` },
+            headers: { 
+              authorization: `Bearer ${userInfo}` 
+            },
           }
           );
         }
@@ -114,7 +133,9 @@ export async function axiosGetAuth(endpoint, userInfo){
         server+endpoint+Id,
         payload,
         {
-          headers: { Authorization: `Bearer ${userInfo}` },
+          headers: { 
+            Authorization: `Bearer ${userInfo}` 
+          },
         }
         );
       };

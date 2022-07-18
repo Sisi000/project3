@@ -3,10 +3,12 @@ const sizeOf = require("image-size");
 
 var config = {credentials:
     {
-        client_email:process.env.GOOGLE_API_EMAIL,
-        private_key:process.env.GOOGLE_API_KEY,
+        client_email:process.env.GOOGLE_API_EMAIL.replace(/\\n/g, '\n'),
+        private_key:process.env.GOOGLE_API_KEY.replace(/\\n/g, '\n'),
     }
 };
+
+//console.log("Google Config: ",config)
 
 /*
 filter is a function to filter results
@@ -236,7 +238,7 @@ async function facelandmark(imageFile, dataBaseProducts, filters) {
             return result
         } catch(error) {
             console.log(error);
-            return res.status(500).json(`problem with the Google API`);
+            return error;
         }
     }
     //specifications for image upload to google vision
@@ -283,7 +285,7 @@ async function facelandmarkURL(url, dataBaseProducts, filters) {
             return result
         } catch(error) {
             console.log(error);
-            return res.status(500).json(`problem with the Google API`);
+            return error;
         }
     }
 
@@ -314,7 +316,7 @@ function tranformToGoogle(userFaceData){
     let userFaceData_Google = {
         landmarks: new Array(34).fill(0).map(()=> {return {position:null}})
     }
-    console.log(userFaceData_Google)
+    //console.log(userFaceData_Google)
 
     userFaceData_Google.landmarks[16].position = userFaceData[386];
     userFaceData_Google.landmarks[18].position = userFaceData[374];
