@@ -213,13 +213,11 @@ productRouter.post(
     }
     if (price.length > 0) {
       searchObj.price = {
-        // price: {
-        //   $gte: Number(price[0].split("-")[0]),
-        //   $lte: Number(price[0].split("-")[1]),
-        // },
+        $gte: Number(price[0].split("-")[0]),
+        $lte: Number(price[0].split("-")[1]),
       };
     }
-    
+    console.log("searchObj is", searchObj);
     const products = await Product.find(searchObj);
     console.log("products are", products);
 
