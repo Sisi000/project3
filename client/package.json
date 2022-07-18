@@ -4,7 +4,6 @@
   "private": true,
   "proxy": "http://localhost:5000",
   "dependencies": {
-    "@auth0/auth0-react": "^1.10.2",
     "@fortawesome/free-brands-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@mui/icons-material": "^5.8.4",
