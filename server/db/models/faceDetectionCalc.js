@@ -8,6 +8,8 @@ var config = {credentials:
     }
 };
 
+console.log("Google Config: ",config)
+
 /*
 filter is a function to filter results
 */
@@ -314,7 +316,7 @@ function tranformToGoogle(userFaceData){
     let userFaceData_Google = {
         landmarks: new Array(34).fill(0).map(()=> {return {position:null}})
     }
-    console.log(userFaceData_Google)
+    //console.log(userFaceData_Google)
 
     userFaceData_Google.landmarks[16].position = userFaceData[386];
     userFaceData_Google.landmarks[18].position = userFaceData[374];
