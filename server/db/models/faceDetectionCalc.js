@@ -238,7 +238,7 @@ async function facelandmark(imageFile, dataBaseProducts, filters) {
             return result
         } catch(error) {
             console.log(error);
-            return res.status(500).json(`problem with the Google API`);
+            return error;
         }
     }
     //specifications for image upload to google vision
@@ -285,7 +285,7 @@ async function facelandmarkURL(url, dataBaseProducts, filters) {
             return result
         } catch(error) {
             console.log(error);
-            return res.status(500).json(`problem with the Google API`);
+            return error;
         }
     }
 

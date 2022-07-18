@@ -46,18 +46,20 @@ router.post("/upload", upload.array("UserData", 2), async (req, res, next) => {
     .toBuffer()
     .then(async (resized) => {
       const buffer = resized;
+      try{
+        const products = await Product.find();
+        const resultVision = await facelandmark(buffer, products, filters);
 
-      const products = await Product.find();
+        let results = [];
 
-      const resultVision = await facelandmark(buffer, products, filters);
+        for (let array of resultVision) {
+          results.push(array[1]);
+        }
 
-      let results = [];
-
-      for (let array of resultVision) {
-        results.push(array[1]);
-      }
-
-      res.send(results);
+        res.send(results);
+      }catch(error){
+        res.status(500).json(`problem with the Image Submit`);
+    }
     });
   res.status("Successfully uploaded!");
 });
@@ -69,23 +71,25 @@ router.post("/uploadwebcam", upload.single("image"), async (req, res, next) => {
   const filters = JSON.parse(req.body.filters);
 
   console.log(filters)
-  console.log(file)
 
   const matches = file.replace(/^data:image\/(png);base64,/, "");
   const buff = Buffer.from(matches, "base64");
+  try{
+    const products = await Product.find();
 
-  const products = await Product.find();
+    const resultVision = await facelandmark(buff, products, filters);
 
-  const resultVision = await facelandmark(buff, products, filters);
+    let results = [];
 
-  let results = [];
+    for (let array of resultVision) {
+      results.push(array[1]);
+    }
 
-  for (let array of resultVision) {
-    results.push(array[1]);
+    res.send(results);
+    res.status("Successfully uploaded!");
+  }catch(error){
+    res.status(500).json(`problem with the Image Submit`);
   }
-
-  res.send(results);
-  res.status("Successfully uploaded!");
 });
 
 // upload Url to vision
@@ -95,18 +99,23 @@ router.post("/uploadurl", async (req, res, next) => {
 
   console.log("urlBody is", urlBody);
   console.log("filters are ", filters);
+  
+  try{
+    const products = await Product.find();
 
-  const products = await Product.find();
-
-  const resultVision = await facelandmarkURL(urlBody, products, filters);
-
-  let results = [];
-
-  for (let array of resultVision) {
-    results.push(array[1]);
+    const resultVision = await facelandmarkURL(urlBody, products, filters);
+  
+    let results = [];
+  
+    for (let array of resultVision) {
+      results.push(array[1]);
+    }
+  
+    res.send(results);
+  }catch(error){
+    res.status(500).json(`problem with the Link Submit`);
   }
-
-  res.send(results);
+  
 });
 
 // upload Url to vision
