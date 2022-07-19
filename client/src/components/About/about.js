@@ -99,6 +99,8 @@ function About() {
                     <br/>
                     "I simply love everything about coding!"
                   </Card.Text>
+                  <a href="https://www.linkedin.com/in/sanja-ivansic/" target="_blank" rel="noreferrer">
+                  <Button type='button' className='shadow-none' variant="primary"><FontAwesomeIcon className='px-2 mx-2 text-center' icon={faLinkedin} size="2x"  /></Button></a>
                   <a href="https://github.com/Sisi000" target="_blank" rel="noreferrer">
                   <Button type='button' className='shadow-none' variant="primary"><FontAwesomeIcon className='px-2 mx-3' icon={faGithub} size="2x"  /></Button></a>
                 </Card.Body>
@@ -123,6 +125,8 @@ function About() {
                     <br/>
                     System Design
                   </Card.Text>
+                  <a href="https://www.linkedin.com/in/yulia-sinko/" target="_blank" rel="noreferrer">
+                  <Button type='button' className='shadow-none' variant="primary"><FontAwesomeIcon className='px-2 mx-2 text-center' icon={faLinkedin} size="2x"  /></Button></a>
                   <a href="https://github.com/bnurmos" target="_blank" rel="noreferrer">
                   <Button type='button' className='shadow-none'  variant="primary"><FontAwesomeIcon className='px-2 mx-2' icon={faGithub} size="2x"  /></Button> </a>
                 </Card.Body>
