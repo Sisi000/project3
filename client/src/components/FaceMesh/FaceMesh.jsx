@@ -103,6 +103,13 @@ function FaceMesh(props) {
 
   return (
     <div>
+      <b>Instructions:</b>
+      <p>Optional: Tell the virtual optician a few preferences with the filters</p>
+        <p>1) Ensure the subject is facing the camera with their face fully visible.</p>
+        <p>2) Wait for mesh to appear on the subject's face</p>
+        <p>3) Submit Facial Node Detection to the virtual optician.</p>
+        <p>4) See what products fit the face!</p>
+        <br/>
       <div
         className="Facemesh"
         style={{
@@ -152,7 +159,7 @@ function FaceMesh(props) {
           await uploadNodes(userFaceData,filters);
         }}
       >
-        Facial Node Detection
+        Submit
       </button>
 
       <Container fluid style={{ padding: "0" }}>

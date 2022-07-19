@@ -62,6 +62,14 @@ function WebcamCapture(props) {
     <div className="webcam-container">
       <div className="container-uploads">
         <form className="forms3" onSubmit={submit}>
+        <b>Instructions:</b>
+        <p>Optional: Tell the virtual optician a few preferences with the filters</p>
+        <p>1) Ensure the subject is facing the camera with their face fully visible.</p>
+        <p>2) Capture the picture on the webcam. Retake the picture if needed</p>
+        <p>3) Upload the picture to the virtual optician.</p>
+        <p>4) See what products fit the face!</p>
+        <br/>
+
           <div className="webcam-img">
             {file === "" ? (
               <Webcam

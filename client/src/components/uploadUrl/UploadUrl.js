@@ -49,6 +49,13 @@ function UploadUrl2(props) {
 <>
       <div className="container-url">
         <form className="formsUrl">
+        <b>Instructions:</b>
+        <p>Optional: Tell the virtual optician a few preferences with the filters</p>
+        <p>1) Find a picture of a subject on the internet. Ensure the subject is facing the camera with their face fully visible.</p>
+        <p>2) Enter and submit the url to the virtual optician.</p>
+        <p>3) See what products fit the face!</p>
+        <br/>
+
           Enter image Url
           <input
             id="enteredUrl"

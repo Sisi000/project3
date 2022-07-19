@@ -58,6 +58,12 @@ function UploadS3(props) {
     <div className="containers3">
       <div className="container-uploads">
         <form className="forms3" onSubmit={submit}>
+        <b>Instructions:</b>
+        <p>Optional: Tell the virtual optician a few preferences with the filters</p>
+        <p>1) Choose a picture locally to upload. Ensure the subject is facing the camera with their face fully visible.</p>
+        <p>2) Upload the picture to the virtual optician.</p>
+        <p>3) See what products fit the face!</p>
+        <br/>
           <div className="containerphoto">
             <img className="imgphoto" src={imgphoto} alt="" />
             <span>&nbsp;Choose Photo</span>
