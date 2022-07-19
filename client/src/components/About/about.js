@@ -41,7 +41,7 @@ function About() {
           <Col className="text-left">
             <h2>About this application</h2>
             <p>
-              This full stack application was created to help customers purchase eyeglass with the help of AI and ML.
+              This full stack application was created to help customers purchase eyeglasses with the help of AI and ML.
               <br/>
               <br/>
               MongoDB, Express.js, React and Node.js are used to create this full stack application. A PayPal Ecommerce payment system is implemented and the application is secured with BCrypt. This application is deployed and hosted in Heroku.
