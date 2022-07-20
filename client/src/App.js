@@ -36,7 +36,7 @@ import UserListScreen from "./screens/UserListScreen";
 import UserEditScreen from "./screens/UserEditScreen";
 import MapScreen from "./screens/MapScreen";
 import logo from "./assets/logo.png";
-import About from "./components/About/About";
+import About from "./components/About/about";
 import Footer from "./components/Footer/footer";
 import Uploads from "./components/Uploads";
 import profileimage from "./assets/profileimage.png";
