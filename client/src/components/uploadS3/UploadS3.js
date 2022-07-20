@@ -58,6 +58,12 @@ function UploadS3(props) {
     <div className="containers3">
       <div className="container-uploads">
         <form className="forms3" onSubmit={submit}>
+        <b>Instructions:</b>
+        <p>Optional: Tell the virtual optician a few preferences with the filters</p>
+        <p>1) Choose a picture locally to upload. Ensure the subject is facing the camera with their face fully visible.</p>
+        <p>2) Upload the picture to the virtual optician.</p>
+        <p>3) See what products fit the face!</p>
+        <br/>
           <div className="containerphoto">
             <img className="imgphoto" src={imgphoto} alt="" />
             <span>&nbsp;Choose Photo</span>
@@ -91,7 +97,7 @@ function UploadS3(props) {
             <Row>
               {products.length > 0 && <h1>Suggested Glasses</h1>}
               {products.map((product) => (
-                <Col key={product._id} sm={6} md={4} lg={3} className="mb-3">
+                <Col key={product._id} sm={6} md={4} lg={4} className="mb-3">
                   <Product product={product}></Product>
                 </Col>
               ))}

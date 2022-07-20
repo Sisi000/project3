@@ -51,9 +51,10 @@ function UploadFilters(props) {
         Filters
       </button>
       {filterShow ? (
-        <div className="filters-container">
-          <br />
+        <div className="filters-container">      
+          <br/>
           <div className="filters-cols">
+          <b>Filters</b>
             <div>
               <Prescription
                 prescription={prescription}

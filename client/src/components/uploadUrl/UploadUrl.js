@@ -46,9 +46,16 @@ function UploadUrl2(props) {
   };
 
   return (
-    <div className="containers3">
+<>
       <div className="container-url">
         <form className="formsUrl">
+        <b>Instructions:</b>
+        <p>Optional: Tell the virtual optician a few preferences with the filters</p>
+        <p>1) Find a picture of a subject on the internet. Ensure the subject is facing the camera with their face fully visible.</p>
+        <p>2) Enter and submit the url to the virtual optician.</p>
+        <p>3) See what products fit the face!</p>
+        <br/>
+
           Enter image Url
           <input
             id="enteredUrl"
@@ -57,25 +64,25 @@ function UploadUrl2(props) {
             value={file}
             onChange={changeUrl}
           />
+        </form>
           <button className="btn btn-primary" onClick={submit}>
             Submit
           </button>
-        </form>
         <img className="imagePreview" src={file} alt=""></img>
-      </div>
+     
       <div className="container-suggestion">
         <Container fluid style={{ padding: "0" }}>
           <Container className="mt-3">
             <div className="suggestedglasses">
               <div className="products my-5 py-2">
-                <Row>
+                <Row sm>
                   {products.length > 0 && <h1>Suggested Glasses</h1>}
                   {products.map((product) => (
                     <Col
                       key={product._id}
-                      sm={3}
-                      md={3}
-                      lg={3}
+                      sm={6}
+                      md={4}
+                      lg={4}
                       className="mb-3"
                     >
                       <Product product={product}></Product>
@@ -87,7 +94,8 @@ function UploadUrl2(props) {
           </Container>
         </Container>
       </div>
-    </div>
+      </div>
+      </>
   );
 }
 

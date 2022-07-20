@@ -103,6 +103,13 @@ function FaceMesh(props) {
 
   return (
     <div>
+      <b>Instructions:</b>
+      <p>Optional: Tell the virtual optician a few preferences with the filters</p>
+        <p>1) Ensure the subject is facing the camera with their face fully visible.</p>
+        <p>2) Wait for mesh to appear on the subject's face</p>
+        <p>3) Submit Facial Node Detection to the virtual optician.</p>
+        <p>4) See what products fit the face!</p>
+        <br/>
       <div
         className="Facemesh"
         style={{
@@ -152,31 +159,20 @@ function FaceMesh(props) {
           await uploadNodes(userFaceData,filters);
         }}
       >
-        Facial Node Detection
+        Submit
       </button>
 
       <Container fluid style={{ padding: "0" }}>
         <Container className="mt-3">
           <div>
             <div className="products my-5 py-2">
-              <Row>
-                {(products) ? (
-                  <><h2>Suggested Glasses</h2>
-                    {products.map((product) => (
-                      <Col
-                        key={product._id}
-                        sm={6}
-                        md={4}
-                        lg={3}
-                        className="mb-3"
-                      >
-                        <Product product={product}></Product>
-                      </Col>
-                    ))}
-                  </>
-                ) : (
-                  <></>
-                )}
+            <Row>
+              {products.length > 0 && <h1>Suggested Glasses</h1>}
+                {products.map((product) => (
+                  <Col key={product._id} sm={6} md={4} lg={4} className="mb-3">
+                    <Product product={product}></Product>
+                  </Col>
+                ))}
               </Row>
             </div>
           </div>
