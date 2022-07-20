@@ -462,11 +462,12 @@ export default function SearchScreen() {
                   selectedPrices !== "all" ? (
                     <Button
                       variant="light"
+                      style={{border: "#FFFFFF", boxShadow: "none"}}
                       onClick={() => {
                         handleRemoveSelection();
                       }}
                     >
-                      <i className="fas fa-times-circle"></i>
+                      <i className="fas fa-times-circle" ></i>
                     </Button>
                   ) : null}
                 </div>
