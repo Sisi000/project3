@@ -197,11 +197,11 @@ productRouter.post(
   expressAsyncHandler(async (req, res) => {
     const query = req.body;
     const category = query.selectedCategories;
+    const brand = query.selectedBrands;
     const frameColor = query.selectedFrameColors;
     const price = query.selectedPrices;
     const rating = query.selectedRatings;
     const order = query.order;
-    console.log("order is", order);
 
     let searchObj = {};
     if (category.length > 0) {
@@ -209,6 +209,9 @@ productRouter.post(
     }
     if (frameColor.length > 0) {
       searchObj.frameColor = { $in: frameColor };
+    }
+    if (brand.length > 0) {
+      searchObj.brand = { $in: brand };
     }
     if (price.length > 0) {
       searchObj.price = {
@@ -237,7 +240,6 @@ productRouter.post(
 
     const products = await Product.find(searchObj).sort(sortOrder);
     const countProducts = await Product.countDocuments(searchObj);
-    console.log("countProducts are", countProducts);
 
     let results = [];
 
@@ -346,6 +348,14 @@ productRouter.get(
   expressAsyncHandler(async (req, res) => {
     const frameColors = await Product.find().distinct("frameColor");
     res.send(frameColors);
+  })
+);
+
+productRouter.get(
+  "/brands",
+  expressAsyncHandler(async (req, res) => {
+    const brands = await Product.find().distinct("brand");
+    res.send(brands);
   })
 );
 

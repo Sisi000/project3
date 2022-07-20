@@ -1,5 +1,5 @@
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
@@ -9,7 +9,7 @@ import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Container from "react-bootstrap/Container";
 import { LinkContainer } from "react-router-bootstrap";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Store } from "./Store";
 import CartScreen from "./screens/CartScreen";
 import SigninScreen from "./screens/SigninScreen";
@@ -22,8 +22,6 @@ import OrderHistoryScreen from "./screens/OrderHistoryScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import PrescriptionScreen from "./screens/PrescriptionScreen";
 import Button from "react-bootstrap/Button";
-import { getError } from "./utils";
-import {axiosGet} from "./components/AxiosHelper"
 import SearchBox from "./components/SearchBox";
 import SearchScreen from "./screens/SearchScreen";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -56,20 +54,20 @@ function App() {
     window.location.href = "/signin";
   };
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const endpoint = `/api/products/categories`
-        const { data } = await axiosGet(endpoint);
-        setCategories(data);
-      } catch (err) {
-        toast.error(getError(err));
-      }
-    };
-    fetchCategories();
-  }, []);
+  // useEffect(() => {
+  //   const fetchCategories = async () => {
+  //     try {
+  //       const endpoint = `/api/products/categories`
+  //       const { data } = await axiosGet(endpoint);
+  //       setCategories(data);
+  //     } catch (err) {
+  //       toast.error(getError(err));
+  //     }
+  //   };
+  //   fetchCategories();
+  // }, []);
   return (
     <BrowserRouter>
       <div
@@ -87,12 +85,7 @@ function App() {
         <header>
           <Navbar className="navbar" expand="lg">
             <Container fluid>
-              <Button
-                variant="dark"
-                onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
-              >
-                <i className="fas fa-bars"></i>
-              </Button>
+             
 
               <LinkContainer to="/">
                 <Navbar.Brand className="mx-5" href="#home">
@@ -195,29 +188,7 @@ function App() {
             </Container>
           </Navbar>
         </header>
-        <div
-          className={
-            sidebarIsOpen
-              ? "active-nav side-navbar d-flex justify-content-between flex-wrap flex-column"
-              : "side-navbar d-flex justify-content-between flex-wrap flex-column"
-          }
-        >
-          <Nav className="flex-column text-white w-100 p-2">
-            <Nav.Item>
-              <strong className="sidebar-categories">Categories</strong>
-            </Nav.Item>
-            {categories.map((category) => (
-              <Nav.Item key={category}>
-                <LinkContainer
-                  to={`/search?category=${category}`}
-                  onClick={() => setSidebarIsOpen(false)}
-                >
-                  <Nav.Link>{category}</Nav.Link>
-                </LinkContainer>
-              </Nav.Item>
-            ))}
-          </Nav>
-        </div>
+       
         <main>
           <Routes>
             <Route

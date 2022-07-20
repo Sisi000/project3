@@ -72,12 +72,12 @@ export default function SearchScreen() {
   const [products, setProducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedFrameColors, setSelectedFrameColors] = useState([]);
+  const [selectedBrands, setSelectedBrands] = useState([]);
   const [selectedPrices, setSelectedPrices] = useState([]);
   const [selectedRatings, setSelectedRatings] = useState([]);
   const [countProducts, setCountProducts] = useState(0);
   const [order, setOrder] = useState("newest");
-
-  const [{ error, pages }, dispatch] = useReducer(reducer, {
+  const [{ error }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
   });
@@ -99,6 +99,8 @@ export default function SearchScreen() {
     fetchData();
   }, []);
 
+  console.log("products are", products);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -106,6 +108,7 @@ export default function SearchScreen() {
         const payload = {
           selectedCategories,
           selectedFrameColors,
+          selectedBrands,
           selectedPrices,
           selectedRatings,
           order,
@@ -124,10 +127,11 @@ export default function SearchScreen() {
   }, [
     selectedCategories,
     selectedFrameColors,
+    selectedBrands,
     selectedPrices,
     selectedRatings,
     order,
-  ]);
+    ]);
 
   const [categories, setCategories] = useState([]);
   useEffect(() => {
@@ -136,8 +140,7 @@ export default function SearchScreen() {
         const endpoint = `/api/products/categories`;
         const { data } = await axiosGet(endpoint);
         setCategories(data);
-        // setSelectedCategories([]);
-      } catch (err) {
+       } catch (err) {
         toast.error(getError(err));
       }
     };
@@ -157,6 +160,21 @@ export default function SearchScreen() {
     };
     fetchFrameColors();
   }, [dispatch]);
+
+  const [brand, setBrand] = useState([]);
+  useEffect(() => {
+    const fetchBrand = async () => {
+      try {
+        const endpoint = `/api/products/brands`;
+        const { data } = await axiosGet(endpoint);
+        setBrand(data);
+      } catch (err) {
+        toast.error(getError(err));
+      }
+    };
+    fetchBrand();
+  }, [dispatch]);
+
 
   const CheckboxMenu = React.forwardRef(
     (
@@ -238,6 +256,16 @@ export default function SearchScreen() {
     setSelectedFrameColors(newFrameColors);
   };
 
+  const toggleBrand = (brand) => {
+    let newBrand = [...selectedBrands];
+    if (newBrand.includes(brand)) {
+      newBrand = newBrand.filter((b) => b !== brand);
+    } else {
+      newBrand.push(brand);
+    }
+    setSelectedBrands(newBrand);
+  };
+
   const togglePrice = (price) => {
     let newPrices = [...selectedPrices];
     if (newPrices.includes(price)) {
@@ -269,6 +297,7 @@ export default function SearchScreen() {
   const handleRemoveSelection = () => {
     setSelectedCategories([]);
     setSelectedFrameColors([]);
+    setSelectedBrands([]);
     setSelectedPrices([]);
     setSelectedRatings([]);
   };
@@ -327,6 +356,32 @@ export default function SearchScreen() {
                   checked={selectedFrameColors.includes(f)}
                 >
                   {f}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+
+          <Dropdown>
+            <Dropdown.Toggle id="dropdown-basic">Brand</Dropdown.Toggle>
+
+            <Dropdown.Menu
+              as={CheckboxMenu}
+              onSelectAll={() => {
+                handleSelectAll(setBrand, brand);
+              }}
+              onSelectNone={() => {
+                handleSelectNone(setBrand);
+              }}
+            >
+              {brand.map((b) => (
+                <Dropdown.Item
+                  key={b}
+                  as={CheckDropdownItem}
+                  id={b}
+                  onChange={() => toggleBrand(b)}
+                  checked={selectedBrands.includes(b)}
+                >
+                  {b}
                 </Dropdown.Item>
               ))}
             </Dropdown.Menu>
@@ -398,6 +453,7 @@ export default function SearchScreen() {
                   {selectedCategories.length > 0 && " : " + selectedCategories}
                   {selectedFrameColors.length > 0 &&
                     " : " + selectedFrameColors}
+                    {selectedBrands.length > 0 && " : " + selectedBrands}
                   {selectedPrices.length > 0 && " Price " + selectedPrices[0]}
                   {selectedRatings.length > 0 &&
                     " : Rating " + selectedRatings + " & up"}
