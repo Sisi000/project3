@@ -196,14 +196,12 @@ productRouter.post(
   "/search",
   expressAsyncHandler(async (req, res) => {
     const query = req.body;
-    console.log("query is", query);
     const category = query.selectedCategories;
-    console.log("category is", category);
     const frameColor = query.selectedFrameColors;
-    console.log("frameColor is", frameColor);
     const price = query.selectedPrices;
-    console.log("price is", price);
     const rating = query.selectedRatings;
+    const order = query.order;
+    console.log("order is", order);
 
     let searchObj = {};
     if (category.length > 0) {
@@ -220,13 +218,26 @@ productRouter.post(
     }
     if (rating.length > 0) {
       searchObj.rating = {
-        $gte: Number(rating[0])
-      }
+        $gte: Number(rating[0]),
+      };
     }
 
-    console.log("searchObj is", searchObj);
-    const products = await Product.find(searchObj);
-    console.log("products are", products);
+    const sortOrder =
+      order === "featured"
+        ? { featured: -1 }
+        : order === "lowest"
+        ? { price: 1 }
+        : order === "highest"
+        ? { price: -1 }
+        : order === "toprated"
+        ? { rating: -1 }
+        : order === "newest"
+        ? { createdAt: -1 }
+        : { _id: -1 };
+
+    const products = await Product.find(searchObj).sort(sortOrder);
+    const countProducts = await Product.countDocuments(searchObj);
+    console.log("countProducts are", countProducts);
 
     let results = [];
 
@@ -234,8 +245,7 @@ productRouter.post(
       results.push(array);
     }
 
-    console.log("results are", results);
-    res.send(results);
+    res.send({ results, countProducts });
   })
 );
 

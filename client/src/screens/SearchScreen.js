@@ -74,30 +74,29 @@ export const ratings = [
 ];
 
 export default function SearchScreen({ items }) {
-  const navigate = useNavigate();
-  const { search } = useLocation();
-  const sp = new URLSearchParams(search); // /search?category=Oval
-  const category = sp.get("category") || "all";
-  const frameColor = sp.get("frameColor") || "all";
-  const query = sp.get("query") || "all";
-  const price = sp.get("price") || "all";
-  const rating = sp.get("rating") || "all";
-  const order = sp.get("order") || "newest";
-  const page = sp.get("page") || 1;
+  // const navigate = useNavigate();
+  // const { search } = useLocation();
+  // const sp = new URLSearchParams(search); // /search?category=Oval
+  // const category = sp.get("category") || "all";
+  // const frameColor = sp.get("frameColor") || "all";
+  // const query = sp.get("query") || "all";
+  // const price = sp.get("price") || "all";
+  // const rating = sp.get("rating") || "all";
+  // const order = sp.get("order") || "newest";
+  // const page = sp.get("page") || 1;
 
   const [products, setProducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedFrameColors, setSelectedFrameColors] = useState([]);
   const [selectedPrices, setSelectedPrices] = useState([]);
   const [selectedRatings, setSelectedRatings] = useState([]);
+  const [countProducts, setCountProducts] = useState(0);
+  const [order, setOrder] = useState("newest");
 
-  const [{ loading, error, pages, countProducts }, dispatch] = useReducer(
-    reducer,
-    {
-      loading: true,
-      error: "",
-    }
-  );
+  const [{ loading, error, pages }, dispatch] = useReducer(reducer, {
+    loading: true,
+    error: "",
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -126,10 +125,12 @@ export default function SearchScreen({ items }) {
           selectedFrameColors,
           selectedPrices,
           selectedRatings,
+          order,
         };
         const result = await axiosPost(endpoint, payload);
         console.log("result is", result.data);
-        setProducts(result.data);
+        setProducts(result.data.results);
+        setCountProducts(result.data.countProducts);
       } catch (err) {
         dispatch({
           type: "FETCH_FAIL",
@@ -138,9 +139,13 @@ export default function SearchScreen({ items }) {
       }
     };
     fetchData();
-  }, [selectedCategories, selectedFrameColors, selectedPrices, selectedRatings]);
-
-  console.log("products is", products);
+  }, [
+    selectedCategories,
+    selectedFrameColors,
+    selectedPrices,
+    selectedRatings,
+    order,
+  ]);
 
   const [categories, setCategories] = useState([]);
   useEffect(() => {
@@ -171,16 +176,16 @@ export default function SearchScreen({ items }) {
     fetchFrameColors();
   }, [dispatch]);
 
-  const getFilterUrl = (filter) => {
-    const filterPage = filter.page || page;
-    const filterCategory = filter.category || category;
-    const filterFrameColor = filter.frameColor || frameColor;
-    const filterQuery = filter.query || query;
-    const filterRating = filter.rating || rating;
-    const filterPrice = filter.price || price;
-    const sortOrder = filter.order || order;
-    return `/search?category=${filterCategory}&query=${filterQuery}&frameColor=${filterFrameColor}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
-  };
+  // const getFilterUrl = (filter) => {
+  //   // const filterPage = filter.page || page;
+  //   const filterCategory = filter.category || category;
+  //   const filterFrameColor = filter.frameColor || frameColor;
+  //   const filterQuery = filter.query || query;
+  //   const filterRating = filter.rating || rating;
+  //   const filterPrice = filter.price || price;
+  //   const sortOrder = filter.order || order;
+  //   return `/search?category=${filterCategory}&query=${filterQuery}&frameColor=${filterFrameColor}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
+  // };
 
   const CheckboxMenu = React.forwardRef(
     (
@@ -282,7 +287,7 @@ export default function SearchScreen({ items }) {
       newRatings.push(rating);
     }
     setSelectedRatings(newRatings);
-  }
+  };
 
   const handleSelectAll = (setter, values) => {
     setter([...values]);
@@ -291,7 +296,13 @@ export default function SearchScreen({ items }) {
   const handleSelectNone = (setter) => {
     setter([]);
   };
-  // })
+
+  const handleRemoveSelection = () => {
+    setSelectedCategories([]);
+    setSelectedFrameColors([]);
+    setSelectedPrices([]);
+    setSelectedRatings([]);
+  };
 
   return (
     <>
@@ -362,8 +373,12 @@ export default function SearchScreen({ items }) {
 
             <Dropdown.Menu
               as={CheckboxMenu}
-              onSelectAll={() => {handleSelectAll(setSelectedPrices, prices)}}
-              onSelectNone={() => {handleSelectNone(setSelectedPrices)}}
+              onSelectAll={() => {
+                handleSelectAll(setSelectedPrices, prices);
+              }}
+              onSelectNone={() => {
+                handleSelectNone(setSelectedPrices);
+              }}
             >
               {prices.map((p) => (
                 <Dropdown.Item
@@ -390,7 +405,7 @@ export default function SearchScreen({ items }) {
                 handleSelectAll(setSelectedRatings, ratings);
               }}
               onSelectNone={() => {
-                handleSelectNone(setSelectedRatings)
+                handleSelectNone(setSelectedRatings);
               }}
             >
               {ratings.map((r) => (
@@ -409,62 +424,58 @@ export default function SearchScreen({ items }) {
         </div>
 
         <div className="products my-5 py-2">
-          {/* {loading ? (
-            <LoadingBox></LoadingBox>
-          ) : error ? (
-            <MessageBox variant="danger">{error}</MessageBox>
-          ) : (
-            <>
-              <Row className="justify-content-between mb-3">
-                <Col md={6}>
-                  <div>
-                    {countProducts === 0 ? "No" : countProducts} Results
-                    {query !== "all" && " : " + query}
-                    {selectedCategories.length > 0 &&
-                      " : " + selectedCategories}
-                    {selectedFrameColors.length > 0 &&
-                      " : " + selectedFrameColors}
-                    {selectedPrices.length > 0 && " Price " + selectedPrices[0]}
-                    {rating !== "all" && " : Rating " + rating + " & up"}
-                    {query !== "all" ||
-                    category !== "all" ||
-                    rating !== "all" ||
-                    price !== "all" ? (
-                      <Button
-                        variant="light"
-                        onClick={() => navigate("/search")}
-                      >
-                        <i className="fas fa-times-circle"></i>
-                      </Button>
-                    ) : null}
-                  </div>
-                </Col>
-                <Col className="text-end">
-                  Sort by{" "}
-                  <select
-                    value={order}
-                    onChange={(e) => {
-                      navigate(getFilterUrl({ order: e.target.value }));
-                    }}
-                  >
-                    <option value="newest">Newest Arrivals</option>
-                    <option value="lowest">Price: Low to High</option>
-                    <option value="highest">Price: High to Low</option>
-                    <option value="toprated">Avg. Customer Reviews</option>
-                  </select>
-                </Col>
-              </Row> */}
-          {products.length === 0 && <MessageBox>No Product Found</MessageBox>}
-
-          <Row>
-            {products.map((product) => (
-              <Col sm={6} md={4} lg={3} className="mb-3" key={product.slug}>
-                <Product product={product}></Product>
+          <>
+            <Row className="justify-content-between mb-3">
+              <Col md={6}>
+                <div>
+                  {countProducts === 0 ? "No" : countProducts} Results
+                  {/* {query !== "all" && " : " + query} */}
+                  {selectedCategories.length > 0 && " : " + selectedCategories}
+                  {selectedFrameColors.length > 0 &&
+                    " : " + selectedFrameColors}
+                  {selectedPrices.length > 0 && " Price " + selectedPrices[0]}
+                  {selectedRatings.length > 0 &&
+                    " : Rating " + selectedRatings + " & up"}
+                  {selectedCategories !== "all" ||
+                  selectedRatings !== "all" ||
+                  selectedPrices !== "all" ? (
+                    <Button
+                      variant="light"
+                      onClick={() => {
+                        handleRemoveSelection();
+                      }}
+                    >
+                      <i className="fas fa-times-circle"></i>
+                    </Button>
+                  ) : null}
+                </div>
               </Col>
-            ))}
-          </Row>
+              <Col className="text-end">
+                Sort by{" "}
+                <select
+                  value={order}
+                  onChange={(e) => {
+                    setOrder(e.target.value);
+                  }}
+                >
+                  <option value="newest">Newest Arrivals</option>
+                  <option value="lowest">Price: Low to High</option>
+                  <option value="highest">Price: High to Low</option>
+                  <option value="toprated">Avg. Customer Reviews</option>
+                </select>
+              </Col>
+            </Row>
+            {products.length === 0 && <MessageBox>No Product Found</MessageBox>}
 
-          <div>
+            <Row>
+              {products.map((product) => (
+                <Col sm={6} md={4} lg={3} className="mb-3" key={product.slug}>
+                  <Product product={product}></Product>
+                </Col>
+              ))}
+            </Row>
+
+            {/* <div>
             {[...Array(pages).keys()].map((x) => (
               <LinkContainer
                 key={x + 1}
@@ -479,9 +490,8 @@ export default function SearchScreen({ items }) {
                 </Button>
               </LinkContainer>
             ))}
-          </div>
-          {/* </> */}
-          {/* )} */}
+          </div> */}
+          </>
         </div>
         {/* </div> */}
       </Container>

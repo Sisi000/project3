@@ -1,6 +1,6 @@
 import { Container } from "react-bootstrap";
 import Slider from "../components/Home/Slider";
-import TryOn from "../components/Home/tryOn";
+import TryOn from "../components/Home/TryOn";
 import SearchScreen from "./SearchScreen";
 
 
