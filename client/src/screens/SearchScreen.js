@@ -1,17 +1,12 @@
 import React, { useEffect, useReducer, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getError } from "../utils";
 import { Helmet } from "react-helmet-async";
 import { Container, Row, Col } from "react-bootstrap";
 import Rating from "../components/Rating";
 import { axiosPost, axiosGet } from "../components/AxiosHelper";
-import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
-// import Button from "react-bootstrap/Button";
 import Product from "../components/Product";
-import LinkContainer from "react-router-bootstrap/LinkContainer";
-// import { Form } from "react-bootstrap";
 import { Button, ButtonGroup, Dropdown, Form } from "react-bootstrap";
 import "./Screens.css";
 
@@ -73,18 +68,7 @@ export const ratings = [
   },
 ];
 
-export default function SearchScreen({ items }) {
-  // const navigate = useNavigate();
-  // const { search } = useLocation();
-  // const sp = new URLSearchParams(search); // /search?category=Oval
-  // const category = sp.get("category") || "all";
-  // const frameColor = sp.get("frameColor") || "all";
-  // const query = sp.get("query") || "all";
-  // const price = sp.get("price") || "all";
-  // const rating = sp.get("rating") || "all";
-  // const order = sp.get("order") || "newest";
-  // const page = sp.get("page") || 1;
-
+export default function SearchScreen() {
   const [products, setProducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedFrameColors, setSelectedFrameColors] = useState([]);
@@ -93,7 +77,7 @@ export default function SearchScreen({ items }) {
   const [countProducts, setCountProducts] = useState(0);
   const [order, setOrder] = useState("newest");
 
-  const [{ loading, error, pages }, dispatch] = useReducer(reducer, {
+  const [{ error, pages }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
   });
@@ -103,8 +87,7 @@ export default function SearchScreen({ items }) {
       try {
         const endpoint = `/api/products/`;
         const { data } = await axiosGet(endpoint);
-        // dispatch({ type: "SUCCESS", payload: data });
-        console.log("data get all", data);
+        dispatch({ type: "SUCCESS", payload: data });
         setProducts(data);
       } catch (err) {
         dispatch({
@@ -128,7 +111,6 @@ export default function SearchScreen({ items }) {
           order,
         };
         const result = await axiosPost(endpoint, payload);
-        console.log("result is", result.data);
         setProducts(result.data.results);
         setCountProducts(result.data.countProducts);
       } catch (err) {
@@ -175,17 +157,6 @@ export default function SearchScreen({ items }) {
     };
     fetchFrameColors();
   }, [dispatch]);
-
-  // const getFilterUrl = (filter) => {
-  //   // const filterPage = filter.page || page;
-  //   const filterCategory = filter.category || category;
-  //   const filterFrameColor = filter.frameColor || frameColor;
-  //   const filterQuery = filter.query || query;
-  //   const filterRating = filter.rating || rating;
-  //   const filterPrice = filter.price || price;
-  //   const sortOrder = filter.order || order;
-  //   return `/search?category=${filterCategory}&query=${filterQuery}&frameColor=${filterFrameColor}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
-  // };
 
   const CheckboxMenu = React.forwardRef(
     (
@@ -269,8 +240,6 @@ export default function SearchScreen({ items }) {
 
   const togglePrice = (price) => {
     let newPrices = [...selectedPrices];
-    console.log("newPrices is", newPrices);
-    console.log("price is", price);
     if (newPrices.includes(price)) {
       newPrices = newPrices.filter((p) => p !== price);
     } else {
@@ -307,12 +276,9 @@ export default function SearchScreen({ items }) {
   return (
     <>
       <Container fluid style={{ padding: "0" }}>
-        {/* <div className="container-search"> */}
-
         <Helmet>
           <title>Search Products</title>
         </Helmet>
-        {/* <Row> */}
 
         <div className="dropdown-container">
           <Dropdown>
@@ -429,7 +395,6 @@ export default function SearchScreen({ items }) {
               <Col md={6}>
                 <div>
                   {countProducts === 0 ? "No" : countProducts} Results
-                  {/* {query !== "all" && " : " + query} */}
                   {selectedCategories.length > 0 && " : " + selectedCategories}
                   {selectedFrameColors.length > 0 &&
                     " : " + selectedFrameColors}
