@@ -5,9 +5,11 @@ import { sliderItems } from "./data";
 import { mobile } from "./responsive";
 
 const Container = styled.div`
-  width: 100vw;
-  height: 110vh;
+  width: 98.7vw;
+  height: 105vh;
   display: flex;
+  padding right: -40px;
+  margin right: -40px;
   position: relative;
   overflow: hidden;
   ${mobile({ display: "none" })}
