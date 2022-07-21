@@ -314,11 +314,7 @@ export default function SearchScreen() {
 
   return (
     <>
-      <Container fluid style={{ padding: "0" }}>
-        <Helmet>
-          <title>Search Products</title>
-        </Helmet>
-
+      <Container fluid style={{ padding: "0" }} id="glasses">
         <div className="dropdown-container">
           <Dropdown>
             <Dropdown.Toggle id="dropdown-basic">Frame Shape</Dropdown.Toggle>
