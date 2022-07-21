@@ -49,22 +49,22 @@ const prices = [
 export const ratings = [
   {
     name: "4stars & up",
-    rating: 4,
+    rating: "4",
   },
 
   {
     name: "3stars & up",
-    rating: 3,
+    rating: "3",
   },
 
   {
     name: "2stars & up",
-    rating: 2,
+    rating: "2",
   },
 
   {
     name: "1stars & up",
-    rating: 1,
+    rating: "1",
   },
 ];
 
@@ -74,7 +74,7 @@ export default function SearchScreen() {
   const [selectedFrameColors, setSelectedFrameColors] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [selectedPrices, setSelectedPrices] = useState([]);
-  const [selectedRatings, setSelectedRatings] = useState([]);
+  const [selectedRatings, setSelectedRatings] = useState("");
   const [countProducts, setCountProducts] = useState(0);
   const [order, setOrder] = useState("newest");
   const [{ error }, dispatch] = useReducer(reducer, {
@@ -221,17 +221,7 @@ export default function SearchScreen() {
   );
 
   const CheckboxMenu2 = React.forwardRef(
-    (
-      {
-        children,
-        style,
-        className,
-        "aria-labelledby": labeledBy,
-        onSelectAll,
-        onSelectNone,
-      },
-      ref
-    ) => {
+    ({ children, style, className, "aria-labelledby": labeledBy }, ref) => {
       return (
         <div
           ref={ref}
@@ -305,13 +295,8 @@ export default function SearchScreen() {
   };
 
   const toggleRating = (rating) => {
-    let newRatings = [...selectedRatings];
-    if (newRatings.includes(rating)) {
-      newRatings = newRatings.filter((r) => r !== rating);
-    } else {
-      newRatings.push(rating);
-    }
-    setSelectedRatings(newRatings);
+       setSelectedRatings(rating);
+    console.log("rating is", rating);
   };
 
   const handleSelectAll = (setter, values) => {
@@ -443,22 +428,14 @@ export default function SearchScreen() {
               Avg. Customer Review
             </Dropdown.Toggle>
 
-            <Dropdown.Menu
-              as={CheckboxMenu}
-              onSelectAll={() => {
-                handleSelectAll(setSelectedRatings, ratings);
-              }}
-              onSelectNone={() => {
-                handleSelectNone(setSelectedRatings);
-              }}
-            >
+            <Dropdown.Menu as={CheckboxMenu2}>
               {ratings.map((r) => (
                 <Dropdown.Item
                   key={r.name}
                   as={CheckDropdownItem}
                   id={r}
                   onChange={() => toggleRating(r.rating)}
-                  checked={selectedRatings.includes(r.rating)}
+                  checked={selectedRatings === r.rating}
                 >
                   <Rating caption={" & up"} rating={r.rating}></Rating>
                 </Dropdown.Item>

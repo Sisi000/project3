@@ -197,12 +197,13 @@ productRouter.post(
   expressAsyncHandler(async (req, res) => {
     const query = req.body;
     const category = query.selectedCategories;
+    console.log("category is", category);
     const brand = query.selectedBrands;
     const frameColor = query.selectedFrameColors;
     const price = query.selectedPrices;
-    console.log("price", price);
+    console.log("price is", price);
     const rating = query.selectedRatings;
-    console.log("rating", rating);
+    console.log("rating is", rating);
     const order = query.order;
 
     let searchObj = {};
@@ -219,14 +220,15 @@ productRouter.post(
       searchObj.price = {
         $gte: Number(price.split("-")[0]),
         $lte: Number(price.split("-")[1]),
-      };
+      }
     }
     if (rating.length > 0) {
       searchObj.rating = {
-        $gte: Number(rating[0]),
-      };
+        $gte: Number(rating)
+      }
     }
 console.log("searchObj", searchObj);
+
     const sortOrder =
       order === "featured"
         ? { featured: -1 }
