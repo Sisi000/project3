@@ -131,7 +131,7 @@ export default function SearchScreen() {
     selectedPrices,
     selectedRatings,
     order,
-    ]);
+  ]);
 
   const [categories, setCategories] = useState([]);
   useEffect(() => {
@@ -140,7 +140,7 @@ export default function SearchScreen() {
         const endpoint = `/api/products/categories`;
         const { data } = await axiosGet(endpoint);
         setCategories(data);
-       } catch (err) {
+      } catch (err) {
         toast.error(getError(err));
       }
     };
@@ -174,7 +174,6 @@ export default function SearchScreen() {
     };
     fetchBrand();
   }, [dispatch]);
-
 
   const CheckboxMenu = React.forwardRef(
     (
@@ -215,6 +214,41 @@ export default function SearchScreen() {
                 </Button>
               </ButtonGroup>
             </div>
+          </div>
+        </div>
+      );
+    }
+  );
+
+  const CheckboxMenu2 = React.forwardRef(
+    (
+      {
+        children,
+        style,
+        className,
+        "aria-labelledby": labeledBy,
+        onSelectAll,
+        onSelectNone,
+      },
+      ref
+    ) => {
+      return (
+        <div
+          ref={ref}
+          style={style}
+          className={`${className} CheckboxMenu`}
+          aria-labelledby={labeledBy}
+        >
+          <div
+            className="d-flex flex-column"
+            style={{ maxHeight: "calc(100vh)", overflow: "none" }}
+          >
+            <ul
+              className="list-unstyled flex-shrink mb-0"
+              style={{ overflow: "auto" }}
+            >
+              {children}
+            </ul>
           </div>
         </div>
       );
@@ -267,13 +301,7 @@ export default function SearchScreen() {
   };
 
   const togglePrice = (price) => {
-    let newPrices = [...selectedPrices];
-    if (newPrices.includes(price)) {
-      newPrices = newPrices.filter((p) => p !== price);
-    } else {
-      newPrices.push(price);
-    }
-    setSelectedPrices(newPrices);
+    setSelectedPrices(price);
   };
 
   const toggleRating = (rating) => {
@@ -392,22 +420,17 @@ export default function SearchScreen() {
               Price
             </Dropdown.Toggle>
 
-            <Dropdown.Menu
-              as={CheckboxMenu}
-              onSelectAll={() => {
-                handleSelectAll(setSelectedPrices, prices);
-              }}
-              onSelectNone={() => {
-                handleSelectNone(setSelectedPrices);
-              }}
-            >
+            <Dropdown.Menu as={CheckboxMenu2}>
               {prices.map((p) => (
                 <Dropdown.Item
                   key={p.value}
                   as={CheckDropdownItem}
                   id={p}
-                  onChange={() => togglePrice(p.value)}
-                  checked={selectedPrices.includes(p.value)}
+                  onChange={() => {
+                    togglePrice(p.value);
+                    console.log("p.value", p.value);
+                  }}
+                  checked={selectedPrices === p.value}
                 >
                   {p.name}
                 </Dropdown.Item>
@@ -453,8 +476,8 @@ export default function SearchScreen() {
                   {selectedCategories.length > 0 && " : " + selectedCategories}
                   {selectedFrameColors.length > 0 &&
                     " : " + selectedFrameColors}
-                    {selectedBrands.length > 0 && " : " + selectedBrands}
-                  {selectedPrices.length > 0 && " Price " + selectedPrices[0]}
+                  {selectedBrands.length > 0 && " : " + selectedBrands}
+                  {selectedPrices.length > 0 && " Price " + selectedPrices}
                   {selectedRatings.length > 0 &&
                     " : Rating " + selectedRatings + " & up"}
                   {selectedCategories !== "all" ||
@@ -462,12 +485,12 @@ export default function SearchScreen() {
                   selectedPrices !== "all" ? (
                     <Button
                       variant="light"
-                      style={{border: "#FFFFFF", boxShadow: "none"}}
+                      style={{ border: "#FFFFFF", boxShadow: "none" }}
                       onClick={() => {
                         handleRemoveSelection();
                       }}
                     >
-                      <i className="fas fa-times-circle" ></i>
+                      <i className="fas fa-times-circle"></i>
                     </Button>
                   ) : null}
                 </div>

@@ -200,7 +200,9 @@ productRouter.post(
     const brand = query.selectedBrands;
     const frameColor = query.selectedFrameColors;
     const price = query.selectedPrices;
+    console.log("price", price);
     const rating = query.selectedRatings;
+    console.log("rating", rating);
     const order = query.order;
 
     let searchObj = {};
@@ -215,8 +217,8 @@ productRouter.post(
     }
     if (price.length > 0) {
       searchObj.price = {
-        $gte: Number(price[0].split("-")[0]),
-        $lte: Number(price[0].split("-")[1]),
+        $gte: Number(price.split("-")[0]),
+        $lte: Number(price.split("-")[1]),
       };
     }
     if (rating.length > 0) {
@@ -224,7 +226,7 @@ productRouter.post(
         $gte: Number(rating[0]),
       };
     }
-
+console.log("searchObj", searchObj);
     const sortOrder =
       order === "featured"
         ? { featured: -1 }
@@ -246,7 +248,7 @@ productRouter.post(
     for (let array of products) {
       results.push(array);
     }
-
+    // console.log("results", results);
     res.send({ results, countProducts });
   })
 );
