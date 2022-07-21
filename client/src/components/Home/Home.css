@@ -1,0 +1,17 @@
+.virtual-container {
+  background-color: #535252;
+  text-align: center;
+  color: white;
+  font-size: 24px;
+  padding: 5px;
+}
+
+.virtualoptician {
+  color: white !important;
+  text-decoration: none;
+}
+
+.virtualoptician:hover {
+  color: rgb(208, 206, 206) !important;
+font-weight: normal;
+}
