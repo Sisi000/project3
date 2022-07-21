@@ -99,8 +99,6 @@ export default function SearchScreen() {
     fetchData();
   }, []);
 
-  console.log("products are", products);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -295,8 +293,7 @@ export default function SearchScreen() {
   };
 
   const toggleRating = (rating) => {
-       setSelectedRatings(rating);
-    console.log("rating is", rating);
+    setSelectedRatings(rating);
   };
 
   const handleSelectAll = (setter, values) => {
@@ -411,11 +408,8 @@ export default function SearchScreen() {
                   key={p.value}
                   as={CheckDropdownItem}
                   id={p}
-                  onChange={() => {
-                    togglePrice(p.value);
-                    console.log("p.value", p.value);
-                  }}
-                  checked={selectedPrices === p.value}
+                  onChange={() => togglePrice(p.value)}
+                  checked={selectedPrices.includes(p.value)}
                 >
                   {p.name}
                 </Dropdown.Item>
@@ -435,7 +429,7 @@ export default function SearchScreen() {
                   as={CheckDropdownItem}
                   id={r}
                   onChange={() => toggleRating(r.rating)}
-                  checked={selectedRatings === r.rating}
+                  checked={selectedRatings.includes(r.rating)}
                 >
                   <Rating caption={" & up"} rating={r.rating}></Rating>
                 </Dropdown.Item>
