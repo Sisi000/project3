@@ -377,10 +377,10 @@ export default function SearchScreen() {
             <Dropdown.Menu
               as={CheckboxMenu}
               onSelectAll={() => {
-                handleSelectAll(setBrand, brand);
+                handleSelectAll(setSelectedBrands, brand);
               }}
               onSelectNone={() => {
-                handleSelectNone(setBrand);
+                handleSelectNone(setSelectedBrands);
               }}
             >
               {brand.map((b) => (
