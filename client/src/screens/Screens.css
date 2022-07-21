@@ -21,13 +21,14 @@
     justify-content: space-between !important;
     flex-direction: row !important;
   }
-/* 
+ 
   .dropdown-menu.show.CheckboxMenu {
-    position: fixed !important;
+    /* position: fixed !important; */
    /* inset: 0 !important;  */
-   /* transform: translate (0px, 40px) !important; */
+   transform: none !important; 
+top: 80px !important;
    /* background-color: blue; */
-/* } */
+}
 
 .thumbnail-product {
   border-color: white !important;

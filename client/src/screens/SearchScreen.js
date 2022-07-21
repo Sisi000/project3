@@ -289,8 +289,12 @@ export default function SearchScreen() {
   };
 
   const togglePrice = (price) => {
-    setSelectedPrices(price);
-  };
+    if (selectedPrices.includes(price)) {
+      setSelectedPrices("");
+    } else {
+      setSelectedPrices(price);
+      };
+    }
 
   const toggleRating = (rating) => {
     setSelectedRatings(rating);
