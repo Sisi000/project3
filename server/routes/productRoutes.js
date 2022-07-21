@@ -204,6 +204,7 @@ productRouter.post(
     const price = query.selectedPrices;
     console.log("price is", price);
     const rating = query.selectedRatings;
+    console.log("rating is", rating);
 
     let searchObj = {};
     if (category.length > 0) {
@@ -226,7 +227,7 @@ productRouter.post(
 
     console.log("searchObj is", searchObj);
     const products = await Product.find(searchObj);
-    console.log("products are", products);
+    // console.log("products are", products);
 
     let results = [];
 
@@ -234,7 +235,7 @@ productRouter.post(
       results.push(array);
     }
 
-    console.log("results are", results);
+    // console.log("results are", results);
     res.send(results);
   })
 );

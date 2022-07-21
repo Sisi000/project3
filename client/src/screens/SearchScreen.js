@@ -398,8 +398,9 @@ export default function SearchScreen({ items }) {
                   key={r.name}
                   as={CheckDropdownItem}
                   id={r}
-                  onChange={() => toggleRating(r.rating)}
-                  checked={selectedRatings.includes(r.rating)}
+                  onChange={() => {toggleRating(r.rating);
+                console.log("rating is", r.rating)}}
+                  checked={selectedRatings === r.rating}
                 >
                   <Rating caption={" & up"} rating={r.rating}></Rating>
                 </Dropdown.Item>
