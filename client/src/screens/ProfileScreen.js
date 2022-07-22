@@ -58,7 +58,7 @@ export default function ProfileScreen() {
   };
 
   return (
-    <div className="container small-container">
+    <div className="container small-container" style={{marginTop: "100px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
       <Card className="my-3" >
         <Card.Img src={Images} alt="Card image" />
       </Card>
@@ -66,8 +66,9 @@ export default function ProfileScreen() {
         <title>User Profile</title>
       </Helmet>
       <h1 className="text-center my-5">User Profile</h1>
+      <div style={{ minWidth: "600px", marginRight: "0"}}>
       <form onSubmit={submitHandler}>
-        <Form.Group className="mb-3" controlId="name">
+        <Form.Group className="mb-3" controlId="name" >
           <Form.Label>Name</Form.Label>
           <Form.Control
             value={name}
@@ -102,6 +103,7 @@ export default function ProfileScreen() {
           <Button type="submit">Update</Button>
         </div>
       </form>
+      </div>
     </div>
   );
 }
