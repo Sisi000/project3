@@ -86,7 +86,7 @@ export default function UserListScreen() {
     }
   };
   return (
-    <div>
+    <div style={{marginTop: "80px"}}>
       <Helmet>
         <title>Users</title>
       </Helmet>
