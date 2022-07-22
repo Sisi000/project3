@@ -216,6 +216,8 @@ export default function Uploads() {
   };
 
   return (
+    <>
+    <div className="uploads-text">Find frames that fit your face with our Virtual Optician!</div>
     <div>
       <UploadFilters
       prescription={prescription}
@@ -274,5 +276,6 @@ export default function Uploads() {
       </div>
     </div>
     </div>
+    </>
   );
 }

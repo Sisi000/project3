@@ -19,3 +19,10 @@
   align-items: center;
   width: 100%;
 }
+
+.uploads-text {
+  margin-top: 80px;
+  font-weight: bold;
+  font-size: 24px;
+  text-align: center;
+}
