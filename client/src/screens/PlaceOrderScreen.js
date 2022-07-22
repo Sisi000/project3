@@ -1,4 +1,4 @@
-import {axiosPost} from "../components/AxiosHelper"
+import {axiosPostAuth} from "../components/AxiosHelper"
 import React, { useContext, useEffect, useReducer } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -57,7 +57,7 @@ export default function PlaceOrderScreen() {
         taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
       };
-      const { data } = await axiosPost(endpoint,payload,userInfo.token);
+      const { data } = await axiosPostAuth(endpoint,payload,userInfo.token);
       ctxDispatch({ type: 'CART_CLEAR' });
       dispatch({ type: 'CREATE_SUCCESS' });
       localStorage.removeItem('cartItems');
