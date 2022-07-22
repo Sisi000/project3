@@ -73,7 +73,7 @@ export default function SearchScreen() {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedFrameColors, setSelectedFrameColors] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
-  const [selectedPrices, setSelectedPrices] = useState([]);
+  const [selectedPrices, setSelectedPrices] = useState("");
   const [selectedRatings, setSelectedRatings] = useState("");
   const [countProducts, setCountProducts] = useState(0);
   const [order, setOrder] = useState("newest");
@@ -290,14 +290,18 @@ export default function SearchScreen() {
 
   const togglePrice = (price) => {
     if (selectedPrices.includes(price)) {
-      setSelectedPrices("");
+      setSelectedPrices([]);
     } else {
       setSelectedPrices(price);
-      };
     }
+  };
 
   const toggleRating = (rating) => {
-    setSelectedRatings(rating);
+    if (selectedRatings.includes(rating)) {
+      setSelectedRatings([]);
+    } else {
+      setSelectedRatings(rating);
+    }
   };
 
   const handleSelectAll = (setter, values) => {

@@ -47,7 +47,7 @@ function UploadFilters(props) {
 
   return (
     <div>
-      <button className="filters btn btn-primary" onClick={changeFilterShow}>
+      <button className="filters btn btn-primary" style={{marginTop: "80px"}} onClick={changeFilterShow}>
         Filters
       </button>
       {filterShow ? (
