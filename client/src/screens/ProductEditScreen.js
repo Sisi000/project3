@@ -243,7 +243,7 @@ export default function ProductEditScreen() {
   };
 
   return (
-    <Container className="small-container">
+    <Container className="small-container" style={{marginTop: "80px"}}>
       <Helmet>
         <title>Edit Product ${productId}</title>
       </Helmet>

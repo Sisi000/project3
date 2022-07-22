@@ -128,7 +128,7 @@ export default function ProductListScreen() {
   };
 
   return (
-    <div>
+    <div style={{marginTop: "80px"}}>
       <Row>
         <Col>
           <h1>Products</h1>
