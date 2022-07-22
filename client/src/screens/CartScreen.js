@@ -36,7 +36,7 @@ export default function CartScreen() {
 
   return (
     <div>
-      <Card className="my-3" >
+      <Card className="my-3" style={{paddingTop: "80px"}}>
         <Card.Img src={Images} alt="Card image" />
       </Card>
       <Helmet>

@@ -123,12 +123,12 @@ export default function PrescriptionScreen() {
   };
 
   return (
-    <Container >
+    <Container style={{marginTop: "100px"}}>
     <div>
       <PrescriptionImg />
     </div>
 
-    <div className="container small-container">
+    <div className="container small-container" >
       <Helmet>
         <title>Prescription</title>
       </Helmet>

@@ -49,8 +49,8 @@ export default function OrderHistoryScreen() {
     fetchData();
   }, [userInfo]);
   return (
-    <div className="my-3 mb-5 pb-5">
-      <Card className="my-3" >
+    <div className="my-3 mb-5 pb-5" style={{paddingTop: "80px"}}>
+      <Card className="my-3">
         <Card.Img src={Images} alt="Card image" />
       </Card>
       <Helmet>
