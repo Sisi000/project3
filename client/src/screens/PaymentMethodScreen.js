@@ -14,7 +14,7 @@ export default function PaymentMethodScreen() {
   } = state;
 
   const [paymentMethodName, setPaymentMethod] = useState(
-    paymentMethod || 'Stripe'
+    paymentMethod || 'PayPal'
   );
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function PaymentMethodScreen() {
   };
   
   return (
-    <div>
+    <div style={{margin: "80px"}}>
       <CheckoutSteps step1 step2 step3></CheckoutSteps>
       <div className="container small-container">
         <Helmet>

@@ -307,9 +307,9 @@ export default function OrderScreen() {
                           onApprove={onApprove}
                           onError={onError}
                         ></PayPalButtons>
-                        <Link to="/stripe">
+                        {/* <Link to="/stripe">
                           <button>Pay</button>
-                        </Link>
+                        </Link> */}
                       </div>
                     )}
                     {loadingPay && <LoadingBox></LoadingBox>}

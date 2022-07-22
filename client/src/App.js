@@ -83,7 +83,12 @@ function App() {
       >
         <ToastContainer position="bottom-center" limit={1} />
         <header>
-          <Navbar className="navbar" expand="lg" fixed="top" style={{zIndex: 100}}>
+          <Navbar
+            className="navbar"
+            expand="lg"
+            fixed="top"
+            style={{ zIndex: 100 }}
+          >
             <Container fluid>
               <LinkContainer to="/">
                 <Navbar.Brand className="mx-5" href="#home">

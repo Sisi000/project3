@@ -1,20 +1,24 @@
-import React, { useContext, useEffect, useReducer } from 'react';
-import {getParamsAuth, axiosPostAuth,axiosDeleteByIDAuth} from "../components/AxiosHelper"
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
-import { toast } from 'react-toastify';
-import { Store } from '../Store';
-import LoadingBox from '../components/LoadingBox';
-import MessageBox from '../components/MessageBox';
-import { getError } from '../utils';
+import React, { useContext, useEffect, useReducer } from "react";
+import {
+  getParamsAuth,
+  axiosPostAuth,
+  axiosDeleteByIDAuth,
+} from "../components/AxiosHelper";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
+import { toast } from "react-toastify";
+import { Store } from "../Store";
+import LoadingBox from "../components/LoadingBox";
+import MessageBox from "../components/MessageBox";
+import { getError } from "../utils";
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'FETCH_REQUEST':
+    case "FETCH_REQUEST":
       return { ...state, loading: true };
-    case 'FETCH_SUCCESS':
+    case "FETCH_SUCCESS":
       return {
         ...state,
         products: action.payload.products,
@@ -22,30 +26,30 @@ const reducer = (state, action) => {
         pages: action.payload.pages,
         loading: false,
       };
-    case 'FETCH_FAIL':
+    case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
-    case 'CREATE_REQUEST':
+    case "CREATE_REQUEST":
       return { ...state, loadingCreate: true };
-    case 'CREATE_SUCCESS':
+    case "CREATE_SUCCESS":
       return {
         ...state,
         loadingCreate: false,
       };
-    case 'CREATE_FAIL':
+    case "CREATE_FAIL":
       return { ...state, loadingCreate: false };
 
-    case 'DELETE_REQUEST':
+    case "DELETE_REQUEST":
       return { ...state, loadingDelete: true, successDelete: false };
-    case 'DELETE_SUCCESS':
+    case "DELETE_SUCCESS":
       return {
         ...state,
         loadingDelete: false,
         successDelete: true,
       };
-    case 'DELETE_FAIL':
+    case "DELETE_FAIL":
       return { ...state, loadingDelete: false, successDelete: false };
 
-    case 'DELETE_RESET':
+    case "DELETE_RESET":
       return { ...state, loadingDelete: false, successDelete: false };
     default:
       return state;
@@ -66,13 +70,13 @@ export default function ProductListScreen() {
     dispatch,
   ] = useReducer(reducer, {
     loading: true,
-    error: '',
+    error: "",
   });
 
   const navigate = useNavigate();
   const { search } = useLocation();
   const sp = new URLSearchParams(search);
-  const page = sp.get('page') || 1;
+  const page = sp.get("page") || 1;
 
   const { state } = useContext(Store);
   const { userInfo } = state;
@@ -81,54 +85,54 @@ export default function ProductListScreen() {
     const fetchData = async () => {
       try {
         const endpoint = "/api/products/admin?page=";
-        const { data } = await getParamsAuth(endpoint,page,userInfo.token);
-        dispatch({ type: 'FETCH_SUCCESS', payload: data });
+        const { data } = await getParamsAuth(endpoint, page, userInfo.token);
+        dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {}
     };
 
     if (successDelete) {
-      dispatch({ type: 'DELETE_RESET' });
+      dispatch({ type: "DELETE_RESET" });
     } else {
       fetchData();
     }
   }, [page, userInfo, successDelete]);
 
   const createHandler = async () => {
-    if (window.confirm('Are you sure to create?')) {
+    if (window.confirm("Are you sure to create?")) {
       try {
-        dispatch({ type: 'CREATE_REQUEST' });
-        const endpoint = '/api/products';
-        const { data } = await axiosPostAuth(endpoint,{},userInfo.token);
-        toast.success('product created successfully');
-        dispatch({ type: 'CREATE_SUCCESS' });
+        dispatch({ type: "CREATE_REQUEST" });
+        const endpoint = "/api/products";
+        const { data } = await axiosPostAuth(endpoint, {}, userInfo.token);
+        toast.success("product created successfully");
+        dispatch({ type: "CREATE_SUCCESS" });
         navigate(`/admin/product/${data.product._id}`);
       } catch (err) {
         toast.error(getError(error));
         dispatch({
-          type: 'CREATE_FAIL',
+          type: "CREATE_FAIL",
         });
       }
     }
   };
 
   const deleteHandler = async (product) => {
-    if (window.confirm('Are you sure to delete?')) {
+    if (window.confirm("Are you sure to delete?")) {
       try {
-        const endpoint = "/api/products/"
-        await axiosDeleteByIDAuth(endpoint,product._id,userInfo.token);
-        toast.success('product deleted successfully');
-        dispatch({ type: 'DELETE_SUCCESS' });
+        const endpoint = "/api/products/";
+        await axiosDeleteByIDAuth(endpoint, product._id, userInfo.token);
+        toast.success("product deleted successfully");
+        dispatch({ type: "DELETE_SUCCESS" });
       } catch (err) {
         toast.error(getError(error));
         dispatch({
-          type: 'DELETE_FAIL',
+          type: "DELETE_FAIL",
         });
       }
     }
   };
 
   return (
-    <div style={{marginTop: "80px"}}>
+    <div style={{ marginTop: "80px" }}>
       <Row>
         <Col>
           <h1>Products</h1>
@@ -156,7 +160,6 @@ export default function ProductListScreen() {
               <tr>
                 <th>ID</th>
                 <th>NAME</th>
-                <th>SLUG</th>
                 <th>PRICE</th>
                 <th>CATEGORY</th>
                 <th>BRAND</th>
@@ -168,7 +171,6 @@ export default function ProductListScreen() {
                 <tr key={product._id}>
                   <td>{product._id}</td>
                   <td>{product.name}</td>
-                  <td>{product.slug}</td>
                   <td>{product.price}</td>
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
@@ -196,7 +198,7 @@ export default function ProductListScreen() {
           <div>
             {[...Array(pages).keys()].map((x) => (
               <Link
-                className={x + 1 === Number(page) ? 'btn text-bold' : 'btn'}
+                className={x + 1 === Number(page) ? "btn text-bold" : "btn"}
                 key={x + 1}
                 to={`/admin/products?page=${x + 1}`}
               >

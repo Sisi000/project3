@@ -58,7 +58,7 @@ export default function ShippingAddressScreen() {
   }, [ctxDispatch, fullBox]);
 
   return (
-    <div>
+    <div style={{margin: "80px"}}>
       <Helmet>
         <title>Shipping Address</title>
       </Helmet>
