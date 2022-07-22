@@ -44,7 +44,7 @@ export default function SigninScreen() {
   }, [navigate, redirect, userInfo]);
 
   return (
-    <Container className="small-container">
+    <Container className="small-container" style={{ maxWidth: "400px", marginTop: "100px"}}>
       <Helmet>
         <title>Sign In</title>
       </Helmet>

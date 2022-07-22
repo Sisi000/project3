@@ -51,7 +51,7 @@ export default function SignupScreen() {
   }, [navigate, redirect, userInfo]);
 
   return (
-    <Container className="small-container">
+    <Container className="small-container" style={{ maxWidth: "400px", marginTop: "100px"}}>
       <Helmet>
         <title>Sign Up</title>
       </Helmet>
@@ -77,6 +77,7 @@ export default function SignupScreen() {
             required
             onChange={(e) => setPassword(e.target.value)}
           />
+           </Form.Group>
           <Form.Group className="mb-3" controlId="confirmPassword">
             <Form.Label>Confirm Password</Form.Label>
             <Form.Control
@@ -84,7 +85,7 @@ export default function SignupScreen() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
-          </Form.Group>
+         
         </Form.Group>
         <div className="mb-3">
           <Button type="submit">Sign Up</Button>
