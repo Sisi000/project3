@@ -322,7 +322,7 @@ export default function SearchScreen() {
 
   return (
     <>
-      <Container fluid style={{ paddingTop: "80px" }} id="glasses">
+      <Container fluid style={{ paddingTop: "80px", borderTop: "solid", borderTopColor: "grey" }} id="glasses">
         <div className="dropdown-container">
           <Dropdown>
             <Dropdown.Toggle id="dropdown-basic">Frame Shape</Dropdown.Toggle>
