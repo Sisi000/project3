@@ -1,6 +1,6 @@
 import { Container } from "react-bootstrap";
 import Slider from "../components/Home/Slider";
-import TryOn from "../components/Home/ThisTryOn";
+import TryOn from "../components/Home/TryOn";
 import VirtualOptician from "../components/Home/VirtualOptician";
 import SearchScreen from "./SearchScreen";
 
