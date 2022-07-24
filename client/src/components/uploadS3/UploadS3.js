@@ -94,7 +94,7 @@ function UploadS3(props) {
               <div className="preview">
                 <img
                   src={URL.createObjectURL(file)}
-                  className="imagePreview"
+                  className="imagePreviewphoto"
                   alt="Thumb"
                 />
               </div>
@@ -111,10 +111,10 @@ function UploadS3(props) {
             }}
             show={show}
           >
-            <Modal.Body style={{ visibility: "visible", marginTop: "196px" }}>
+            <Modal.Body style={{ visibility: "visible", marginTop: "200px" }}>
               <img
                 src={scan}
-                style={{ width: "93%", marginLeft: "5px", position: "absolute" }} alt=""
+                style={{ width: "105%", marginLeft: "-20px", position: "absolute" }} alt=""
               ></img>
             </Modal.Body>
           </Modal>

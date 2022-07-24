@@ -41,9 +41,9 @@
   align-items: center;
 }
 
-.imagePreview {
+.imagePreviewphoto {
   max-width: 100%;
-  max-height: 320px;
+  max-height: 380px;
 }
 
 .get-calc {
