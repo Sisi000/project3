@@ -7,3 +7,14 @@ font-size: 24px;
     height: 70px;
     justify-content: space-between;
 }
+
+.me-auto {
+    justify-content: flex-start !important;
+        font-size: 1.2rem;
+    margin-left: 0px !important;
+  
+}
+
+.navbar-collapse {
+    justify-content: flex-start !important;
+}

@@ -12,6 +12,7 @@ import "./About.css";
 function About() {
   return (
     <div className="aboutStyles" style={{marginTop: "80px"}}>
+      <h1 style={{textAlign: "center"}}>About Us</h1>
       <Container fluid>
         <Row>
           <Col className="py-4 my-4 text-left" style={{border: "solid", borderWidth: "thin", borderColor: "#C2C5CC", borderRadius: "15px", marginRight:"20px"}}>
