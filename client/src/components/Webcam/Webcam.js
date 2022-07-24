@@ -139,9 +139,19 @@ function WebcamCapture(props) {
           >
             Submit
           </Button>
-          <Modal style={{ visibility: "hidden", marginTop: "380px", position: "absolute" }} show={show}>
-            <Modal.Body style={{visibility: "visible", marginTop: "130px"}}>
-              <img src={scan} style={{ width: "100%",  position: "absolute" }}></img>
+          <Modal
+            style={{
+              visibility: "hidden",
+              marginTop: "380px",
+              position: "absolute",
+            }}
+            show={show}
+          >
+            <Modal.Body style={{ visibility: "visible", marginTop: "130px" }}>
+              <img
+                src={scan}
+                style={{ width: "100%", marginLeft: "-10px", position: "absolute" }} alt=""
+              ></img>
             </Modal.Body>
           </Modal>
         </form>

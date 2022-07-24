@@ -177,7 +177,7 @@ function FaceMesh(props) {
               <Modal.Body
                 style={{ visibility: "visible" }}
               >
-                <img src={scan} style={{ width: "120%", marginLeft: "-50px", position: "absolute" }}></img>
+                <img src={scan} style={{ width: "120%", marginLeft: "-50px", position: "absolute" }} alt=""></img>
               </Modal.Body>
             </Modal>
           </div>
