@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as faceLandmarksDetection from "@tensorflow-models/face-landmarks-detection";
 import Product from "../Product";
-import {axiosPost} from "../AxiosHelper";
+import { axiosPost } from "../AxiosHelper";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import scan from "../../assets/scan.gif";
 
 //Added as per TF api suggestions
 import "@mediapipe/face_mesh";
@@ -11,6 +14,7 @@ import "@tensorflow/tfjs-backend-webgl";
 import Webcam from "react-webcam";
 import { drawMesh } from "./FaceMeshUtilities";
 import { Col, Container, Row } from "react-bootstrap";
+import "../Webcam/Webcam.css";
 
 function FaceMesh(props) {
   const filters = props.filters;
@@ -79,100 +83,140 @@ function FaceMesh(props) {
     const params = result;
     try {
       const endpoint = `/api/products/id`;
-      const payload = {params};
-      const products = await axiosPost(endpoint,payload)
+      const payload = { params };
+      const products = await axiosPost(endpoint, payload);
       setProducts(products.data);
     } catch (error) {
       console.log("Error with the database API: ", error);
     }
   };
 
-  const uploadNodes = async (userFaceData,filters) => {
+  const uploadNodes = async (userFaceData, filters) => {
     if (userFaceData) {
       try {
         const endpoint = "/facemesh";
         const payload = { userFaceData, filters };
-        const result = await axiosPost(endpoint,payload);
+        const result = await axiosPost(endpoint, payload);
         await showSuggestedMesh(result.data);
-        
       } catch (error) {
         console.log("Error with submission: ", error);
       }
     }
   };
 
+  const [show, setShow] = useState(false);
+
+  const handleShow = () => {
+    setShow(true);
+    setTimeout(() => setShow(false), 3800);
+  };
+
+  const [isHide, setIsHide] = useState(true);
+  if (products.length > 0) {
+    setTimeout(() => setIsHide(false), 3800);
+    clearTimeout(setIsHide);
+  }
+
   return (
     <div>
-      <b>Instructions:</b>
-      <p>Optional: Tell the virtual optician a few preferences with the filters</p>
-        <p>1) Ensure the subject is facing the camera with their face fully visible.</p>
-        <p>2) Wait for mesh to appear on the subject's face</p>
-        <p>3) Submit Facial Node Detection to the virtual optician.</p>
-        <p>4) See what products fit the face!</p>
-        <br/>
-      <div
-        className="Facemesh"
-        style={{
-          width: 640,
-          height: 480,
-        }}
-      >
-        <Webcam
-          ref={webcamRef}
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480,
-          }}
-        />
+      <div className="container-uploads">
+        <form className="forms3">
+          <b>Instructions:</b>
+          <p>
+            Optional: Tell the virtual optician a few preferences with the
+            filters
+          </p>
+          <p>
+            1) Ensure the subject is facing the camera with their face fully
+            visible.
+          </p>
+          <p>2) Wait for mesh to appear on the subject's face</p>
+          <p>3) Submit Facial Node Detection to the virtual optician.</p>
+          <p>4) See what products fit the face!</p>
+          <br />
+          <div
+            className="Facemesh"
+            style={{
+              width: 640,
+              height: 480,
+            }}
+          >
+            <Webcam
+              ref={webcamRef}
+              style={{
+                position: "absolute",
+                marginLeft: "auto",
+                marginRight: "auto",
+                left: 0,
+                right: 0,
+                textAlign: "center",
+                zindex: 9,
+                width: 640,
+                height: 480,
+              }}
+            />
 
-        <canvas
-          ref={canvasRef}
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480,
-          }}
-        />
+            <canvas
+              ref={canvasRef}
+              style={{
+                position: "absolute",
+                marginLeft: "auto",
+                marginRight: "auto",
+                left: 0,
+                right: 0,
+                textAlign: "center",
+                zindex: 9,
+                width: 640,
+                height: 480,
+              }}
+            />
+            <Modal
+              style={{ visibility: "hidden", marginTop: "500px", position: "absolute" }}
+              show={show}
+            >
+              <Modal.Body
+                style={{ visibility: "visible" }}
+              >
+                <img src={scan} style={{ width: "120%", marginLeft: "-50px", position: "absolute" }}></img>
+              </Modal.Body>
+            </Modal>
+          </div>
+          <br />
+          <Button
+            className="btn btn-primary"
+            style={{
+              marginTop: 10,
+            }}
+            onClick={async (event) => {
+              setProducts([]);
+              event.preventDefault();
+              await uploadNodes(userFaceData, filters);
+              handleShow();
+            }}
+          >
+            Submit
+          </Button>
+        </form>
       </div>
-      <br />
-      <button
-        className="btn btn-primary"
-        style={{
-          position: "absolute",
-          marginTop: 10,
-        }}
-        onClick={async (event) => {
-          event.preventDefault();
-          await uploadNodes(userFaceData,filters);
-        }}
-      >
-        Submit
-      </button>
-
       <Container fluid style={{ padding: "0" }}>
         <Container className="mt-3">
           <div>
             <div className="products my-5 py-2">
-            <Row>
-              {products.length > 0 && <h1>Suggested Glasses</h1>}
-                {products.map((product) => (
-                  <Col key={product._id} sm={6} md={4} lg={4} className="mb-3">
-                    <Product product={product}></Product>
-                  </Col>
-                ))}
+              <Row>
+                {!isHide && <h1>Suggested Glasses</h1>}
+                {!isHide
+                  ? products.map((product) => (
+                      <Col
+                        key={product._id}
+                        sm={6}
+                        md={4}
+                        lg={4}
+                        className="mb-3"
+                      >
+                        <Product product={product}></Product>
+                      </Col>
+                    ))
+                  : null}
               </Row>
             </div>
           </div>

@@ -74,7 +74,7 @@ function WebcamCapture(props) {
   }
 
   return (
-    <div className="webcam-container">
+    <div>
       <div className="container-uploads">
         <form className="forms3" onSubmit={submit}>
           <b>Instructions:</b>
