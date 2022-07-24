@@ -61,7 +61,6 @@ function WebcamCapture(props) {
   };
 
   const [show, setShow] = useState(false);
-
   const handleShow = () => {
     setShow(true);
     setTimeout(() => setShow(false), 3800);

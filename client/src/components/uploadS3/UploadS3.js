@@ -4,6 +4,9 @@ import imgphoto from "../../assets/photo.png";
 import { Container, Row, Col } from "react-bootstrap";
 import Product from "../Product";
 import {axiosPost, axiosPostMPFD} from "../AxiosHelper"
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import scan from "../../assets/scan.gif";
 
 function UploadS3(props) {
   const filters = props.filters;
@@ -38,7 +41,7 @@ function UploadS3(props) {
         console.log(err);
       });
     //console.log("Suggested glasses from submit are", result);
-    setFile(null);
+    // setFile(null);
     document.getElementById("selectedimage").value = "";
   };
   const fileSelected = (event) => {
@@ -53,6 +56,18 @@ function UploadS3(props) {
     const result2 = await axiosPost(endpoint, {params});
     setProducts(result2.data, ...products);
   };
+
+  const [show, setShow] = useState(false);
+  const handleShow = () => {
+    setShow(true);
+    setTimeout(() => setShow(false), 3800);
+  };
+
+  const [isHide, setIsHide] = useState(true);
+  if (products.length > 0) {
+    setTimeout(() => setIsHide(false), 2800);
+    clearTimeout(setIsHide);
+  }
 
   return (
     <div className="containers3">
@@ -85,9 +100,24 @@ function UploadS3(props) {
               </div>
             )}
           </div>
-          <button className="btn btn-primary" type="submit">
+          <Button className="btn btn-primary" type="submit" onClick={handleShow}>
             Submit
-          </button>
+          </Button>
+          <Modal
+            style={{
+              visibility: "hidden",
+              marginTop: "380px",
+              position: "absolute",
+            }}
+            show={show}
+          >
+            <Modal.Body style={{ visibility: "visible", marginTop: "196px" }}>
+              <img
+                src={scan}
+                style={{ width: "93%", marginLeft: "5px", position: "absolute" }} alt=""
+              ></img>
+            </Modal.Body>
+          </Modal>
         </form>
       </div>
 
@@ -95,12 +125,14 @@ function UploadS3(props) {
         <Container className="mt-3">
           <div className="products my-5 py-2">
             <Row>
-              {products.length > 0 && <h1>Suggested Glasses</h1>}
-              {products.map((product) => (
+            {!isHide && <h1>Suggested Glasses</h1>}
+                {!isHide
+                  ? products.map((product) => (
                 <Col key={product._id} sm={6} md={4} lg={4} className="mb-3">
                   <Product product={product}></Product>
                 </Col>
-              ))}
+              ))
+              : null}
             </Row>
           </div>
         </Container>
