@@ -3,6 +3,9 @@ import {axiosPost} from "../AxiosHelper";
 import "./UploadUrl.css";
 import { Container, Row, Col } from "react-bootstrap";
 import Product from "../Product";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import scan from "../../assets/scan.gif";
 
 
 function UploadUrl2(props) {
@@ -32,7 +35,8 @@ function UploadUrl2(props) {
       .catch((err) => {
         console.log(err);
       });
-    setFile(null);
+      handleShow();
+    // setFile(null);
     document.getElementById("enteredUrl").value = "";
     // return res.data;
   };
@@ -44,6 +48,20 @@ function UploadUrl2(props) {
     const result2 = await axiosPost(endpoint, payload);
     setProducts(result2.data, ...products);
   };
+
+  
+  const [show, setShow] = useState(false);
+  const handleShow = () => {
+    setShow(true);
+    setTimeout(() => setShow(false), 3800);
+  };
+
+  const [isHide, setIsHide] = useState(true);
+  if (products.length > 0) {
+    setTimeout(() => setIsHide(false), 3800);
+    clearTimeout(setIsHide);
+  }
+
 
   return (
 <>
@@ -64,30 +82,57 @@ function UploadUrl2(props) {
             value={file}
             onChange={changeUrl}
           />
-        </form>
-          <button className="btn btn-primary" onClick={submit}>
+       
+         
+          <Modal
+            style={{
+              visibility: "hidden",
+              marginTop: "350px",
+              position: "absolute",
+            }}
+            show={show}
+          >
+            <Modal.Body style={{ visibility: "visible", marginTop: "200px" }}>
+              <img
+                src={scan}
+                style={{ width: "105%", marginLeft: "-20px", position: "absolute" }} alt=""
+              ></img>
+            </Modal.Body>
+          </Modal>
+          </form>
+          {isHide !== true ? (
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setFile("");
+                  setProducts([]);
+                  setIsHide(true);
+                }}
+                className="btn btn-primary"
+              >
+                Clear
+              </Button>
+            ) : (
+          <Button className="btn btn-primary" onClick={submit}>
             Submit
-          </button>
-        <img className="imagePreview" src={file} alt=""></img>
+          </Button>
+            )}
+        <img className="imagePreviewUrl" src={file} alt=""></img>
      
       <div className="container-suggestion">
         <Container fluid style={{ padding: "0" }}>
           <Container className="mt-3">
             <div className="suggestedglasses">
               <div className="products my-5 py-2">
-                <Row sm>
-                  {products.length > 0 && <h1>Suggested Glasses</h1>}
-                  {products.map((product) => (
-                    <Col
-                      key={product._id}
-                      sm={6}
-                      md={4}
-                      lg={4}
-                      className="mb-3"
-                    >
-                      <Product product={product}></Product>
-                    </Col>
-                  ))}
+                               <Row>
+            {!isHide && <h1>Suggested Glasses</h1>}
+                {!isHide
+                  ? products.map((product) => (
+                <Col key={product._id} sm={6} md={4} lg={4} className="mb-3">
+                  <Product product={product}></Product>
+                </Col>
+              ))
+              : null}
                 </Row>
               </div>
             </div>
