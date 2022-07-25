@@ -3,8 +3,7 @@ import * as faceLandmarksDetection from "@tensorflow-models/face-landmarks-detec
 import Product from "../Product";
 import { axiosPost } from "../AxiosHelper";
 import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import scan from "../../assets/scan.gif";
+
 
 //Added as per TF api suggestions
 import "@mediapipe/face_mesh";
@@ -104,18 +103,18 @@ function FaceMesh(props) {
     }
   };
 
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
 
-  const handleShow = () => {
-    setShow(true);
-    setTimeout(() => setShow(false), 3800);
-  };
+  // const handleShow = () => {
+  //   setShow(true);
+  //   setTimeout(() => setShow(false), 3800);
+  // };
 
-  const [isHide, setIsHide] = useState(true);
-  if (products.length > 0) {
-    setTimeout(() => setIsHide(false), 3800);
-    clearTimeout(setIsHide);
-  }
+  // const [isHide, setIsHide] = useState(true);
+  // if (products.length > 0) {
+  //   setTimeout(() => setIsHide(false), 3800);
+  //   clearTimeout(setIsHide);
+  // }
 
   return (
     <div>
@@ -170,7 +169,7 @@ function FaceMesh(props) {
                 height: 480,
               }}
             />
-            <Modal
+            {/* <Modal
               style={{ visibility: "hidden", marginTop: "500px", position: "absolute" }}
               show={show}
             >
@@ -179,7 +178,7 @@ function FaceMesh(props) {
               >
                 <img src={scan} style={{ width: "120%", marginLeft: "-50px", position: "absolute" }} alt=""></img>
               </Modal.Body>
-            </Modal>
+            </Modal> */}
           </div>
           <br />
           <Button
@@ -188,10 +187,10 @@ function FaceMesh(props) {
               marginTop: 10,
             }}
             onClick={async (event) => {
-              setProducts([]);
+              // setProducts([]);
               event.preventDefault();
               await uploadNodes(userFaceData, filters);
-              handleShow();
+              // handleShow();
             }}
           >
             Submit
@@ -203,20 +202,12 @@ function FaceMesh(props) {
           <div>
             <div className="products my-5 py-2">
               <Row>
-                {!isHide && <h1>Suggested Glasses</h1>}
-                {!isHide
-                  ? products.map((product) => (
-                      <Col
-                        key={product._id}
-                        sm={6}
-                        md={4}
-                        lg={4}
-                        className="mb-3"
-                      >
-                        <Product product={product}></Product>
-                      </Col>
-                    ))
-                  : null}
+              {products.length > 0 && <h1>Suggested Glasses</h1>}
+                {products.map((product) => (
+                  <Col key={product._id} sm={6} md={4} lg={4} className="mb-3">
+                    <Product product={product}></Product>
+                  </Col>
+                ))}
               </Row>
             </div>
           </div>
