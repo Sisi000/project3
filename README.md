@@ -1,6 +1,6 @@
 # InceptionU Project 3 - Smart Glasses AI and ML Ecommerce Application
 
-This is the final project for our InceptionU cohert 8 course taken in 2022. 
+This is the final project for our InceptionU cohort 8 course taken in 2022. 
 
 This project was a pitch from Wink, an optician software development company. The pitch was to create an application that could recommend products based on their customers.
 
