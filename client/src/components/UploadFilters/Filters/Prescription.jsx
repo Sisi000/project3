@@ -15,7 +15,6 @@ function Prescription(props) {
           value={prescription}
           onChange={(event) => setPrescription(event.target.value)}
         />
-        <label for="MinPrice"> - dpt </label>
     </div>
   )
 }
