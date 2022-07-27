@@ -7,6 +7,7 @@ import UploadUrl from "./uploadUrl/UploadUrl";
 import UploadFilters from "./UploadFilters/UploadFilters";
 import FaceMesh from "./FaceMesh/FaceMesh"
 import "./Uploads.css";
+import imgaiml from "../assets/aiml.png";
 
 export default function Uploads() {
   const [isShown1, setIsShown1] = useState(false);
@@ -274,6 +275,7 @@ export default function Uploads() {
         {isShown3 && <UploadUrl filters = {filters}/>}
         {isShown4 && <FaceMesh filters = {filters}/>}
       </div>
+      <img className="imgaiml" src={imgaiml} alt="uploads"/>
     </div>
     </div>
     </>
